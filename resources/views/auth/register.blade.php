@@ -1,52 +1,79 @@
-<x-guest-layout>
-    <form method="POST" action="{{ route('register') }}">
-        @csrf
+@extends('auth.app')
 
-        <!-- Name -->
-        <div>
-            <x-input-label for="name" :value="__('Name')" />
-            <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
-            <x-input-error :messages="$errors->get('name')" class="mt-2" />
+@section('content')
+<!-- CONTAINER OPEN -->
+<div class="col col-login mx-auto text-center">
+    <a href="index.html" class="text-center">
+        <img src="{{ asset($settings->logo ?? 'default/logo.png') }}" class="header-brand-img" alt="">
+    </a>
+</div>
+<div class="container-login100">
+    <div class="wrap-login100 p-0">
+        <div class="card-body">
+            <form class="login100-form validate-form" method="POST" action="{{ route('register') }}">
+                @csrf
+                <div class="login100-form-title">
+                    <h2>Sign Up</h2>
+                </div>
+
+                <div class="wrap-input100 validate-input" data-bs-validate="Valid name is required: sabbir">
+                    <input class="input100" type="text" name="name" placeholder="Name" value="{{ old('name') }}">
+                    <span class="focus-input100"></span>
+                    <span class="symbol-input100">
+                        <i class="zmdi zmdi-account" aria-hidden="true"></i>
+                    </span>
+                </div>
+                @error('name')
+                <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
+
+                <div class="wrap-input100 validate-input" data-bs-validate="Valid email is required: ex@abc.xyz">
+                    <input class="input100" type="text" name="email" placeholder="Email" value="{{ old('email') }}">
+                    <span class="focus-input100"></span>
+                    <span class="symbol-input100">
+                        <i class="zmdi zmdi-email" aria-hidden="true"></i>
+                    </span>
+                </div>
+                @error('email')
+                <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
+
+                <div class="wrap-input100 validate-input" data-bs-validate="Password is required">
+                    <input class="input100" type="password" name="password" placeholder="Password">
+                    <span class="focus-input100"></span>
+                    <span class="symbol-input100">
+                        <i class="zmdi zmdi-lock" aria-hidden="true"></i>
+                    </span>
+                </div>
+                @error('password')
+                <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
+
+                <div class="wrap-input100 validate-input" data-bs-validate="Password is required">
+                    <input class="input100" type="password" name="password_confirmation" placeholder="Confirm Password">
+                    <span class="focus-input100"></span>
+                    <span class="symbol-input100">
+                        <i class="zmdi zmdi-lock" aria-hidden="true"></i>
+                    </span>
+                </div>
+                @error('password_confirmation')
+                <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
+
+                <div class="text-end pt-1">
+                    <p class="mb-0"><a href="{{ route('login') }}" class="text-primary ms-1">login here</a></p>
+                </div>
+
+                <div class="container-login100-form-btn">
+                    <button type="submit" class="login100-form-btn btn-primary">
+                        Sign Up
+                    </button>
+                </div>
+
+            </form>
         </div>
+    </div>
+</div>
+<!-- CONTAINER CLOSED -->
+@endsection
 
-        <!-- Email Address -->
-        <div class="mt-4">
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
-        </div>
-
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
-
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="new-password" />
-
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
-
-        <!-- Confirm Password -->
-        <div class="mt-4">
-            <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
-
-            <x-text-input id="password_confirmation" class="block mt-1 w-full"
-                            type="password"
-                            name="password_confirmation" required autocomplete="new-password" />
-
-            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
-        </div>
-
-        <div class="flex items-center justify-end mt-4">
-            <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('login') }}">
-                {{ __('Already registered?') }}
-            </a>
-
-            <x-primary-button class="ms-4">
-                {{ __('Register') }}
-            </x-primary-button>
-        </div>
-    </form>
-</x-guest-layout>

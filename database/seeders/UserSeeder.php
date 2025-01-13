@@ -14,28 +14,87 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
+
+        DB::table('permissions')->insert([
+            ['name' => 'insert', 'guard_name' => 'web'],
+            ['name' => 'update', 'guard_name' => 'web'],
+            ['name' => 'delete', 'guard_name' => 'web'],
+            ['name' => 'view', 'guard_name' => 'web']
+        ]);
+
+        DB::table('roles')->insert([
+            ['name' => 'admin', 'guard_name' => 'web'],
+            ['name' => 'client', 'guard_name' => 'web'],
+            ['name' => 'owner', 'guard_name' => 'web']
+        ]);
+
         DB::table('users')->insert([
            [
             'name' => 'Admin',
             'email' => 'admin@admin.com',
             'password' => Hash::make('12345678'),
-            'role' => 'admin',
             'email_verified_at' => now(),
            ],
            [
             'name' => 'User',
             'email' => 'user@user.com',
             'password' => Hash::make('12345678'),
-            'role' => 'customer',
             'email_verified_at' => now(),
            ],
            [
-            'name' => 'Trainer',
-            'email' => 'trainer@trainer.com',
+            'name' => 'owner',
+            'email' => 'owner@owner.com',
             'password' => Hash::make('12345678'),
-            'role' => 'trainer',
             'email_verified_at' => now(),
            ]
+        ]);
+
+        DB::table('role_has_permissions')->insert([
+            ['permission_id' => 1, 'role_id' => 1],
+            ['permission_id' => 2, 'role_id' => 1],
+            ['permission_id' => 3, 'role_id' => 1],
+            ['permission_id' => 4, 'role_id' => 1],
+        ]);
+
+        DB::table('model_has_roles')->insert([
+            [
+                'role_id' => 1,
+                'model_id' => 1,
+                'model_type' => 'App\Models\User'
+            ],
+            [
+                'role_id' => 2,
+                'model_id' => 2,
+                'model_type' => 'App\Models\User'
+            ],
+            [
+                'role_id' => 3,
+                'model_id' => 3,
+                'model_type' => 'App\Models\User'
+            ]
+        ]);
+
+        DB::table('model_has_permissions')->insert([
+            [
+                'permission_id' => 1,
+                'model_id' => 1,
+                'model_type' => 'App\Models\User'
+            ],
+            [
+                'permission_id' => 2,
+                'model_id' => 1,
+                'model_type' => 'App\Models\User'
+            ],
+            [
+                'permission_id' => 3,
+                'model_id' => 1,
+                'model_type' => 'App\Models\User'
+            ],
+            [
+                'permission_id' => 4,
+                'model_id' => 1,
+                'model_type' => 'App\Models\User'
+            ],
         ]);
     }
 }

@@ -3,22 +3,23 @@
 namespace App\Http\Controllers\Web\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules;
+use Illuminate\View\View;
 
 class RegisteredUserController extends Controller
 {
     /**
      * Display the registration view.
      */
-    /* public function create(): View
+    public function create(): View
     {
         return view('auth.register');
-    } */
-    public function create()
-    {
-        
-        return redirect('/')->with('t-error', 'Something went wrong. Please try again.');
     }
 
     /**
@@ -29,7 +30,7 @@ class RegisteredUserController extends Controller
     public function store(Request $request): RedirectResponse
     {
 
-        /* $request->validate([
+        $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
@@ -45,10 +46,15 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        return redirect(route('dashboard', absolute: false)); */
-
-
-        return redirect('/')->with('t-error', 'Something went wrong. Please try again.');
+        if (Auth::user()->hasRole('admin')) {
+            return redirect()->intended(route('admin.dashboard', absolute: false))->with('t-success', 'Login Successfully');
+        } elseif (Auth::user()->hasRole('owner')) {
+            return redirect()->intended(route('owner.dashboard', absolute: false))->with('t-success', 'Login Successfully');
+        } elseif (Auth::user()->hasRole('client')) {
+            return redirect()->intended(route('dashboard', absolute: false))->with('t-success', 'Login Successfully');
+        } else {
+            return redirect()->intended(route('home', absolute: false))->with('t-error', 'Something went wrong. Please try again.');
+        }
 
     }
 }

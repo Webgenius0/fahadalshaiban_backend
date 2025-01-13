@@ -78,7 +78,7 @@ class PageController extends Controller
         } catch (Exception $e) {
             session()->put('t-error', $e->getMessage());
         }
-        return redirect()->route('Page.index')->with('success', 'Page created successfully');
+        return redirect()->route('admin.page.index')->with('success', 'Page created successfully');
     }
 
     /**
@@ -118,7 +118,7 @@ class PageController extends Controller
             session()->put('t-error', $e->getMessage());
         }
 
-        return redirect()->route('Page.index');
+        return redirect()->route('admin.page.index');
     }
 
     /**

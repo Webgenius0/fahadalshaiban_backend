@@ -8,14 +8,34 @@ enum SectionEnum: string
 
     case HOME_BANNER = 'home_banner';
     case HOME_BANNERS = 'home_banners';
+    case HERO = 'hero';
+
+    //Footer
+    case FOOTER = 'footer';
+    case SOLUTION = "solution";
+
 
 
     // Home page section
-    public static function getHome()
+    public static function HomePage()
     {
         return [
             self::HOME_BANNER->value => ['item' => 1, 'type' => 'first'],
-            self::HOME_BANNERS->value => ['item' => 3, 'type' => 'get']
+            self::HOME_BANNERS->value => ['item' => 3, 'type' => 'get'],
+            self::HERO->value => ['item' => 1, 'type' => 'first'],
+        ];
+
+        // Check if the requested section exists
+        if (! in_array(request()->section, array_keys(self::HomePage()))) {
+            abort(404);
+        }
+    }
+
+    public static function getCommon(){
+        return [
+            self::FOOTER->value => ['item' => 1, 'type' => 'first'],
+            self::SOLUTION->value => ['item' => 1, 'type' => 'first'],
         ];
     }
+    
 }

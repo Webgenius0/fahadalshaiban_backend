@@ -92,7 +92,7 @@ class CategoryController extends Controller
             session()->put('t-error', $e->getMessage());
         }
 
-        return redirect()->route('category.index')->with('success', 'Category created successfully');
+        return redirect()->route('admin.category.index')->with('success', 'Category created successfully');
     }
 
     /**
@@ -139,7 +139,7 @@ class CategoryController extends Controller
             session()->put('t-error', $e->getMessage());
         }
 
-        return redirect()->route('category.index');
+        return redirect()->route('admin.category.index');
     }
 
     /**

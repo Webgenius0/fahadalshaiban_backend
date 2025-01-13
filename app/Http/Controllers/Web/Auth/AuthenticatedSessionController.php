@@ -24,13 +24,22 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
-        if (Auth::attempt(['email' => $request->email, 'password' => $request->password, 'role' => 'admin'])) {
+        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
 
             $request->authenticate();
 
             $request->session()->regenerate();
-            session()->put('t-success', 'Login Successfully');
-            return redirect()->intended(route('dashboard', absolute: false));
+            
+            if (Auth::user()->hasRole('admin')) {
+                return redirect()->intended(route('admin.dashboard', absolute: false))->with('t-success', 'Login Successfully');
+            } elseif (Auth::user()->hasRole('owner')) {
+                return redirect()->intended(route('owner.dashboard', absolute: false))->with('t-success', 'Login Successfully');
+            } elseif (Auth::user()->hasRole('client')) {
+                return redirect()->intended(route('dashboard', absolute: false))->with('t-success', 'Login Successfully');
+            } else {
+                return redirect()->intended(route('home', absolute: false))->with('t-error', 'Something went wrong. Please try again.');
+            }
+
         }else{
             return back()->withErrors([
                 'email' => 'The provided credentials do not match our records.',

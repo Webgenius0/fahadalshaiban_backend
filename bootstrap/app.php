@@ -15,12 +15,13 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
         web: __DIR__.'/../routes/web.php',
+        api: __DIR__.'/../routes/api.php',
         commands: __DIR__.'/../routes/console.php',
         health: '/up',
         then: function () {
-            Route::middleware(['web', 'auth', 'admin'])->prefix('admin')->group(base_path('routes/backend.php'));
-            Route::middleware(['api', 'customer'])->prefix('api/customer')->name('customer.')->group(base_path('routes/customer.php'));
-            Route::middleware(['api', 'trainer'])->prefix('api/trainer')->name('trainer.')->group(base_path('routes/trainer.php'));
+            Route::middleware(['web', 'auth', 'admin'])->prefix('admin')->name('admin.')->group(base_path('routes/backend.php'));
+            Route::middleware(['web', 'owner'])->prefix('owner')->name('owner.')->group(base_path('routes/owner.php'));
+            Route::middleware(['web', 'client'])->group(base_path('routes/client.php'));
         }
     )
     ->withBroadcasting(
@@ -30,9 +31,12 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
             'admin' => App\Http\Middleware\AdminMiddleware::class,
-            'customer' => App\Http\Middleware\CustomerMiddleware::class,
-            'trainer' => App\Http\Middleware\TrainerMiddleware::class,
-            'authCheck' => App\Http\Middleware\AuthCheckMiddleware::class
+            'owner' => App\Http\Middleware\OwnerMiddleware::class,
+            'client' => App\Http\Middleware\ClientMiddleware::class,
+            'authCheck' => App\Http\Middleware\AuthCheckMiddleware::class,
+            'role' => \Spatie\Permission\Middleware\RoleMiddleware::class,
+            'permission' => \Spatie\Permission\Middleware\PermissionMiddleware::class,
+            'role_or_permission' => \Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

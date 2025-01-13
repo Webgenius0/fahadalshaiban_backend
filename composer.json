@@ -7,9 +7,14 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "kreait/laravel-firebase": "^5.8",
         "laravel/breeze": "^2.3",
         "laravel/framework": "^11.31",
+        "laravel/sanctum": "^4.0",
+        "laravel/socialite": "^5.16",
         "laravel/tinker": "^2.9",
+        "spatie/laravel-permission": "^6.10",
+        "tymon/jwt-auth": "^2.1",
         "yajra/laravel-datatables-oracle": "^11.0"
     },
     "require-dev": {
@@ -26,7 +31,11 @@
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
-        }
+        },
+        "files": [
+            "app/Helpers/Helper.php",
+            "app/Helpers/Fn.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
