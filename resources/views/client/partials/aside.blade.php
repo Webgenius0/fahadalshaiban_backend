@@ -4,7 +4,7 @@
     </a>
     <div class="dashboard-sidebar-menu-wrapper">
         <nav class="dashboard-sidebar-menu">
-            <a href="./dashboard-overview.html" class="menu-item active">
+            <a href="{{ route('dashboard') }}" class="menu-item {{ request()->routeIs('dashboard') ? 'active' : '' }}">
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="24"
@@ -34,7 +34,7 @@
                         stroke-linejoin="round" />
                 </svg>
                 Overview</a>
-            <a href="./dashboard-new-campaigns.html" class="menu-item">
+            <a href="{{ route('page.new.campaigns') }}" class="menu-item {{ request()->routeIs('page.new.campaigns') ? 'active' : '' }}">
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="24"
@@ -59,7 +59,7 @@
                         stroke-linejoin="round" />
                 </svg>
                 Start New Campaign</a>
-            <a href="./dashboard-invoice.html" class="menu-item">
+            <a href="{{ route('page.invoice.list') }}" class="menu-item {{ request()->routeIs('page.invoice.list') ? 'active' : '' }}">
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="24"
@@ -96,7 +96,7 @@
                 Invoice</a>
         </nav>
         <div class="sidebar-footer">
-            <a href="./dashboard-tutorials.html" class="menu-item">
+            <a href="{{ route('page.tutorials') }}" class="menu-item {{ request()->routeIs('page.tutorials') ? 'active' : '' }}">
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="24"
@@ -113,7 +113,7 @@
                 </svg>
                 Tutorials
             </a>
-            <a href="#" class="menu-item">
+            <a href="{{ route('page.profile') }}" class="menu-item {{ request()->routeIs('page.profile') ? 'active' : '' }}">
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="24"

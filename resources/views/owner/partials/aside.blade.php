@@ -4,7 +4,7 @@
         </a>
         <div class="dashboard-sidebar-menu-wrapper">
             <nav class="dashboard-sidebar-menu">
-                <a href="./owner-dashboard-overview.html" class="menu-item active">
+                <a href="{{ route('owner.dashboard') }}" class="menu-item {{ request()->routeIs('owner.dashboard') ? 'active' : '' }}">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         width="24"
@@ -34,7 +34,7 @@
                             stroke-linejoin="round" />
                     </svg>
                     Overview</a>
-                <a href="./owner-dashboard-new-signage.html " class="menu-item">
+                <a href="{{ route('owner.page.add.signage') }}" class="menu-item {{ request()->routeIs('owner.page.add.signage') ? 'active' : '' }}">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         width="24"
@@ -59,7 +59,7 @@
                             stroke-linejoin="round" />
                     </svg>
                     Add New Signage</a>
-                <a href="./owner-dashboard-income-statement.html" class="menu-item">
+                <a href="{{ route('owner.page.income.statement') }}" class="menu-item {{ request()->routeIs('owner.page.income.statement') ? 'active' : '' }}">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         width="24"
@@ -73,7 +73,7 @@
                     Income Statement</a>
             </nav>
             <div class="sidebar-footer">
-                <a href="./dashboard-tutorials.html" class="menu-item">
+                <a href="{{ route('owner.page.tutorials') }}" class="menu-item {{ request()->routeIs('owner.page.tutorials') ? 'active' : '' }}">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         width="24"
@@ -90,7 +90,7 @@
                     </svg>
                     Tutorials
                 </a>
-                <a href="#" class="menu-item">
+                <a href="{{ route('owner.page.profile') }}" class="menu-item {{ request()->routeIs('owner.page.profile') ? 'active' : '' }}">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         width="24"

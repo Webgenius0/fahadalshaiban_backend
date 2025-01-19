@@ -1,31 +1,49 @@
-<x-guest-layout>
-    <div class="mb-4 text-sm text-gray-600">
-        {{ __('Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you? If you didn\'t receive the email, we will gladly send you another.') }}
-    </div>
+@extends('auth.app')
 
-    @if (session('status') == 'verification-link-sent')
-        <div class="mb-4 font-medium text-sm text-green-600">
-            {{ __('A new verification link has been sent to the email address you provided during registration.') }}
+@section('content')
+<section class="authentication">
+    <div class="authentication-box">
+        <div class="authentication-box-header">
+            <img src="{{ asset('frontend') }}/images/favicon.png" alt="logo" />
+            <h4>Verify Your Phone Number</h4>
         </div>
-    @endif
 
-    <div class="mt-4 flex items-center justify-between">
+        <div class="verify-divider-line"></div>
+        <h5 class="notify-alert">
+            A verification code has been sent to @peatix.com
+        </h5>
+        <p class="remaining-time-text">
+            Please check your inbox and enter the verification code below to
+            verify your email address. The code will expire in <span>4:59</span>
+        </p>
+
         <form method="POST" action="{{ route('verification.send') }}">
             @csrf
-
-            <div>
-                <x-primary-button>
-                    {{ __('Resend Verification Email') }}
-                </x-primary-button>
+            <div class="code-container">
+                <input type="tel" maxlength="1" class="code-input" />
+                <input type="tel" maxlength="1" class="code-input" />
+                <input type="tel" maxlength="1" class="code-input" />
+                <input type="tel" maxlength="1" class="code-input" />
+                <input type="tel" maxlength="1" class="code-input" />
+                <input type="tel" maxlength="1" class="code-input" />
             </div>
+            <a href="{{ route('page.started.form') }}" class="verify-button text-center">Verify</a>
         </form>
 
-        <form method="POST" action="{{ route('logout') }}">
-            @csrf
-
-            <button type="submit" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                {{ __('Log Out') }}
-            </button>
-        </form>
+        <!-- home-tutorials -->
+        <div class="home-tutorials-wrapper">
+            <a href="{{ route('home') }}">Home</a>
+            <div data-bs-toggle="modal" data-bs-target="#videoModal">
+                Tutorials
+            </div>
+        </div>
+        <!-- home-tutorials -->
     </div>
-</x-guest-layout>
+    <div class="greeting-box">
+        <div class="greeting-content">
+            <h2>Welcome</h2>
+            <p>New Here? Create a account to start a new campaign?</p>
+        </div>
+    </div>
+</section>
+@endsection
