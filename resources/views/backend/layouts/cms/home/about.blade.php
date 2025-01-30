@@ -1,7 +1,6 @@
-@extends('backend.app', ['title' => 'Create Banner'])
+@extends('backend.app', ['title' => 'Update About'])
 
 @section('content')
-
 <!--app-content open-->
 <div class="app-content main-content mt-0">
     <div class="side-app">
@@ -11,14 +10,14 @@
 
             <div class="page-header">
                 <div>
-                    <h1 class="page-title">CMS : Create Banner</h1>
+                    <h1 class="page-title">CMS : About</h1>
                 </div>
                 <div class="ms-auto pageheader-btn">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item">CMS</li>
                         <li class="breadcrumb-item">Home</li>
-                        <li class="breadcrumb-item">Baner</li>
-                        <li class="breadcrumb-item">Create</li>
+                        <li class="breadcrumb-item">About</li>
+                        <li class="breadcrumb-item">Update</li>
                     </ol>
                 </div>
             </div>
@@ -30,14 +29,19 @@
                         <div class="tab-pane active show" id="editProfile">
                             <div class="card">
                                 <div class="card-body border-0">
-                                    <form method="POST" action="{{ route('admin.cms.home.banner.store') }}" enctype="multipart/form-data">
+                                    <form method="POST" action="{{ route('admin.cms.home.about.update') }}"
+                                        enctype="multipart/form-data">
                                         @csrf
+                                        @method('PUT')
 
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <label for="title" class="form-label">Title:</label>
-                                                    <input type="text" class="form-control @error('title') is-invalid @enderror" name="title" placeholder="Enter here title" id="title" value="{{ old('title') }}">
+                                                    <input type="text"
+                                                        class="form-control @error('title') is-invalid @enderror"
+                                                        name="title" placeholder="Enter here title" id="title"
+                                                        value="{{ $about->title ?? '' }}">
                                                 </div>
                                             </div>
                                         </div>
@@ -46,33 +50,21 @@
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <label for="description" class="form-label">Description:</label>
-                                                    <textarea class="form-control @error('description') is-invalid @enderror" name="description" id="description" placeholder="Enter here description" rows="3">{{ old('description') }}</textarea>
+                                                    <textarea class="form-control @error('description') is-invalid @enderror" name="description" id="description"
+                                                        placeholder="Enter here description" rows="3">{{ $about->description ?? '' }}</textarea>
                                                 </div>
                                             </div>
                                         </div>
 
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="btn_text" class="form-label">Button Text:</label>
-                                                    <input type="text" class="form-control @error('btn_text') is-invalid @enderror" name="btn_text" placeholder="Enter here button text" id="btn_text" value="{{ old('btn_text') }}">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="btn_link" class="form-label">Button Link:</label>
-                                                    <input type="text" class="form-control @error('btn_link') is-invalid @enderror" name="btn_link" placeholder="Enter here link" id="btn_link" value="{{ old('btn_link') }}">
-                                                </div>
-                                            </div>
-                                        </div>
 
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <label for="image" class="form-label">Side Image:</label>
-                                                    <input type="file" class="dropify @error('image') is-invalid @enderror" name="image"
-                                                        id="image"
-                                                        data-default-file="">
+                                                    <input type="file"
+                                                        class="dropify @error('image') is-invalid @enderror"
+                                                        name="image" id="image"
+                                                        data-default-file="{{ isset($about->image) ? asset($about->image) : '' }}">
                                                     @error('image')
                                                     <span class="text-danger">{{ $message }}</span>
                                                     @enderror
@@ -101,5 +93,4 @@
 <!-- CONTAINER CLOSED -->
 @endsection
 @push('scripts')
-
 @endpush

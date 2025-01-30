@@ -51,6 +51,14 @@
                     </a>
                 </li>
                 <li class="slide">
+                    <a class="side-menu__item {{  request()->routeIs('admin.social') ? 'has-link' : '' }}" href="{{ route('admin.social.index') }}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="side-menu__icon" viewBox="0 0 16 16">
+                            <path d="M15 14l-5-5-5 5v-3l10 -10z" />
+                        </svg>
+                        <span class="side-menu__label">Social Link</span>
+                    </a>
+                </li>
+                <li class="slide">
                     <a class="side-menu__item" data-bs-toggle="slide" href="#">
                         <svg xmlns="http://www.w3.org/2000/svg" class="side-menu__icon" viewBox="0 0 512 512" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32">
                             <rect width="416" height="416" rx="48" ry="48" />
@@ -109,6 +117,10 @@
 
                     <ul class="slide-menu">
                         <li><a href="{{ route('admin.cms.home.banner.index') }}" class="slide-item">Banner Section</a></li>
+                        <li><a href="{{ route('admin.cms.home.marquee.index') }}" class="slide-item">Marquee Section</a></li>
+                        <li><a href="{{ route('admin.cms.home.card.index') }}" class="slide-item">Card Section</a></li>
+                        <li><a href="{{ route('admin.cms.home.about.index') }}" class="slide-item">About Section</a></li>
+                        <li><a href="{{ route('admin.cms.home.testimonial.index') }}" class="slide-item">Testimonial Section</a></li>
                         <li><a href="{{ route('admin.cms.home.hero.index') }}" class="slide-item">Hero Section</a></li>
                     </ul>
                 </li>

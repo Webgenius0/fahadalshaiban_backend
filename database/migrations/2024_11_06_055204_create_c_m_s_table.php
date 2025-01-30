@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('page');
             $table->string('section');
+            $table->string('name')->nullable();
+            $table->string('slug')->nullable();
             $table->string('title')->nullable();
             $table->string('sub_title')->nullable();
             $table->longText('description')->nullable();
@@ -23,6 +25,8 @@ return new class extends Migration
             $table->longText('image')->nullable();
             $table->string('btn_text')->nullable();
             $table->string('btn_link')->nullable();
+            $table->string('btn_color')->nullable();
+            $table->json('metadata')->nullable();
             $table->enum('status', ['active', 'inactive'])->default('active');
             $table->timestamps();
         });

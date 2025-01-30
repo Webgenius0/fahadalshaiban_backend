@@ -11,13 +11,7 @@ class HomeController extends Controller
 {
     public function index()
     {
-        //cms start
-        $query = CMS::where('page', PageEnum::HOME)->where('status', 'active');
-        $cms = [];
-        foreach (SectionEnum::HomePage() as $key => $section) {
-            $cms[$key] = (clone $query)->where('section', $key)->latest()->take($section['item'])->{$section['type']}();
-        }
-        //cms end
+        $cms = CMS::where('page', PageEnum::HOME)->where('status', 'active')->get();
         return view('frontend.layouts.index', compact('cms'));
     }
 }

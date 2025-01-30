@@ -1,6 +1,12 @@
 @php
 use App\Enums\PageEnum;
 use App\Enums\SectionEnum;
+$home_banner = $cms->firstWhere('section', SectionEnum::HOME_BANNER);
+$home_marquee = $cms->firstWhere('section', SectionEnum::HOME_MARQUEE);
+$home_card = $cms->where('section', SectionEnum::HOME_CARD)->take(4)->values();
+$home_about = $cms->firstWhere('section', SectionEnum::HOME_ABOUT);
+$home_testimonials = $cms->where('section', SectionEnum::HOME_TESTIMONIALS)->values();
+$home_hero = $cms->firstWhere('section', SectionEnum::HOME_HERO);
 @endphp
 
 @extends('frontend.app', ['title' => 'Home'])
@@ -9,31 +15,15 @@ use App\Enums\SectionEnum;
 <section class="banner-home">
     <div class="my-container">
         <div class="banner-content">
-            <h1 class="banner-title">
-                Shashh <br />
-                Advertising
-            </h1>
+            <h1 class="banner-title">{{ $home_banner->title ?? "Shashh Advertising" }}</h1>
             <div class="banner-details">
                 <div class="banner-line"></div>
                 <div>
-                    <p class="banner-desc">
-                        Reach a real and local engagead audience on Shashh. Drive
-                        results on one platform for better connections.
-                    </p>
-                    <a href="{{ route('login') }}" class="btn-common banner-home-btn">
-                        Start New Campaign
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            fill="none">
-                            <path
-                                d="M4 12L20 12M20 12L14 18M20 12L14 6"
-                                stroke="white"
-                                stroke-width="1.5"
-                                stroke-linecap="round"
-                                stroke-linejoin="round" />
+                    <p class="banner-desc">{{ $home_banner->description ?? "Reach a real and local engagead audience on Shashh. Drive results on one platform for better connections." }}</p>
+                    <a href="{{ $home_banner->button_link ?? '#' }}" class="btn-common banner-home-btn">
+                        {{ $home_banner->button_text ?? "Sign up now" }}
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <path d="M4 12L20 12M20 12L14 18M20 12L14 6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
                     </a>
                 </div>
@@ -45,10 +35,7 @@ use App\Enums\SectionEnum;
 
 <!-- marquee starts -->
 <section class="marquee">
-    <h1>
-        1st Public Signage Booking Website  in Saudi Arabia and  GCC***1st
-        Public Signage Booking Website  in Saudi Arabia and  GCC
-    </h1>
+    <h1>{{ $home_marquee->title ?? "1st Public Signage Booking Website in Saudi Arabia and GCC***1st Public Signage Booking Website in Saudi Arabia and GCC" }}</h1>
 </section>
 <!-- marquee ends -->
 
@@ -56,6 +43,20 @@ use App\Enums\SectionEnum;
 <section class="services">
     <div class="my-container">
         <div class="services-wrapper">
+
+            @if(isset($home_card) && $home_card->count() > 0)
+            @foreach($home_card as $card)
+            <div class="service-item">
+                <div class="service-item-icon">
+                    <img src="{{ asset($card->image) }}" alt="image" />
+                </div>
+                <h3 class="service-item-title">{{ $service->title ?? "Locate" }}</h3>
+                <p class="service-item-desc">
+                    {{ $service->description ?? "Find the optimal location for your signage to meet your business needs." }}
+                </p>
+            </div>
+            @endforeach
+            @else
             <div class="service-item">
                 <div class="service-item-icon">
                     <svg
@@ -180,6 +181,8 @@ use App\Enums\SectionEnum;
                     hours.
                 </p>
             </div>
+            @endif
+
         </div>
     </div>
 </section>
@@ -190,21 +193,10 @@ use App\Enums\SectionEnum;
     <div class="my-container">
         <div class="about-us-content-wrapper">
             <div class="about-us-left">
-                <h2 class="section-title">About Shashh</h2>
+                <h2 class="section-title">{{ $home_about->title ?? "About Us" }}</h2>
                 <div class="about-us-content">
                     <div class="about-us-line"></div>
-                    <p class="about-us-desc">
-                        Welcome to Shashh, the game-changer in how businesses and
-                        individuals book and utilize public signage spaces. Our
-                        cutting-edge solution is designed to make your advertising
-                        experience seamless, efficient, and incredibly effective.
-                    </p>
-                    <p class="about-us-desc">
-                        ​Experience the future of public signage reservations with
-                        SignSpace. Transform how you advertise, simplify your booking
-                        process, save your time and elevate your business visibility
-                        today!
-                    </p>
+                    {!! $home_about->description ?? "Welcome to Shashh, the game-changer in how businesses and individuals book and utilize public signage spaces. Our cutting-edge solution is designed to make your advertising experience seamless, efficient, and incredibly effective." !!}
                 </div>
             </div>
             <div class="about-us-right">
@@ -212,7 +204,7 @@ use App\Enums\SectionEnum;
             </div>
         </div>
         <div class="about-us-banner">
-            <img src="{{ asset('frontend') }}/images/about.png" alt="" />
+            <img src="{{ isset($home_about->image) ? asset($home_about->image) : asset('frontend/images/about.png') }}" class="about-us-banner-img" alt="" />
         </div>
     </div>
 </section>
@@ -222,8 +214,28 @@ use App\Enums\SectionEnum;
 <section class="testimonial">
     <div class="my-container">
         <h2 class="section-title">Testimonial</h2>
-
         <div class="review-grid">
+            @if(isset($home_testimonials) && $home_testimonials->count() > 0)
+            @foreach($home_testimonials as $testimonial)
+            <div class="review-card">
+                <div class="review-header">
+                    <h3>{{ $testimonial->title ?? "Adam Smith" }}</h3>
+                    <img src="{{ asset('frontend') }}/images/google.png" alt="Google Logo" />
+                </div>
+                <div class="review-rating">
+                @if (isset(json_decode($testimonial->metadata)->rating) && json_decode($testimonial->metadata)->rating > 0)
+                    @for ($i = 0; $i < json_decode($testimonial->metadata)->rating; $i++)
+                        ⭐
+                    @endfor
+                @endif
+                </div>
+                <p class="review-date">{{ $testimonial->created_at->diffForHumans() ?? "N/A" }}</p>
+                <p class="review-text">
+                    {!! $testimonial->description ?? "Find the optimal location for your signage to meet your business needs." !!}
+                </p>
+            </div>
+            @endforeach
+            @else
             <div class="review-card">
                 <div class="review-header">
                     <h3>Adam Smith</h3>
@@ -378,6 +390,7 @@ use App\Enums\SectionEnum;
                     meet your business needs.
                 </p>
             </div>
+            @endif
         </div>
     </div>
 </section>
@@ -388,8 +401,8 @@ use App\Enums\SectionEnum;
     <div class="my-container">
         <div class="grow-business-wrapper">
             <div class="grow-business-content">
-                <h3>Its time to grow your business</h3>
-                <p>Create your free account now and track your success</p>
+                <h3>{{ $home_hero->title ?? "Its time to grow your business" }}</h3>
+                <p>{!! $home_hero->description ?? "reate your free account now and track your success" !!}</p>
             </div>
 
             <div class="grow-business-action-wrapper">

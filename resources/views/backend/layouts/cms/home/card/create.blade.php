@@ -1,4 +1,4 @@
-@extends('backend.app', ['title' => 'Update Banner'])
+@extends('backend.app', ['title' => 'Create card'])
 
 @section('content')
 
@@ -11,14 +11,14 @@
 
             <div class="page-header">
                 <div>
-                    <h1 class="page-title">CMS : Update Banner</h1>
+                    <h1 class="page-title">CMS : Create card</h1>
                 </div>
                 <div class="ms-auto pageheader-btn">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item">CMS</li>
                         <li class="breadcrumb-item">Home</li>
-                        <li class="breadcrumb-item">Baner</li>
-                        <li class="breadcrumb-item">update</li>
+                        <li class="breadcrumb-item">card</li>
+                        <li class="breadcrumb-item">Create</li>
                     </ol>
                 </div>
             </div>
@@ -30,50 +30,40 @@
                         <div class="tab-pane active show" id="editProfile">
                             <div class="card">
                                 <div class="card-body border-0">
-                                    <form method="POST" action="{{ route('admin.cms.home.banner.update', $banner->id) }}" enctype="multipart/form-data">
+                                    <form method="POST" action="{{ route('admin.cms.home.card.store') }}" enctype="multipart/form-data">
                                         @csrf
-                                        @method('PATCH')
 
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <label for="title" class="form-label">Title:</label>
-                                                    <input type="text" class="form-control @error('title') is-invalid @enderror" name="title" placeholder="Enter here title" id="title" value="{{ $banner->title ?? '' }}">
+                                                    <input type="text" class="form-control @error('title') is-invalid @enderror" name="title" placeholder="Enter here title" id="title" value="{{ old('title') }}">
+                                                    @error('title')
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                    @enderror
                                                 </div>
                                             </div>
                                         </div>
-
+                                        
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <label for="description" class="form-label">Description:</label>
-                                                    <textarea class="form-control @error('description') is-invalid @enderror" name="description" id="description" placeholder="Enter here description" rows="3">{{ $banner->description ?? '' }}</textarea>
+                                                    <textarea class="form-control @error('description') is-invalid @enderror" name="description" id="description" placeholder="Enter here description" rows="3">{{ old('description') }}</textarea>
+                                                    @error('description')
+                                                        <span class="text-danger">{{ $message }}</span>
+                                                    @enderror
                                                 </div>
                                             </div>
                                         </div>
-
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="btn_text" class="form-label">Button Text:</label>
-                                                    <input type="text" class="form-control @error('btn_text') is-invalid @enderror" name="btn_text" placeholder="Enter here button text" id="btn_text" value="{{ $banner->btn_text ?? '' }}">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="btn_link" class="form-label">Button Link:</label>
-                                                    <input type="text" class="form-control @error('btn_link') is-invalid @enderror" name="btn_link" placeholder="Enter here link" id="btn_link" value="{{ $banner->btn_link ?? '' }}">
-                                                </div>
-                                            </div>
-                                        </div>
-
+                                        
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="form-group">
-                                                    <label for="image" class="form-label">Side Image:</label>
+                                                    <label for="image" class="form-label">Image:</label>
                                                     <input type="file" class="dropify @error('image') is-invalid @enderror" name="image"
                                                         id="image"
-                                                        data-default-file="{{ isset($banner->image) ? asset($banner->image) : '' }}">
+                                                        data-default-file="">
                                                     @error('image')
                                                     <span class="text-danger">{{ $message }}</span>
                                                     @enderror

@@ -3,14 +3,14 @@
 namespace App\Http\Controllers\Web\Backend;
 
 use App\Helpers\Helper;
-use App\Models\Category;
+use App\Models\SocialLink;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Yajra\DataTables\Facades\DataTables;
 
-class CategoryController extends Controller
+class SocialLinkController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,15 +18,15 @@ class CategoryController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = Category::all();
+            $data = SocialLink::all();
             return DataTables::of($data)
                 ->addIndexColumn()
-                ->addColumn('image', function ($data) {
-                    if ($data->image) {
-                        $url = asset($data->image);
-                        return '<img src="' . $url . '" alt="image" width="50px" height="50px" style="margin-left:20px;">';
+                ->addColumn('icon', function ($data) {
+                    if ($data->icon) {
+                        $url = asset($data->icon);
+                        return '<img src="' . $url . '" alt="icon" width="50px" height="50px" style="margin-left:20px;">';
                     } else {
-                        return '<img src="' . asset('default/logo.png') . '" alt="image" width="50px" height="50px" style="margin-left:20px;">';
+                        return '<img src="' . asset('default/logo.png') . '" alt="icon" width="50px" height="50px" style="margin-left:20px;">';
                     }
                 })
                 ->addColumn('status', function ($data) {
@@ -54,10 +54,10 @@ class CategoryController extends Controller
                                 </a>
                             </div>';
                 })
-                ->rawColumns([ 'image' ,'status', 'action'])
+                ->rawColumns([ 'icon' ,'status', 'action'])
                 ->make();
         }
-        return view("backend.layouts.category.index");
+        return view("backend.layouts.social.index");
     }
 
     /**
@@ -65,7 +65,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return view('backend.layouts.category.create');
+        return view('backend.layouts.social.create');
     }
 
     /**
@@ -74,43 +74,44 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         $validate = $request->validate([
-            'name' => 'required|unique:categories,name',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
+            'sn' => 'required|unique:social_links,sn',
+            'name' => 'required|string|max:50',
+            'url' => 'required|string|max:255',
+            'icon' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
         ]);
 
         try {
-            if ($request->hasFile('image')) {
-                $validate['image'] = Helper::fileUpload($request->file('image'), 'category', time() . '_' . getFileName($request->file('image')));
+            if ($request->hasFile('icon')) {
+                $validate['icon'] = Helper::fileUpload($request->file('icon'), 'social', time() . '_' . getFileName($request->file('icon')));
             }
-            $validate['slug'] = Helper::makeSlug(Category::class, $validate['name']);
+            
+            SocialLink::create($validate);
 
-            Category::create($validate);
-
-            session()->put('t-success', 'Category created successfully');
+            session()->put('t-success', 'SocialLink created successfully');
            
         } catch (Exception $e) {
             session()->put('t-error', $e->getMessage());
         }
 
-        return redirect()->route('admin.category.index')->with('success', 'Category created successfully');
+        return redirect()->route('admin.social.index')->with('success', 'SocialLink created successfully');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Category $category, $id)
+    public function show(SocialLink $social, $id)
     {
-        $category = Category::findOrFail($id);
-        return view('backend.layouts.category.edit', compact('category'));
+        $social = SocialLink::findOrFail($id);
+        return view('backend.layouts.social.edit', compact('social'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Category $category, $id)
+    public function edit(SocialLink $social, $id)
     {
-        $category = Category::findOrFail($id);
-        return view('backend.layouts.category.edit', compact('category'));
+        $social = SocialLink::findOrFail($id);
+        return view('backend.layouts.social.edit', compact('social'));
     }
 
     /**
@@ -119,27 +120,29 @@ class CategoryController extends Controller
     public function update(Request $request, $id)
     {
         $validate = $request->validate([
-            'name' => 'required',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
+            'sn' => 'required|unique:social_links,sn',
+            'name' => 'required|string|max:50',
+            'url' => 'required|string|max:255',
+            'icon' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
         ]);
 
         try {
-            $category = Category::findOrFail($id);
+            $social = SocialLink::findOrFail($id);
 
-            if ($request->hasFile('image')) {
-                if ($category->image && file_exists(public_path($category->image))) {
-                    Helper::fileDelete(public_path($category->image));
+            if ($request->hasFile('icon')) {
+                if ($social->icon && file_exists(public_path($social->icon))) {
+                    Helper::fileDelete(public_path($social->icon));
                 }
-                $validate['image'] = Helper::fileUpload($request->file('image'), 'category', time() . '_' . getFileName($request->file('image')));
+                $validate['icon'] = Helper::fileUpload($request->file('icon'), 'social', time() . '_' . getFileName($request->file('icon')));
             }
 
-            $category->update($validate);
-            session()->put('t-success', 'Category updated successfully');
+            $social->update($validate);
+            session()->put('t-success', 'SocialLink updated successfully');
         } catch (Exception $e) {
             session()->put('t-error', $e->getMessage());
         }
 
-        return redirect()->route('admin.category.index');
+        return redirect()->route('admin.social.index');
     }
 
     /**
@@ -148,9 +151,9 @@ class CategoryController extends Controller
     public function destroy(string $id)
     {
         try {
-            $data = Category::findOrFail($id);
-            if ($data->image && file_exists(public_path($data->image))) {
-                Helper::fileDelete(public_path($data->image));
+            $data = SocialLink::findOrFail($id);
+            if ($data->icon && file_exists(public_path($data->icon))) {
+                Helper::fileDelete(public_path($data->icon));
             }
             $data->delete();
             return response()->json([
@@ -168,7 +171,7 @@ class CategoryController extends Controller
 
     public function status(int $id): JsonResponse
     {
-        $data = Category::findOrFail($id);
+        $data = SocialLink::findOrFail($id);
         if (!$data) {
             return response()->json([
                 'status' => 'error',
@@ -182,4 +185,5 @@ class CategoryController extends Controller
             'message' => 'Your action was successful!',
         ]);
     }
+
 }

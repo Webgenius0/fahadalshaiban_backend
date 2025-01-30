@@ -6,9 +6,15 @@ enum SectionEnum: string
 {
     const BG = 'bg_image';
 
+
+    //Home
     case HOME_BANNER = 'home_banner';
-    case HOME_BANNERS = 'home_banners';
-    case HERO = 'hero';
+    case HOME_MARQUEE = 'home_marquee';
+    case HOME_CARD = 'home_card';
+    case HOME_ABOUT = 'home_about';
+    case HOME_TESTIMONIALS = 'home_testimonials';
+    case HOME_HERO = 'home_hero';
+
 
     //Footer
     case FOOTER = 'footer';
@@ -16,26 +22,6 @@ enum SectionEnum: string
 
 
 
-    // Home page section
-    public static function HomePage()
-    {
-        return [
-            self::HOME_BANNER->value => ['item' => 1, 'type' => 'first'],
-            self::HOME_BANNERS->value => ['item' => 3, 'type' => 'get'],
-            self::HERO->value => ['item' => 1, 'type' => 'first'],
-        ];
-
-        // Check if the requested section exists
-        if (! in_array(request()->section, array_keys(self::HomePage()))) {
-            abort(404);
-        }
-    }
-
-    public static function getCommon(){
-        return [
-            self::FOOTER->value => ['item' => 1, 'type' => 'first'],
-            self::SOLUTION->value => ['item' => 1, 'type' => 'first'],
-        ];
-    }
+    
     
 }

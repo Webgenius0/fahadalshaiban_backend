@@ -5,27 +5,38 @@ use App\Http\Controllers\Web\Backend\Access\RoleController;
 use App\Http\Controllers\Web\Backend\Access\UserController;
 use App\Http\Controllers\Web\Backend\CategoryController;
 use App\Http\Controllers\Web\Backend\CMS\AuthPageController;
+use App\Http\Controllers\Web\Backend\CMS\Home\HomeAboutController;
 use App\Http\Controllers\Web\Backend\CMS\Home\HomeBannerController;
+use App\Http\Controllers\Web\Backend\CMS\Home\HomeCardController;
 use App\Http\Controllers\Web\Backend\CMS\Home\HomeHeroController;
+use App\Http\Controllers\Web\Backend\CMS\Home\HomeMarqueeController;
+use App\Http\Controllers\Web\Backend\CMS\Home\HomeTestimonialController;
+use App\Http\Controllers\Web\Backend\DashboardController;
 use App\Http\Controllers\Web\Backend\NotificationController;
+use App\Http\Controllers\Web\Backend\PageController;
 use App\Http\Controllers\Web\Backend\Settings\FirebaseController;
-use App\Http\Controllers\Web\Backend\Settings\ProfileController;
+use App\Http\Controllers\Web\Backend\Settings\GoogleMapController;
 use App\Http\Controllers\Web\Backend\Settings\MailSettingController;
+use App\Http\Controllers\Web\Backend\Settings\ProfileController;
 use App\Http\Controllers\Web\Backend\Settings\SettingController;
 use App\Http\Controllers\Web\Backend\Settings\SocialController;
 use App\Http\Controllers\Web\Backend\Settings\StripeController;
-use App\Http\Controllers\Web\Backend\Settings\GoogleMapController;
+use App\Http\Controllers\Web\Backend\SocialLinkController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Web\Backend\DashboardController;
-use App\Http\Controllers\Web\Backend\PageController;
 
 Route::controller(DashboardController::class)->group(function () {
     Route::get('dashboard', 'index')->name('dashboard');
 });
 
-Route::resource('users', UserController::class);
-Route::resource('permissions', PermissionController::class);
-Route::resource('roles', RoleController::class);
+Route::controller(SocialLinkController::class)->prefix('social')->name('social.')->group(function () {
+    Route::get('/', 'index')->name('index');
+    Route::get('/create', 'create')->name('create');
+    Route::post('/store', 'store')->name('store');
+    Route::get('/edit/{id}', 'edit')->name('edit');
+    Route::post('/update/{id}', 'update')->name('update');
+    Route::delete('/delete/{id}', 'destroy')->name('destroy');
+    Route::get('/status/{id}', 'status')->name('status');
+});
 
 Route::controller(CategoryController::class)->prefix('category')->name('category.')->group(function () {
     Route::get('/', 'index')->name('index');
@@ -97,7 +108,6 @@ Route::controller(GoogleMapController::class)->group(function () {
 
 //CMS
 
-
 Route::prefix('cms')->name('cms.')->group(function () {
 
     Route::controller(AuthPageController::class)->prefix('page/auth')->name('page.auth.')->group(function () {
@@ -105,27 +115,54 @@ Route::prefix('cms')->name('cms.')->group(function () {
         Route::patch('/section/bg', 'update')->name('section.bg.update');
     });
 
-    Route::controller(HomeBannerController::class)->group(function () {
-        Route::get('/banner', 'index')->name('home.banner.index');
-        Route::get('/banner/create', 'create')->name('home.banner.create');
-        Route::post('/banner', 'store')->name('home.banner.store');
-        Route::get('/banner/{id}', 'show')->name('home.banner.show');
-        Route::get('/banner/{id}/edit', 'edit')->name('home.banner.edit');
-        Route::patch('/banner/{id}', 'update')->name('home.banner.update');
-        Route::delete('/banner/{id}', 'destroy')->name('home.banner.destroy');
-        Route::get('/banner/{id}/status', 'status')->name('home.banner.status');
-
-        Route::put('/banner/content', 'content')->name('home.banner.content');    
+    
+    Route::controller(HomeBannerController::class)->prefix('home/banner')->name('home.banner.')->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::put('/update', 'update')->name('update');
     });
 
-    Route::controller(HomeHeroController::class)->group(function () {
-        Route::get('/hero', 'index')->name('home.hero.index');
-        Route::put('/home/hero', 'update')->name('home.hero.update');
+    Route::controller(HomeMarqueeController::class)->prefix('home/marquee')->name('home.marquee.')->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::put('/update', 'update')->name('update');
+    });
+
+    Route::controller(HomeCardController::class)->group(function () {
+        Route::get('/card', 'index')->name('home.card.index');
+        Route::get('/card/create', 'create')->name('home.card.create');
+        Route::post('/card', 'store')->name('home.card.store');
+        Route::get('/card/{id}', 'show')->name('home.card.show');
+        Route::get('/card/{id}/edit', 'edit')->name('home.card.edit');
+        Route::patch('/card/{id}', 'update')->name('home.card.update');
+        Route::delete('/card/{id}', 'destroy')->name('home.card.destroy');
+        Route::get('/card/{id}/status', 'status')->name('home.card.status');   
+    });
+
+    Route::controller(HomeAboutController::class)->prefix('home/about')->name('home.about.')->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::put('/update', 'update')->name('update');
+    });
+
+    Route::controller(HomeTestimonialController::class)->group(function () {
+        Route::get('/testimonial', 'index')->name('home.testimonial.index');
+        Route::get('/testimonial/create', 'create')->name('home.testimonial.create');
+        Route::post('/testimonial', 'store')->name('home.testimonial.store');
+        Route::get('/testimonial/{id}', 'show')->name('home.testimonial.show');
+        Route::get('/testimonial/{id}/edit', 'edit')->name('home.testimonial.edit');
+        Route::patch('/testimonial/{id}', 'update')->name('home.testimonial.update');
+        Route::delete('/testimonial/{id}', 'destroy')->name('home.testimonial.destroy');
+        Route::get('/testimonial/{id}/status', 'status')->name('home.testimonial.status');   
+    });
+
+    Route::controller(HomeHeroController::class)->prefix('home/hero')->name('home.hero.')->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::put('/update', 'update')->name('update');
     });
 
 });
 
-
+Route::resource('users', UserController::class);
+Route::resource('permissions', PermissionController::class);
+Route::resource('roles', RoleController::class);
 //Users
 Route::controller(UserController::class)->prefix('users')->name('users.')->group(function () {
     Route::get('/', 'index')->name('index');

@@ -20,6 +20,9 @@ Route::get('contact/us',[ContactUsController::class, 'index'])->name('contact.us
 
 
 
+
+
+
 // Routes for running artisan commands
 Route::get('/run-migrate-fresh', function () {
     try {

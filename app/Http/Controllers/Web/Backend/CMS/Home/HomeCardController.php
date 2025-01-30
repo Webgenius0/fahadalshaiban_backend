@@ -1,16 +1,18 @@
 <?php
 
-namespace App\Http\Controllers\Web\Backend;
+namespace App\Http\Controllers\Web\Backend\CMS\Home;
 
-use App\Helpers\Helper;
-use App\Models\Category;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Enums\PageEnum;
+use App\Enums\SectionEnum;
+use App\Helpers\Helper;
+use App\Models\CMS;
 use Exception;
 use Illuminate\Http\JsonResponse;
-use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Http\Request;
+use Yajra\DataTables\DataTables;
 
-class CategoryController extends Controller
+class HomeCardController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,7 +20,7 @@ class CategoryController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = Category::all();
+            $data = CMS::where('page', PageEnum::HOME)->where('section', SectionEnum::HOME_CARD)->latest()->get();
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('image', function ($data) {
@@ -26,7 +28,7 @@ class CategoryController extends Controller
                         $url = asset($data->image);
                         return '<img src="' . $url . '" alt="image" width="50px" height="50px" style="margin-left:20px;">';
                     } else {
-                        return '<img src="' . asset('default/logo.png') . '" alt="image" width="50px" height="50px" style="margin-left:20px;">';
+                        return '<span>No Image Available</span>';
                     }
                 })
                 ->addColumn('status', function ($data) {
@@ -44,8 +46,7 @@ class CategoryController extends Controller
                 })
                 ->addColumn('action', function ($data) {
                     return '<div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
-
-                                <a href="#" type="button" onclick="goToEdit(' . $data->id . ')" class="btn btn-primary fs-14 text-white delete-icn" title="Delete">
+                                <a href="' . route('admin.cms.home.card.edit', ['id' => $data->id]) . '" type="button" class="btn btn-primary fs-14 text-white edit-icn" title="Edit">
                                     <i class="fe fe-edit"></i>
                                 </a>
 
@@ -54,10 +55,11 @@ class CategoryController extends Controller
                                 </a>
                             </div>';
                 })
-                ->rawColumns([ 'image' ,'status', 'action'])
+                ->rawColumns(['image', 'status', 'action'])
                 ->make();
         }
-        return view("backend.layouts.category.index");
+
+        return view("backend.layouts.cms.home.card.index");
     }
 
     /**
@@ -65,7 +67,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return view('backend.layouts.category.create');
+        return view("backend.layouts.cms.home.card.create");
     }
 
     /**
@@ -73,44 +75,51 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        $validate = $request->validate([
-            'name' => 'required|unique:categories,name',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
+        $validatedData = $request->validate([
+            'title' => 'required|string|max:50',
+            'description' => 'required|string|max:255',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048'
         ]);
 
         try {
-            if ($request->hasFile('image')) {
-                $validate['image'] = Helper::fileUpload($request->file('image'), 'category', time() . '_' . getFileName($request->file('image')));
+            // Add the page and section to validated data
+            $validatedData['page'] = PageEnum::HOME->value;
+            $validatedData['section'] = SectionEnum::HOME_CARD->value;
+
+            $counting = CMS::where('page', $validatedData['page'])->where('section', $validatedData['section'])->count(); 
+            if ($counting >= 3) {
+                return redirect()->back()->with('t-error', 'Maximum 3 Item You Can Add');
             }
-            $validate['slug'] = Helper::makeSlug(Category::class, $validate['name']);
 
-            Category::create($validate);
+            if ($request->hasFile('image')) {
+                $validatedData['image'] = Helper::fileUpload($request->file('image'), 'card', time() . '_' . getFileName($request->file('image')));
+            }
 
-            session()->put('t-success', 'Category created successfully');
-           
+            // Create or update the CMS entry
+            CMS::create($validatedData);
+
+            return redirect()->route('admin.cms.home.card.index')->with('t-success', 'Created successfully');
         } catch (Exception $e) {
-            session()->put('t-error', $e->getMessage());
+            return redirect()->back()->with('t-error', $e->getMessage());
         }
-
-        return redirect()->route('admin.category.index')->with('success', 'Category created successfully');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Category $category, $id)
+    public function show(string $id)
     {
-        $category = Category::findOrFail($id);
-        return view('backend.layouts.category.edit', compact('category'));
+        $card = CMS::findOrFail($id);
+        return view("backend.layouts.cms.home.card.update", compact("card"));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Category $category, $id)
+    public function edit(string $id)
     {
-        $category = Category::findOrFail($id);
-        return view('backend.layouts.category.edit', compact('category'));
+        $card = CMS::findOrFail($id);
+        return view("backend.layouts.cms.home.card.update", compact("card"));
     }
 
     /**
@@ -118,29 +127,40 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $validate = $request->validate([
-            'name' => 'required',
+
+        $validatedData = $request->validate([
+            'title' => 'required|string|max:50',
+            'description' => 'required|string|max:255',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
         ]);
 
         try {
-            $category = Category::findOrFail($id);
+            // Find the existing CMS record by ID
+            $Review = CMS::findOrFail($id);
 
+            // Update the page and section if necessary
+            $validatedData['page'] = PageEnum::HOME->value;
+            $validatedData['section'] = SectionEnum::HOME_CARD->value;
+
+            // Check if an image is being uploaded
             if ($request->hasFile('image')) {
-                if ($category->image && file_exists(public_path($category->image))) {
-                    Helper::fileDelete(public_path($category->image));
+                // If there is an existing image, delete it
+                if ($Review->image && file_exists(public_path($Review->image))) {
+                    Helper::fileDelete(public_path($Review->image));
                 }
-                $validate['image'] = Helper::fileUpload($request->file('image'), 'category', time() . '_' . getFileName($request->file('image')));
+
+                // Upload the new image
+                $validatedData['image'] = Helper::fileUpload($request->file('image'), 'card', time() . '_' . getFileName($request->file('image')));
             }
 
-            $category->update($validate);
-            session()->put('t-success', 'Category updated successfully');
+            // Update the CMS entry with the validated data
+            $Review->update($validatedData);
+            return redirect()->route('admin.cms.home.card.index')->with('t-success', 'Updated successfully');
         } catch (Exception $e) {
-            session()->put('t-error', $e->getMessage());
+            return redirect()->back()->with('t-error', $e->getMessage());
         }
-
-        return redirect()->route('admin.category.index');
     }
+
 
     /**
      * Remove the specified resource from storage.
@@ -148,38 +168,55 @@ class CategoryController extends Controller
     public function destroy(string $id)
     {
         try {
-            $data = Category::findOrFail($id);
+            // Find the CMS entry by ID
+            $data = CMS::findOrFail($id);
+
+            // Check if there is an image associated with this CMS entry
             if ($data->image && file_exists(public_path($data->image))) {
+                // Delete the image file from the server
                 Helper::fileDelete(public_path($data->image));
             }
+
+            // Delete the CMS entry
             $data->delete();
+
             return response()->json([
-                'status' => 'success',
-                'message' => 'Your action was successful!'
+                't-success' => true,
+                'message' => 'Deleted successfully.',
             ]);
-            
         } catch (Exception $e) {
             return response()->json([
-                'status' => 'error',
-                'message' => 'Your action was successful!'
+                't-success' => false,
+                'message' => 'Failed to delete.',
             ]);
         }
     }
 
     public function status(int $id): JsonResponse
     {
-        $data = Category::findOrFail($id);
+        // Find the CMS entry by ID
+        $data = CMS::findOrFail($id);
+
+        // Check if the record was found
         if (!$data) {
             return response()->json([
-                'status' => 'error',
-                'message' => 'Item not found.',
+                "success" => false,
+                "message" => "Item not found.",
+                "data" => $data,
             ]);
         }
+
+        // Toggle the status
         $data->status = $data->status === 'active' ? 'inactive' : 'active';
+
+        // Save the changes
         $data->save();
+
         return response()->json([
-            'status' => 'success',
-            'message' => 'Your action was successful!',
+            't-success' => true,
+            'message' => 'Item status changed successfully.',
+            'data'    => $data,
         ]);
     }
+
 }
