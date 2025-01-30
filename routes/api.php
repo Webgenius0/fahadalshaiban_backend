@@ -35,6 +35,7 @@ Route::group(['middleware' => 'auth:api'], function ($router) {
     Route::delete('/delete-profile', [UserController::class, 'deleteProfile']);
 });
 
+
 /* // Firebase Token Module
 Route::get("firebase/test", [FirebaseTokenController::class, "test"]);
 Route::post("firebase/token/add", [FirebaseTokenController::class, "store"]);
