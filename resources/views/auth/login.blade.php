@@ -1,3 +1,6 @@
+@php
+$is_role = request()->query('is_role') ?? 'client';
+@endphp
 @extends('auth.app')
 
 @section('content')
@@ -5,10 +8,10 @@
     <div class="authentication-box">
         <div class="authentication-box-header">
             <img src="{{ asset('frontend') }}/images/favicon.png" alt="logo" />
-            <h4>Login your account</h4>
+            <h4>Login your {{ $is_role }} account</h4>
         </div>
 
-        <form class="authentication-form" method="POST" action="{{ route('login') }}">
+        <form class="authentication-form" method="POST" action="{{ route('login', ['is_role' => $is_role]) }}">
             @csrf
             <div class="input-wrapper-wrapper">
                 <div class="input-wrapper">
@@ -65,7 +68,7 @@
             <div class="divider-line"></div>
         </div>
 
-        <button class="social-login-btn">
+        <button class="social-login-btn" onclick="window.location.href='{{ route('social-login.redirect', ['is_role' => $is_role, 'provider' => 'google']) }}'">
             <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="25"

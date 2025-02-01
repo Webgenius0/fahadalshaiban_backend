@@ -43,7 +43,7 @@
                     <a href="{{ route('home') }}">Home</a>
                     <a href="./dashboard-new-campaigns.html">Find Signage</a>
                     <a href="{{ route('contact.us') }}">Contact Us</a>
-                    <a href="{{ route('login') }}">Sign In</a>
+                    <a href="{{ route('login', ['is_role' => 'admin']) }}">Sign In</a>
                     <a href="{{ route('join.signage.owner') }}" class="text-hightlight">Join as a signage owner</a>
                 </div>
             </div>

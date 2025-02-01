@@ -29,11 +29,11 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'is_role' => ['required', 'in:owner,client'],
+            'password' => ['required', 'confirmed'],
         ]);
 
         $user = User::create([
@@ -42,13 +42,13 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
+        $user->assignRole($request->is_role);
+
         event(new Registered($user));
 
         Auth::login($user);
 
-        if (Auth::user()->hasRole('admin')) {
-            return redirect()->intended(route('admin.dashboard', absolute: false))->with('t-success', 'Login Successfully');
-        } elseif (Auth::user()->hasRole('owner')) {
+        if (Auth::user()->hasRole('owner')) {
             return redirect()->intended(route('owner.dashboard', absolute: false))->with('t-success', 'Login Successfully');
         } elseif (Auth::user()->hasRole('client')) {
             return redirect()->intended(route('dashboard', absolute: false))->with('t-success', 'Login Successfully');

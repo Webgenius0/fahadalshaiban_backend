@@ -11,26 +11,39 @@
         <form class="authentication-form" method="POST" action="{{ route('register') }}">
             @csrf
             <div class="input-wrapper-wrapper">
+                
+                <div class="input-wrapper">
+                    <label>Choose your role:</label>
+                    <select name="is_role" id="is_role" class="form-control">
+                        <option value="" disabled selected>Select your role</option>
+                        <option value="client">Client</option>
+                        <option value="owner">Owner</option>
+                    </select>
+                </div>
+                @error('is_role')
+                <span class="text-danger">{{ $message }}</span>
+                @enderror
+
                 <div class="input-wrapper">
                     <label>Name</label>
-                    <input type="text" placeholder="johndoe" name="name"/>
+                    <input type="text" value="{{ old('name') }}" placeholder="johndoe" name="name" />
                 </div>
                 @error('name')
-                    <span class="text-danger">{{ $message }}</span>
+                <span class="text-danger">{{ $message }}</span>
                 @enderror
                 <div class="input-wrapper">
                     <label>Email Address</label>
-                    <input type="email" placeholder="johndoe@email.com" name="email"/>
+                    <input type="email" value="{{ old('email') }}" placeholder="johndoe@email.com" name="email" />
                 </div>
                 @error('email')
-                    <span class="text-danger">{{ $message }}</span>
+                <span class="text-danger">{{ $message }}</span>
                 @enderror
                 <div>
                     <div class="label-password">
                         <label>Password</label>
                     </div>
                     <div class="input-password-wrapper">
-                        <input type="password" placeholder="*****" name="password"/>
+                        <input type="password" value="{{ old('password') }}" placeholder="*****" name="password" />
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             width="25"
@@ -53,14 +66,14 @@
                     </div>
                 </div>
                 @error('password')
-                    <span class="text-danger">{{ $message }}</span>
+                <span class="text-danger">{{ $message }}</span>
                 @enderror
                 <div>
                     <div class="label-password">
                         <label>Confirm Password</label>
                     </div>
                     <div class="input-password-wrapper">
-                        <input type="password" placeholder="*****" name="confirm_password"/>
+                        <input type="password" value="{{ old('password_confirmation') }}" placeholder="*****" name="password_confirmation" />
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             width="25"
@@ -82,8 +95,8 @@
                         </svg>
                     </div>
                 </div>
-                @error('confirm_password')    
-                    <span class="text-danger">{{ $message }}</span>
+                @error('confirm_password')
+                <span class="text-danger">{{ $message }}</span>
                 @enderror
             </div>
 

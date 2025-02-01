@@ -11,7 +11,8 @@
                 <div class="navbar-content">
                     <ul class="nav-items-wrapper">
                         <li><a href="{{ route('home') }}" class="nav-item-active">Home</a></li>
-                        <li><a href="{{ route('login') }}" class="nav-item">Sign in</a></li>
+                        <li><a href="{{ route('login', ['is_role' => 'client']) }}" class="nav-item">Client</a></li>
+                        <li><a href="{{ route('login', ['is_role' => 'owner']) }}" class="nav-item">Owner</a></li>
                     </ul>
                     <div class="action-lang-wrapper">
                         <select>

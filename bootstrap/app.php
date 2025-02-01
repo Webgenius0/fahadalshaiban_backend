@@ -19,9 +19,9 @@ return Application::configure(basePath: dirname(__DIR__))
         commands: __DIR__.'/../routes/console.php',
         health: '/up',
         then: function () {
-            Route::middleware(['web', 'auth', 'admin'])->prefix('admin')->name('admin.')->group(base_path('routes/backend.php'));
-            Route::middleware(['web', 'owner'])->prefix('owner')->name('owner.')->group(base_path('routes/owner.php'));
-            Route::middleware(['web', 'client'])->group(base_path('routes/client.php'));
+            Route::middleware(['web', 'otp', 'auth', 'admin'])->prefix('admin')->name('admin.')->group(base_path('routes/backend.php'));
+            Route::middleware(['web', 'otp', 'owner'])->prefix('owner')->name('owner.')->group(base_path('routes/owner.php'));
+            Route::middleware(['web', 'otp', 'client'])->group(base_path('routes/client.php'));
         }
     )
     ->withBroadcasting(
@@ -34,6 +34,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'owner' => App\Http\Middleware\OwnerMiddleware::class,
             'client' => App\Http\Middleware\ClientMiddleware::class,
             'authCheck' => App\Http\Middleware\AuthCheckMiddleware::class,
+            'otp' => App\Http\Middleware\OtpController::class,
             'role' => \Spatie\Permission\Middleware\RoleMiddleware::class,
             'permission' => \Spatie\Permission\Middleware\PermissionMiddleware::class,
             'role_or_permission' => \Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class

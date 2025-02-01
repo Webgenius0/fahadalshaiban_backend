@@ -23,7 +23,7 @@ Route::group(['middleware' => 'guest:api'], function ($router) {
     Route::post('/verify-otp', [ResetPasswordController::class, 'VerifyOTP']);
     Route::post('/reset-password', [ResetPasswordController::class, 'ResetPassword']);
     //social login
-    Route::post('/social-login', [SocialLoginController::class, 'SocialLogin']);
+    /* Route::post('/social-login', [SocialLoginController::class, 'SocialLogin']); */
 });
 
 Route::group(['middleware' => 'auth:api'], function ($router) {
