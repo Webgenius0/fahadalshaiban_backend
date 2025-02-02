@@ -20,6 +20,10 @@ return new class extends Migration
             $table->string('provider')->default('local');
             $table->string('provider_id')->nullable();
             $table->string('password');
+            $table->string('vat_no')->nullable();
+            $table->string('cr_document')->nullable();
+            $table->enum('agree_terms', ['yes', 'no'])->default('no');
+            $table->string('ad_license_doc')->nullable();
             $table->enum('status', ['active', 'inactive'])->default('active');
             $table->rememberToken();
             $table->timestamps();

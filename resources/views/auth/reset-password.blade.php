@@ -180,7 +180,7 @@
         </div>
         <!-- home-tutorials -->
         <div class="home-tutorials-wrapper">
-            <a href="./index.html">Home</a>
+            <a href="{{ route('home') }}">Home</a>
             <div data-bs-toggle="modal" data-bs-target="#videoModal">
                 Tutorials
             </div>

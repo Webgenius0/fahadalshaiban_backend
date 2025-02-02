@@ -103,7 +103,7 @@
                 <div class="empty-campaign">
                     <h2>You haven't create a campaign yet</h2>
                     <p>Let create your first campaign</p>
-                    <a href="./dashboard-new-campaigns.html" class="btn-common">
+                    <a href="{{ route('page.new.campaigns') }}" class="btn-common">
                         Start New Campaign
                         <svg
                             xmlns="http://www.w3.org/2000/svg"

@@ -96,7 +96,7 @@
                         name="terms-and-condition"
                         id="terms-and-condition" />
                     <span class="custom-checkbox-checkmark"></span>
-                    <a href="./terms-and-conditions.html" class="agree">Terms & Conditions</a>
+                    <a href="{{ route('terms.conditions') }}" class="agree">Terms & Conditions</a>
                 </label>
 
                 <label class="custom-checkbox-label">
@@ -105,7 +105,7 @@
                         name="privacy-policy"
                         id="privacy-policy" />
                     <span class="custom-checkbox-checkmark"></span>
-                    <a href="./privacy-policy.html" class="agree">Privacy Policy</a>
+                    <a href="{{ route('privacy.policy') }}" class="agree">Privacy Policy</a>
 
                 </label>
             </div>

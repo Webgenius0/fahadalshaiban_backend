@@ -1,5 +1,5 @@
 <aside class="dashboard-sidebar" id="sidebar">
-    <a href="./index.html" class="logo d-block">
+    <a href="{{ route('dashboard') }}" class="logo d-block">
         <img src="{{ asset('frontend') }}/images/favicon.png" alt="logo" />
     </a>
     <div class="dashboard-sidebar-menu-wrapper">
