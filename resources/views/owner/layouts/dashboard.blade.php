@@ -132,10 +132,10 @@
                     <div class="d-flex align-items-center justify-content-between gap-2">
                         <div>
                             <h3>{{ $signage->name ?? 'Billboard Location' }}</h3>
-                            <p class="billboard-card-id">#{{ $signage->id }}</p>
+                            <p class="billboard-card-id">{{ $signage->id }}</p>
                         </div>
 
-                        <button class="campaign-edit-btn">Edit Signage</button>
+                        <button class="campaign-edit-btn " data-id="{{ $signage->id }}" id="show-signage">View</button>
                     </div>
 
                     <div class="billboard-card-info">
@@ -147,7 +147,7 @@
                                 </svg>
                             </span>
                             <p class="billboard-card-info-label">Estimated views</p>
-                            <p class="billboard-card-info-value">50.5k</p>
+                            <p class="billboard-card-info-value">{{$signage->avg_daily_views}}</p>
                         </div>
                         <div>
                             <span class="billboard-card-info-icon">
@@ -157,7 +157,7 @@
                                 </svg>
                             </span>
                             <p class="billboard-card-info-label">Price per day</p>
-                            <p class="billboard-card-info-value">5SR 5</p>
+                            <p class="billboard-card-info-value">{{$signage->per_day_price}}</p>
                         </div>
                         <div>
                             <span class="billboard-card-info-icon">
@@ -172,7 +172,7 @@
                                 </svg>
                             </span>
                             <p class="billboard-card-info-label">Rotations</p>
-                            <p class="billboard-card-info-value">10 seconds</p>
+                            <p class="billboard-card-info-value">{{$signage->exposure_time}}</p>
                         </div>
                     </div>
                 </div>

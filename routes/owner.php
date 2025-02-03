@@ -24,4 +24,9 @@ Route::controller(SignageController::class)->prefix('signage')->name('signage.')
     /* Route::get('/edit/{id}', 'edit')->name('edit');
     Route::post('/update/{id}', 'update')->name('update');
     Route::delete('/delete/{id}', 'destroy')->name('destroy'); */
+
+    Route::get('/billboards/{id}','showDetails')->name('show');
+    Route::get('/edit-signage/{id}', 'editSignage')->name('edit');
+    Route::PUT('/update/{id}', 'update')->name('update');
+
 });

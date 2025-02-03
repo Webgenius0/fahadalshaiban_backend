@@ -42,33 +42,20 @@
             </div>
             <div class="modal-body">
                 <div class="billboard-card">
-                    <img
-                        src="{{ asset('frontend') }}/images/modal-img.png"
-                        alt="Billboard"
-                        class="billboard-card-image" />
+                <img id="modal-image" src="" alt="Billboard" class="billboard-card-image" />
                     <div class="billboard-card-content">
                         <div
                             class="d-flex align-items-center justify-content-between gap-2">
                             <div>
                                 <h3>Billboard Location</h3>
-                                <p class="billboard-card-id">#255484</p>
+                                <p class="billboard-card-id" id="modal-name"></p>
                             </div>
-                            <button class="campaign-edit-btn">Add signage</button>
+                            <div id="editSignage"></div>
                         </div>
 
                         <div>
                             <p class="billboard-card-info-label">Description</p>
-                            <p class="billboard-card-info-value">
-                                It is a long established fact that a reader will be
-                                distracted by the readable content of a page when looking at
-                                its layout. The point of using Lorem Ipsum is that it has a
-                                more-or-less normal distribution of letters, as opposed to
-                                using 'Content here, content here', making it look like
-                                readable English. Many desktop publishing packages and web
-                                page editors now use Lorem Ipsum as their default model
-                                text, and a search for 'lorem ipsum' will uncover many web
-                                sites still in their infancy.
-                            </p>
+                            <p class="billboard-card-info-value" id="modal-description"></p>
                         </div>
 
                         <div class="billboard-card-info">
@@ -95,7 +82,7 @@
                                     </svg>
                                 </span>
                                 <p class="billboard-card-info-label">Estimated views</p>
-                                <p class="billboard-card-info-value">50.5k</p>
+                                <p class="billboard-card-info-value" id="modal-views"></p>
                             </div>
                             <div>
                                 <span class="billboard-card-info-icon">
@@ -120,7 +107,7 @@
                                     </svg>
                                 </span>
                                 <p class="billboard-card-info-label">Price per day</p>
-                                <p class="billboard-card-info-value">5SR 5</p>
+                                <p class="billboard-card-info-value" id="modal-price"></p>
                             </div>
                             <div>
                                 <span class="billboard-card-info-icon">
@@ -145,7 +132,7 @@
                                     </svg>
                                 </span>
                                 <p class="billboard-card-info-label">Rotations</p>
-                                <p class="billboard-card-info-value">10 seconds</p>
+                                <p class="billboard-card-info-value" id="modal-rotations"></p>
                             </div>
                             <div>
                                 <span class="billboard-card-info-icon">
@@ -170,8 +157,8 @@
                                     </svg>
                                 </span>
                                 <p class="billboard-card-info-label">Display size</p>
-                                <p class="billboard-card-info-value">
-                                    Wide:638 x Hight:176
+                                <p class="billboard-card-info-value" id="modal-display-size">
+                                    
                                 </p>
                             </div>
                             <div>
@@ -197,7 +184,7 @@
                                     </svg>
                                 </span>
                                 <p class="billboard-card-info-label">Location</p>
-                                <p class="billboard-card-info-value">Dammam City</p>
+                                <p class="billboard-card-info-value" id="modal-location"></p>
                             </div>
                         </div>
                     </div>
@@ -206,3 +193,50 @@
         </div>
     </div>
 </div>
+
+@push('script')
+<script>
+$(document).ready(function() {   
+    $('button.campaign-edit-btn').click(function() {
+        var id = $(this).data('id'); 
+
+        $.ajax({
+            url: "{{ route('owner.signage.show', ':id') }}".replace(':id', id), 
+            method: 'GET',
+            success: function(response) {
+                console.log(response);               
+                $('#modal-name').text(response.data.name);  
+                $('#modal-description').text(response.data.description.replace(/<\/?[^>]+(>|$)/g, "")); 
+                
+                const url = "{{ route('owner.signage.edit', ':id') }}".replace(':id', response.data.id);
+                $('#editSignage').html(`<button onclick="window.location.href='${url}'" class="campaign-edit-btn edit-signage" id="modal-id">Edit</button>`);
+
+
+
+                var baseUrl = window.location.origin; 
+                var imageUrl = response.data.image ? baseUrl + '/' + response.data.image : defaultImage;
+
+                $('#modal-image').attr('src', imageUrl);
+                $('#modal-views').text(response.data.avg_daily_views); 
+                $('#modal-price').text(response.data.per_day_price); 
+                $('#modal-rotations').text(response.data.exposure_time); 
+                $('#modal-location').text(response.data.location);  
+                $('#modal-display-size').text(response.data.display_size); 
+
+               
+                $('#exampleModal').modal('show');
+            },
+            error: function(xhr, status, error) {
+                console.log('Error:', error);  
+            }
+        });
+    });
+});
+
+//edit-signage
+
+
+
+
+</script>
+@endpush

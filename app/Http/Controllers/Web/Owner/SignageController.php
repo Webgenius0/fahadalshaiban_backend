@@ -7,12 +7,15 @@ use Exception;
 use Illuminate\Http\Request;
 use App\Models\Signage;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Log;
+
+use function Laravel\Prompts\alert;
 
 class SignageController extends Controller
 {
     public function index()
     {
-       //
+       
     }
 
     public function create()
@@ -50,5 +53,72 @@ class SignageController extends Controller
             return redirect()->back()->with('t-error', $e->getMessage());
         }
     }
+    
+
+    public function showDetails($id)
+    {
+        
+        $billboard= Signage::findOrFail($id);  
+        //Log::info('Signage Data:', $billboard->toArray());
+        return response()->json([
+            'data'=>$billboard
+
+        ]);
+    }
+
+
+    //edit 
+    public function editSignage($id)
+    {
+        $signage = Signage::findOrFail($id);
+    
+        return view('owner.layouts.edit-signaage', compact('signage'));
+    }
+
+
+    //update 
+    public function update(Request $request, $id)
+    {
+    
+        $signage = Signage::findOrFail($id);
+    
+       
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'required|string',
+            'avg_daily_views' => 'required|integer',
+            'per_day_price' => 'required|numeric',
+            'display_size' => 'required|string',
+            'exposure_time' => 'required|string',
+            'on_going_ad' => 'required|integer',
+            'space_left_for_ad' => 'required|integer',
+            'location' => 'required|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Optional image validation
+        ]);
+    
+        
+        if ($request->hasFile('image')) {
+            
+            if ($signage->image && file_exists(public_path('images/signages/' . $signage->image))) {
+                unlink(public_path('images/signages/' . $signage->image));
+            }
+ 
+            $image = $request->file('image');
+            $validatedData['image'] = Helper::fileUpload($image, 'signage', time() . '_' . getFileName($image));
+        }
+ 
+        $validatedData['slug'] = Helper::makeSlug(Signage::class, $validatedData['name']);
+ 
+        $signage->fill($validatedData);  
+    
+       
+        $signage->save();
+  
+        session()->flash('success', 'Sign updated successfully!');
+
+       return redirect()->back();
+    }
+    
+    
     
 }

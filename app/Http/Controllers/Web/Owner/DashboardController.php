@@ -15,4 +15,6 @@ class DashboardController extends Controller
         $signages = Signage::where('user_id', auth('web')->user()->id)->get();
         return view('owner.layouts.dashboard', compact('signages'));
     }
+
+   
 }
