@@ -3,11 +3,16 @@
 namespace App\Http\Controllers\Web\Owner;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use App\Models\Signage;
+use Illuminate\Support\Str;
+use Exception;
 
 class DashboardController extends Controller
 {
     public function index()
     {
-        return view('owner.layouts.dashboard');
+        $signages = Signage::where('user_id', auth('web')->user()->id)->get();
+        return view('owner.layouts.dashboard', compact('signages'));
     }
 }

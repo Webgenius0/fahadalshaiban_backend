@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Web\Owner\DashboardController;
 use App\Http\Controllers\Web\Owner\PageController;
+use App\Http\Controllers\Web\Owner\SignageController;
 use Illuminate\Support\Facades\Route;
 
 Route::controller(DashboardController::class)->group(function () {
@@ -13,4 +14,14 @@ Route::controller(PageController::class)->group(function () {
     Route::get('page/add/signage', 'signage')->name('page.add.signage');
     Route::get('page/income/statement', 'incomeStatement')->name('page.income.statement');
     Route::get('page/profile', 'profile')->name('page.profile');
+});
+
+
+Route::controller(SignageController::class)->prefix('signage')->name('signage.')->group(function () {
+    /* Route::get('/', 'index')->name('index');
+    Route::get('/create', 'create')->name('create'); */
+    Route::post('/store', 'store')->name('store');
+    /* Route::get('/edit/{id}', 'edit')->name('edit');
+    Route::post('/update/{id}', 'update')->name('update');
+    Route::delete('/delete/{id}', 'destroy')->name('destroy'); */
 });
