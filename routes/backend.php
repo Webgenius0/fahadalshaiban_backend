@@ -21,6 +21,7 @@ use App\Http\Controllers\Web\Backend\Settings\ProfileController;
 use App\Http\Controllers\Web\Backend\Settings\SettingController;
 use App\Http\Controllers\Web\Backend\Settings\SocialController;
 use App\Http\Controllers\Web\Backend\Settings\StripeController;
+use App\Http\Controllers\Web\Backend\SignageController;
 use App\Http\Controllers\Web\Backend\SocialLinkController;
 use Illuminate\Support\Facades\Route;
 
@@ -46,6 +47,13 @@ Route::controller(CategoryController::class)->prefix('category')->name('category
     Route::post('/update/{id}', 'update')->name('update');
     Route::delete('/delete/{id}', 'destroy')->name('destroy');
     Route::get('/status/{id}', 'status')->name('status');
+});
+
+Route::controller(SignageController::class)->prefix('signage')->name('signage.')->group(function () {
+    Route::get('/', 'index')->name('index');
+    //Route::get('show/{id}', 'show')->name('show');
+    Route::get('/status/{id}', 'status')->name('status');
+    Route::get('/signage/view/{id}', 'showSignage')->name('view');
 });
 
 Route::controller(PageController::class)->prefix('page')->name('page.')->group(function () {

@@ -14,13 +14,28 @@
         <h5>Describe your campaign bellow</h5>
         <form action="{{ route('owner.signage.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
-            <div class="describe-campaign-input-wrapper">
-                <label>Signage Name <span>*</span></label>
-                <input name="name" type="text" placeholder="Get 70% OFF Discount from Shashh" />
-                @error('name')
-                <span class="text-danger">{{ $message }}</span>
-                @enderror
+            <div class="describe-campaign-input-wrapper-container gap-3 d-flex  w-100 gap-3">
+                <div class="describe-campaign-input-wrapper w-50 mr-5">
+                    <label>Signage Title <span>*</span></label>
+                    <input name="name" type="text" class="form-control" placeholder="Get 70% OFF Discount from Shashh" />
+                    @error('name')
+                    <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+                <div class="describe-campaign-input-wrapper w-50 mr-5">
+                    <label>Category <span>*</span></label>
+                    <select name="category_name" class="form-control">
+                        <option value="">Select Category</option>
+                        @foreach ($categories as $category)
+                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                        @endforeach
+                    </select>
+                    @error('category_id')
+                    <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
             </div>
+
 
             <div class="describe-campaign-input-wrapper">
                 <label>Description <span>*</span></label>
@@ -88,6 +103,27 @@
                 <span class="text-danger">{{ $message }}</span>
                 @enderror
             </div>
+
+            <!-- lata and long -->
+
+            <div class="describe-campaign-input-wrapper-container gap-3 d-flex w-100">
+                <div class="describe-campaign-input-wrapper w-50 mr-5">
+                    <label>Latitude <span>*</span></label>
+                    <input name="latitude" type="text" placeholder="latitude" />
+                    @error('latitude')
+                    <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+                <div class="describe-campaign-input-wrapper w-50 ml-5">
+                    <label>Longitude <span>*</span></label>
+                    <input name="longitude" type="text" placeholder="longitude" />
+                    @error('longitude')
+                    <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+            </div>
+
+
 
             <div class="describe-campaign-input-wrapper w-100">
                 <label>Upload Signage Photo</label>

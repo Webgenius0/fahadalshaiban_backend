@@ -26,6 +26,9 @@ class SignageController extends Controller
     public function store(Request $request){
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
+            'category_name'=>'required|string|max:255',
+            'latitude'=>'required|string|max:255',
+            'longitude'=>'required|string|max:255',
             'description' => 'required|string',
             'avg_daily_views' => 'required|integer|min:0',
             'per_day_price' => 'required|numeric|min:0',
@@ -48,9 +51,9 @@ class SignageController extends Controller
 
         try {
             Signage::create($validatedData);
-            return redirect()->route('admin.signage.index')->with('t-success', 'Created successfully');
+            return redirect()->back()->with('success', 'Created successfully');
         } catch (Exception $e) {
-            return redirect()->back()->with('t-error', $e->getMessage());
+            return redirect()->back()->with('error', $e->getMessage());
         }
     }
     
@@ -114,9 +117,8 @@ class SignageController extends Controller
        
         $signage->save();
   
-        session()->flash('success', 'Sign updated successfully!');
-
-       return redirect()->back();
+       
+       return redirect()->back()->with('success','Billboard update successfully');
     }
     
     

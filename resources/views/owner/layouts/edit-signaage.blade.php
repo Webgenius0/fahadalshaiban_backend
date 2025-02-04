@@ -1,11 +1,6 @@
 @extends('owner.app', ['title' => 'Home'])
 @section('content')
 
-@if(session('success'))
-    <div class="alert alert-success">
-        {{ session('success') }}
-    </div>
-@endif
 
 <div class="main-content">
     <div class="campaign-header">
@@ -122,18 +117,9 @@
 
 @endsection
 
-@push('script')
-<script defer src="https://cdn.jsdelivr.net/npm/@flasher/flasher@1.2.4/dist/flasher.min.js"></script>
-<script>
-    
-     $(document).ready(function() {
-        const flasher = new Flasher({
-            selector: '[data-flasher]',
-            duration: 3000,
-            options: {
-                position: 'top-center',
-            },
-        });
-    });
-</script>
+@push('style')
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/css/bootstrap.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
 @endpush

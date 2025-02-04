@@ -52,7 +52,7 @@ class User extends Authenticatable
     }
 
     public function signages(){
-        return $this->hasMany(Signage::class);
+        return $this->belongsTo(Signage::class);
     }
     
 }

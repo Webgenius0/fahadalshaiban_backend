@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Web\Client;
 
 use App\Http\Controllers\Controller;
+use App\Models\Signage;
 
 class PageController extends Controller
 {
@@ -25,7 +26,9 @@ class PageController extends Controller
     }
 
     public function newCampaigns(){
-        return view('client.layouts.new-campaigns');
+        $signages= Signage::all();
+        
+        return view('client.layouts.new-campaigns', compact('signages'));
     }
 
     public function billing(){

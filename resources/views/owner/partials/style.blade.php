@@ -10,4 +10,7 @@
 <link rel="stylesheet" href="{{ asset('frontend') }}/css/style.css" />
 <link rel="stylesheet" href="{{ asset('frontend') }}/css/dashbaord.css" />
 
+<!-- toster css -->
+
+
 @stack('style')
