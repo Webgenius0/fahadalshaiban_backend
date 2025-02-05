@@ -28,11 +28,11 @@
             </p>
         </div>
 
-        <div class="cart-details">
+        <!-- <div class="cart-details">
             <p>Total Views: <span>0</span> Views</p>
             <p>Total Signage: <span>0</span></p>
             <p>Total Price: <span>0.00</span> SR</p>
-        </div>
+        </div> -->
     </div>
 
     <section>
@@ -245,41 +245,11 @@
                         <label for="start-date" class="date-label">Start Date <span>*</span></label>
                         <div class="date-input-container">
                             <input
-                                type="text"
+                                type="date"
                                 id="start-date"
                                 class="date-input"
                                 placeholder="12 /06 / 24" />
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="24"
-                                height="24"
-                                viewBox="0 0 24 24"
-                                fill="none">
-                                <path
-                                    d="M19 4H5C3.89543 4 3 4.89543 3 6V20C3 21.1046 3.89543 22 5 22H19C20.1046 22 21 21.1046 21 20V6C21 4.89543 20.1046 4 19 4Z"
-                                    stroke="#4D4D4D"
-                                    stroke-width="2"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round" />
-                                <path
-                                    d="M16 2V6"
-                                    stroke="#4D4D4D"
-                                    stroke-width="2"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round" />
-                                <path
-                                    d="M8 2V6"
-                                    stroke="#4D4D4D"
-                                    stroke-width="2"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round" />
-                                <path
-                                    d="M3 10H21"
-                                    stroke="#4D4D4D"
-                                    stroke-width="2"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round" />
-                            </svg>
+                            
                         </div>
                     </div>
 
@@ -287,41 +257,11 @@
                         <label for="end-date" class="date-label">End Date <span>*</span></label>
                         <div class="date-input-container">
                             <input
-                                type="text"
+                                type="date"
                                 id="end-date"
                                 class="date-input"
                                 placeholder="DD / MM / YY" />
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="24"
-                                height="24"
-                                viewBox="0 0 24 24"
-                                fill="none">
-                                <path
-                                    d="M19 4H5C3.89543 4 3 4.89543 3 6V20C3 21.1046 3.89543 22 5 22H19C20.1046 22 21 21.1046 21 20V6C21 4.89543 20.1046 4 19 4Z"
-                                    stroke="#4D4D4D"
-                                    stroke-width="2"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round" />
-                                <path
-                                    d="M16 2V6"
-                                    stroke="#4D4D4D"
-                                    stroke-width="2"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round" />
-                                <path
-                                    d="M8 2V6"
-                                    stroke="#4D4D4D"
-                                    stroke-width="2"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round" />
-                                <path
-                                    d="M3 10H21"
-                                    stroke="#4D4D4D"
-                                    stroke-width="2"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round" />
-                            </svg>
+                           
                         </div>
                     </div>
                 </div>
@@ -349,7 +289,7 @@
 
                 <button
                     type="button"
-                    class="next-btn m-auto mt-4 change-step next">
+                    class="next-btn m-auto mt-4 change-step next" id="first">
                     Next
                 </button>
             </div>
@@ -509,7 +449,7 @@
                                             <h3>Billboard Location</h3>
                                             <p class="billboard-card-id">#{{$data->id}}</p>
                                         </div>
-                                        <button type="button" class="add-signage">
+                                        <button type="button" class="add-signage" data-id="{{$data->id}}">
                                             Add signage
                                         </button>
                                     </div>
@@ -646,6 +586,9 @@
                                     </button>
                                 </div>
                             </div>
+
+
+                            <input type="hidden" id="selected-signage-id" />
 
                             <div class="billboard-map-card-container">
                                 @foreach($signages as $data)
@@ -808,6 +751,9 @@
             <div class="describe-campaign-details-wrapper form-step">
                 <div class="describe-campaign">
                     <h5>Campaign Details</h5>
+                    <div id="signage-data">
+                        <h5>Signage Location</h5>
+                    </div>
 
                     <div class="campaign-details-wrapper">
                         <div class="campaign-details-input-wrapper">
@@ -815,7 +761,7 @@
                             <input
                                 type="text"
                                 value="Get 70% OFF Discount from Shashh"
-                                readonly />
+                                readonly  id="name"/>
                         </div>
                         <div class="campaign-details-input-wrapper">
                             <label>What is your Objective?</label>
@@ -833,12 +779,12 @@
                         </div>
                         <div class="campaign-details-input-wrapper">
                             <label>Design</label>
-                            <input type="text" value="Design File.JPEG" readonly />
+                            <input type="text" value="Design File.JPEG" readonly id="uploaded-image-preview"/>
                         </div>
 
                         <div class="campaign-details-input-wrapper">
                             <label>Date Range</label>
-                            <input type="text" value="12/11/24 - 21/11/24" readonly />
+                            <input type="text" id="daterange" />
                         </div>
                     </div>
                 </div>
@@ -859,51 +805,8 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>
-                                        <img
-                                            src="{{ asset('frontend') }}/images/cart-image.png"
-                                            class="cart-table-img"
-                                            alt="billboard image" />
-                                    </td>
-                                    <td>Dammam, Ohh</td>
-                                    <td>#14156</td>
-                                    <td>Dammam City</td>
-                                    <td>Billboard</td>
-                                    <td>SR 5</td>
-                                    <td>5 Seconds</td>
-                                    <td>8k</td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <img
-                                            src="{{ asset('frontend') }}/images/cart-image.png"
-                                            class="cart-table-img"
-                                            alt="billboard image" />
-                                    </td>
-                                    <td>Dammam, Ohh</td>
-                                    <td>#14156</td>
-                                    <td>Dammam City</td>
-                                    <td>Billboard</td>
-                                    <td>SR 5</td>
-                                    <td>5 Seconds</td>
-                                    <td>8k</td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <img
-                                            src="{{ asset('frontend') }}/images/cart-image.png"
-                                            class="cart-table-img"
-                                            alt="billboard image" />
-                                    </td>
-                                    <td>Dammam, Ohh</td>
-                                    <td>#14156</td>
-                                    <td>Dammam City</td>
-                                    <td>Billboard</td>
-                                    <td>SR 5</td>
-                                    <td>5 Seconds</td>
-                                    <td>8k</td>
-                                </tr>
+                                
+                               
                             </tbody>
                         </table>
                     </div>
@@ -957,7 +860,7 @@
 
 
 //calender
-document.addEventListener('DOMContentLoaded', function () {
+/* document.addEventListener('DOMContentLoaded', function () {
     
     flatpickr("#start-date", {
         dateFormat: "d/m/Y", 
@@ -970,7 +873,105 @@ document.addEventListener('DOMContentLoaded', function () {
         minDate: "today",
         disableMobile: true, 
     });
+}); */
+// Function to calculate and store the difference
+function storeDifference() {
+   
+    let startDate = document.getElementById('start-date').value;
+    let endDate = document.getElementById('end-date').value;
+
+   
+    console.log(startDate, endDate);
+
+   
+    if (startDate && endDate) {
+        let start = new Date(startDate);  
+        let end = new Date(endDate);      
+
+      
+        let difference = end - start;
+       
+        let differenceDays = difference / (1000 * 3600 * 24);
+
+    
+        console.log("Difference (in milliseconds):", difference);
+        console.log("Difference (in days):", differenceDays);
+        $("#daterange").val(differenceDays);
+        
+        document.getElementById('difference').value = difference;
+    }
+}
+document.getElementById('start-date').addEventListener('change', storeDifference);
+document.getElementById('end-date').addEventListener('change', storeDifference);
+
+
+
+const idArray = new Set(); 
+
+$('.add-signage').click(function() {
+    var signageId = $(this).data('id');
+    if (idArray.has(signageId)) {
+        idArray.delete(signageId); 
+    } else {
+        idArray.add(signageId); 
+    }
+    console.log("Current Signage IDs: ", Array.from(idArray)); 
+    fetchSignageLocation(signageId);
 });
+
+function fetchSignageLocation(signageId) {
+    $.ajax({
+        url: '/get-signage-location/' + signageId,  
+        type: 'GET',  
+        success: function(response) {
+           
+            console.log("Fetched Signage Location: ", response);
+            console.log("Signage ID: ", signageId);
+            
+            let row = `
+                            <tr>
+                                <td><img src="${response.image}" class="cart-table-img" alt="billboard image" /></td>
+                                <td>${response.name}</td>
+                                <td>#${response.signage_id}</td>
+                                <td>${response.location}</td>
+                                <td>${response.type}</td>
+                                <td>SR ${response.price_per_day}</td>
+                                <td>${response.rotation_time}</td>
+                                <td>${response.total_views}</td>
+                            </tr>
+                        `;
+                        
+                        // Append the row inside the table's tbody
+                        $('.signage-table tbody').append(row);
+        },
+        error: function(xhr, status, error) {
+            console.error("AJAX request failed:", error);
+        }
+    });
+}
+
+
+
+
+
+
+
+// Capture the file input
+let uploadedFile = null;
+$('#file-input').change(function(event) {
+    uploadedFile = event.target.files[0]; 
+});
+
+
+    if (uploadedFile) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            $('#uploaded-image-preview').attr('src', e.target.result);  // Set the uploaded image as the source
+            console.log('image:', reader )
+        };
+        reader.readAsDataURL(uploadedFile);
+    }
+
 
 </script>
 @endpush

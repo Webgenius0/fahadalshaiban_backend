@@ -1,4 +1,10 @@
 @extends('owner.app', ['title' => 'Home'])
+@push('style')
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/css/bootstrap.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
+@endpush
 @section('content')
 
 
@@ -19,12 +25,28 @@
         @csrf
         @method('PUT')
         <!-- The action route might be different if you're editing an existing signage -->
-        <div class="describe-campaign-input-wrapper">
-            <label>Signage Name <span>*</span></label>
-            <input name="name" type="text" placeholder="Get 70% OFF Discount from Shashh" value="{{ old('name', $signage->name) }}" />
-            @error('name')
+        <div class="describe-campaign-input-wrapper-container gap-3 d-flex w-100 gap-3">
+            <div class="describe-campaign-input-wrapper w-50 mr-5">
+                <label>Signage Title <span>*</span></label>
+                <input name="name" type="text" class="form-control" value="{{ old('name', $signage->name) }}" />
+                @error('name')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
+            </div>
+            <div class="describe-campaign-input-wrapper w-50 mr-5">
+                <label>Category <span>*</span></label>
+                <select name="category_name" class="form-control">
+                @foreach ($categories as $category)
+                    <option value="{{ $category->name }}" 
+                        {{ old('category_name', $signage->category_name) == $category->name ? 'selected' : '' }}>
+                        {{ $category->name }}
+                    </option>
+                @endforeach
+            </select>
+            @error('category_name')
                 <span class="text-danger">{{ $message }}</span>
             @enderror
+            </div>
         </div>
 
         <div class="describe-campaign-input-wrapper">
@@ -94,6 +116,25 @@
             @enderror
         </div>
 
+        <!-- Lat and lan -->
+        <div class="describe-campaign-input-wrapper-container gap-3 d-flex w-100">
+            <div class="describe-campaign-input-wrapper w-50 mr-5">
+                <label>Latitude <span>*</span></label>
+                <input name="lat" type="text" value="{{ old('lat', $signage->lat) }}" />
+                @error('lat')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
+            </div>
+            <div class="describe-campaign-input-wrapper w-50 ml-5">
+                <label>Longitude <span>*</span></label>
+                <input name="lan" type="text" value="{{ old('lan', $signage->lan) }}" />
+                @error('lan')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
+            </div>
+        </div>
+
+
         <div class="describe-campaign-input-wrapper w-100">
             <label>Upload Signage Photo</label>
             <div class="upload-box">
@@ -117,9 +158,44 @@
 
 @endsection
 
-@push('style')
 
-<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/css/bootstrap.css" rel="stylesheet">
-<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
+@push('script')
+<!-- toster scrippt -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+<script>
+    @if(Session::has('success'))
+  toastr.options = {
+    "closeButton": true,
+    "progressBar": true
+  }
+  toastr.success("{{ Session::get('success') }}");
+@endif
+
+@if(Session::has('info'))
+  toastr.options = {
+    "closeButton": true,
+    "progressBar": true
+  }
+  toastr.info("{{ Session('info') }}");
+@endif
+
+@if(Session::has('warning'))
+  toastr.options = {
+    "closeButton": true,
+    "progressBar": true
+  }
+  toastr.warning("{{ Session('warning') }}");
+@endif
+
+@if(Session::has('error'))
+  toastr.options = {
+    "closeButton": true,
+    "progressBar": true
+  }
+  toastr.error("{{ Session('error') }}");
+@endif
+
+</script>
 @endpush

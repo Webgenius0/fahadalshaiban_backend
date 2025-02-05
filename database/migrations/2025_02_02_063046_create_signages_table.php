@@ -26,7 +26,7 @@ return new class extends Migration
             $table->integer('space_left_for_ad');
             $table->string('location');
             $table->string('lat');
-            $table->string('long');
+            $table->string('lan');
             $table->string('image')->nullable();
             $table->enum('terms_and_conditions', ['on', 'off'])->default('on');
             $table->enum('privacy_policy', ['on', 'off'])->default('on');

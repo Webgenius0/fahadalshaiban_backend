@@ -17,4 +17,6 @@ Route::controller(PageController::class)->group(function () {
     Route::get('page/cart', 'cart')->name('page.cart');
     Route::get('page/started/form', 'startedForm')->name('page.started.form');
     Route::get('page/profile', 'profile')->name('page.profile');
+
+    Route::get('/get-signage-location/{id}', 'getLocation')->name('page.location');
 });

@@ -42,4 +42,27 @@ class PageController extends Controller
     public function startedForm(){
         return view('client.layouts.get-started-form');
     }
+
+ // for detact location according to lat and lan
+ public function getLocation($id)
+ {
+     try {
+         $signage = Signage::find($id); 
+         if (!$signage) {
+             return response()->json(['error' => 'Signage not found'], 404);
+         }
+         return response()->json([
+             'name' => $signage->name,    // Assuming you have a 'name' field
+            'signage_id' => $signage->id,
+            'location' => $signage->location,
+            'type' => $signage->type,
+            'price_per_day' => $signage->price_per_day,
+            'rotation_time' => $signage->rotation_time,
+            'total_views' => $signage->total_views
+         ]);
+     } catch (\Exception $e) {
+         return response()->json(['error' => 'Server error: ' . $e->getMessage()], 500);
+     }
+ }
+ 
 }
