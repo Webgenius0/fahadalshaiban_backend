@@ -67,7 +67,7 @@
                         <label>Ad Title <span>*</span></label>
                         <input
                             type="text"
-                            placeholder="Get 70% OFF Discount from Shashh" />
+                            placeholder="Get 70% OFF Discount from Shashh" id="addTitle" />
                     </div>
 
                     <div class="describe-campaign-input-wrapper">
@@ -604,7 +604,7 @@
                                                 <h3>Billboard Location</h3>
                                                 <p class="billboard-card-id">#{{$data->id}}</p>
                                             </div>
-                                            <button type="button" class="add-signage" data-id="{{$data->id}}">
+                                            <button type="button" id="add-signage"  class="add-signage" data-id="{{$data->id}}">
                                                 Add signage
                                             </button>
                                         </div>
@@ -715,23 +715,12 @@
 
                     <div class="upload-box">
                         <input type="file" id="file-input" />
-                        <div class="upload-content">
+                        <div class="upload-content" id="uploadContent">
                             <span class="upload-icon">
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="24"
-                                    height="24"
-                                    viewBox="0 0 24 24"
-                                    fill="none">
-                                    <path
-                                        d="M19 15V17C19 18.1046 18.1046 19 17 19H7C5.89543 19 5 18.1046 5 17V15M12 15L12 5M12 5L14 7M12 5L10 7"
-                                        stroke="#344051"
-                                        stroke-width="1.67"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round" />
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                    <path d="M19 15V17C19 18.1046 18.1046 19 17 19H7C5.89543 19 5 18.1046 5 17V15M12 15L12 5M12 5L14 7M12 5L10 7" stroke="#344051" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round" />
                                 </svg>
                             </span>
-                            <span class="upload-file-text">Upload file</span>
                         </div>
                     </div>
                 </div>
@@ -751,9 +740,7 @@
             <div class="describe-campaign-details-wrapper form-step">
                 <div class="describe-campaign">
                     <h5>Campaign Details</h5>
-                    <div id="signage-data">
-                        <h5>Signage Location</h5>
-                    </div>
+                    
 
                     <div class="campaign-details-wrapper">
                         <div class="campaign-details-input-wrapper">
@@ -761,7 +748,7 @@
                             <input
                                 type="text"
                                 value="Get 70% OFF Discount from Shashh"
-                                readonly  id="name"/>
+                                readonly  id="detailsName"/>
                         </div>
                         <div class="campaign-details-input-wrapper">
                             <label>What is your Objective?</label>
@@ -775,11 +762,12 @@
                             <input
                                 type="text"
                                 value="12 signages selected"
+                                id="signage-count"
                                 readonly />
                         </div>
                         <div class="campaign-details-input-wrapper">
                             <label>Design</label>
-                            <input type="text" value="Design File.JPEG" readonly id="uploaded-image-preview"/>
+                            <input type="text" value="Design File.JPEG"  readonly id="uploaded-image-preview"/>
                         </div>
 
                         <div class="campaign-details-input-wrapper">
@@ -794,7 +782,7 @@
                         <table class="signage-table">
                             <thead>
                                 <tr>
-                                    <th>Image</th>
+                                   
                                     <th>Signage Name</th>
                                     <th>Signage ID</th>
                                     <th>Signage Location</th>
@@ -805,8 +793,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                
-                               
+
                             </tbody>
                         </table>
                     </div>
@@ -832,70 +819,42 @@
 <!-- Flatpickr JS -->
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-    const addSignageButtons = document.querySelectorAll('.add-signage');
+   $(document).ready(function() {
+    $('.add-signage').click(function() {
+        var button = $(this);
+        var signageId = button.data('id');
 
-    addSignageButtons.forEach(button => {
-        button.addEventListener('click', function () {
-            const billboardId = this.getAttribute('data-id');
-            
-           
-            if (this.textContent === "Add signage") {
-                this.textContent = "Remove signage";  
-                this.classList.add('btn-warning');   
-                this.classList.remove('btn-primary'); 
-                
-               
-                const modal = new bootstrap.Modal(document.getElementById('exampleModal'));
-                modal.show();
-                document.getElementById('modalBillboardId').textContent = billboardId;
-            } else {
-                this.textContent = "Add signage";    
-                this.classList.remove('btn-warning'); 
-                this.classList.add('btn-primary');  
-            }
-        });
+        // Check the current button text and toggle it along with the class
+        if (button.text() === "Remove signage") {
+            button.text("Add signage");  // Change text on the first click
+            button.toggleClass('btn-primary').toggleClass('btn-warning');  // Change color to warning
+        } else {
+            button.text("Remove signage");  // Change text back on the second click
+            button.toggleClass('btn-warning').toggleClass('btn-primary');  // Change color back to primary
+        }
     });
 });
 
+//collect Details name
+function collectName() {
+    let name = document.getElementById('addTitle').value;
+    console.log(name);
+    $('#detailsName').val(name);
+}
+document.getElementById('addTitle').addEventListener('change', collectName);
 
-//calender
-/* document.addEventListener('DOMContentLoaded', function () {
-    
-    flatpickr("#start-date", {
-        dateFormat: "d/m/Y", 
-        minDate: "today", 
-        disableMobile: true, 
-    });
 
-    flatpickr("#end-date", {
-        dateFormat: "d/m/Y", 
-        minDate: "today",
-        disableMobile: true, 
-    });
-}); */
 // Function to calculate and store the difference
 function storeDifference() {
    
     let startDate = document.getElementById('start-date').value;
     let endDate = document.getElementById('end-date').value;
-
-   
     console.log(startDate, endDate);
-
-   
     if (startDate && endDate) {
         let start = new Date(startDate);  
         let end = new Date(endDate);      
-
-      
         let difference = end - start;
-       
-        let differenceDays = difference / (1000 * 3600 * 24);
-
-    
-        console.log("Difference (in milliseconds):", difference);
-        console.log("Difference (in days):", differenceDays);
+        let differenceDays = difference / (1000 * 3600 * 24);   
         $("#daterange").val(differenceDays);
         
         document.getElementById('difference').value = difference;
@@ -906,72 +865,73 @@ document.getElementById('end-date').addEventListener('change', storeDifference);
 
 
 
-const idArray = new Set(); 
+const idArray = new Set();
 
 $('.add-signage').click(function() {
-    var signageId = $(this).data('id');
+    var signageId = $(this).data('id'); 
     if (idArray.has(signageId)) {
-        idArray.delete(signageId); 
+
+        idArray.delete(signageId);
+        console.log("Removed Signage ID: ", signageId);
     } else {
+        
         idArray.add(signageId); 
+        console.log("Added Signage ID: ", signageId);
+        $(`.signage-table tbody tr[data-id="${signageId}"]`).remove();
     }
-    console.log("Current Signage IDs: ", Array.from(idArray)); 
+
+    $('#signage-count').val(idArray.size);
+    localStorage.setItem('selectedSignageIds', JSON.stringify(Array.from(idArray)));
+
     fetchSignageLocation(signageId);
 });
 
+
+
+//image file upload
+let uploadedFile = null;
+$('#file-input').change(function(event) {
+    $('#uploadContent').html(`<img src="${URL.createObjectURL(event.target.files[0])}" alt="Upload" style="width: 100%;" />`);
+    uploadedFile = event.target.files[0]; 
+    $('#uploaded-image-preview').val(uploadedFile.name);
+    console.log("Uploaded File: ", uploadedFile);
+});
+
+// AJAX function to fetch signage location and display image
 function fetchSignageLocation(signageId) {
+    
+    if (!idArray.has(signageId)) return;
+
     $.ajax({
         url: '/get-signage-location/' + signageId,  
         type: 'GET',  
         success: function(response) {
-           
-            console.log("Fetched Signage Location: ", response);
-            console.log("Signage ID: ", signageId);
+            console.log(response);
             
-            let row = `
-                            <tr>
-                                <td><img src="${response.image}" class="cart-table-img" alt="billboard image" /></td>
-                                <td>${response.name}</td>
-                                <td>#${response.signage_id}</td>
-                                <td>${response.location}</td>
-                                <td>${response.type}</td>
-                                <td>SR ${response.price_per_day}</td>
-                                <td>${response.rotation_time}</td>
-                                <td>${response.total_views}</td>
-                            </tr>
-                        `;
+            let imageUrl = uploadedFile ? URL.createObjectURL(uploadedFile) : response.image;
                         
-                        // Append the row inside the table's tbody
-                        $('.signage-table tbody').append(row);
+            if (idArray.has(signageId)) {
+                let row = `
+                    <tr data-id="${signageId}">
+                        
+                        <td>${response.name}</td>
+                        <td>#${response.signage_id}</td>
+                        <td>${response.location}</td>
+                        <td>${response.category_name}</td>
+                        <td>SR ${response.price_per_day}</td>
+                        <td>${response.rotation_time}</td>
+                        <td>${response.avg_daily_views}</td>
+                    </tr>
+                `;
+                              
+                $('.signage-table tbody').append(row);
+            }
         },
         error: function(xhr, status, error) {
             console.error("AJAX request failed:", error);
         }
     });
+
 }
-
-
-
-
-
-
-
-// Capture the file input
-let uploadedFile = null;
-$('#file-input').change(function(event) {
-    uploadedFile = event.target.files[0]; 
-});
-
-
-    if (uploadedFile) {
-        var reader = new FileReader();
-        reader.onload = function(e) {
-            $('#uploaded-image-preview').attr('src', e.target.result);  // Set the uploaded image as the source
-            console.log('image:', reader )
-        };
-        reader.readAsDataURL(uploadedFile);
-    }
-
-
 </script>
 @endpush

@@ -52,13 +52,15 @@ class PageController extends Controller
              return response()->json(['error' => 'Signage not found'], 404);
          }
          return response()->json([
-             'name' => $signage->name,    // Assuming you have a 'name' field
+             'name' => $signage->name,  
             'signage_id' => $signage->id,
             'location' => $signage->location,
             'type' => $signage->type,
-            'price_per_day' => $signage->price_per_day,
+            'price_per_day' => $signage->per_day_price,
             'rotation_time' => $signage->rotation_time,
-            'total_views' => $signage->total_views
+            'total_views' => $signage->total_views,
+            'category_name' => $signage->category_name,
+            'avg_daily_views'=>$signage->avg_daily_views
          ]);
      } catch (\Exception $e) {
          return response()->json(['error' => 'Server error: ' . $e->getMessage()], 500);
