@@ -1,4 +1,22 @@
 @extends('client.app', ['title' => 'Start New Campaign'])
+@push('style')
+<!-- Flatpickr CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+
+
+<style>
+    /* Optional: Custom button styles */
+
+
+.add-signage.btn-warning {
+    background-color: #ff9800; /* warning yellow/orange */
+}
+
+
+
+</style>
+@endpush
 @section('content')
 <div class="main-content">
     <div
@@ -10,11 +28,11 @@
             </p>
         </div>
 
-        <div class="cart-details">
+        <!-- <div class="cart-details">
             <p>Total Views: <span>0</span> Views</p>
             <p>Total Signage: <span>0</span></p>
             <p>Total Price: <span>0.00</span> SR</p>
-        </div>
+        </div> -->
     </div>
 
     <section>
@@ -49,7 +67,7 @@
                         <label>Ad Title <span>*</span></label>
                         <input
                             type="text"
-                            placeholder="Get 70% OFF Discount from Shashh" />
+                            placeholder="Get 70% OFF Discount from Shashh" id="addTitle" />
                     </div>
 
                     <div class="describe-campaign-input-wrapper">
@@ -227,41 +245,11 @@
                         <label for="start-date" class="date-label">Start Date <span>*</span></label>
                         <div class="date-input-container">
                             <input
-                                type="text"
+                                type="date"
                                 id="start-date"
                                 class="date-input"
                                 placeholder="12 /06 / 24" />
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="24"
-                                height="24"
-                                viewBox="0 0 24 24"
-                                fill="none">
-                                <path
-                                    d="M19 4H5C3.89543 4 3 4.89543 3 6V20C3 21.1046 3.89543 22 5 22H19C20.1046 22 21 21.1046 21 20V6C21 4.89543 20.1046 4 19 4Z"
-                                    stroke="#4D4D4D"
-                                    stroke-width="2"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round" />
-                                <path
-                                    d="M16 2V6"
-                                    stroke="#4D4D4D"
-                                    stroke-width="2"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round" />
-                                <path
-                                    d="M8 2V6"
-                                    stroke="#4D4D4D"
-                                    stroke-width="2"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round" />
-                                <path
-                                    d="M3 10H21"
-                                    stroke="#4D4D4D"
-                                    stroke-width="2"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round" />
-                            </svg>
+                            
                         </div>
                     </div>
 
@@ -269,41 +257,11 @@
                         <label for="end-date" class="date-label">End Date <span>*</span></label>
                         <div class="date-input-container">
                             <input
-                                type="text"
+                                type="date"
                                 id="end-date"
                                 class="date-input"
                                 placeholder="DD / MM / YY" />
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="24"
-                                height="24"
-                                viewBox="0 0 24 24"
-                                fill="none">
-                                <path
-                                    d="M19 4H5C3.89543 4 3 4.89543 3 6V20C3 21.1046 3.89543 22 5 22H19C20.1046 22 21 21.1046 21 20V6C21 4.89543 20.1046 4 19 4Z"
-                                    stroke="#4D4D4D"
-                                    stroke-width="2"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round" />
-                                <path
-                                    d="M16 2V6"
-                                    stroke="#4D4D4D"
-                                    stroke-width="2"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round" />
-                                <path
-                                    d="M8 2V6"
-                                    stroke="#4D4D4D"
-                                    stroke-width="2"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round" />
-                                <path
-                                    d="M3 10H21"
-                                    stroke="#4D4D4D"
-                                    stroke-width="2"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round" />
-                            </svg>
+                           
                         </div>
                     </div>
                 </div>
@@ -331,7 +289,7 @@
 
                 <button
                     type="button"
-                    class="next-btn m-auto mt-4 change-step next">
+                    class="next-btn m-auto mt-4 change-step next" id="first">
                     Next
                 </button>
             </div>
@@ -478,22 +436,20 @@
                         aria-labelledby="nav-home-tab"
                         tabindex="0">
                         <div class="billboard-card-container">
+                            @foreach($signages as $data)
                             <div
                                 class="billboard-card"
                                 data-bs-toggle="modal"
                                 data-bs-target="#exampleModal">
-                                <img
-                                    src="{{ asset('frontend') }}/images/signage.png"
-                                    alt="Billboard"
-                                    class="billboard-card-image" />
+                                <img src="{{ asset($data->image ??'default/banner.png') }}" alt="Billboard" class="billboard-card-image" />
                                 <div class="billboard-card-content">
                                     <div
                                         class="d-flex align-items-center justify-content-between gap-2 flex-wrap">
                                         <div>
                                             <h3>Billboard Location</h3>
-                                            <p class="billboard-card-id">#255484</p>
+                                            <p class="billboard-card-id">#{{$data->id}}</p>
                                         </div>
-                                        <button type="button" class="add-signage">
+                                        <button type="button" class="add-signage" data-id="{{$data->id}}">
                                             Add signage
                                         </button>
                                     </div>
@@ -524,7 +480,7 @@
                                             <p class="billboard-card-info-label">
                                                 Estimated views
                                             </p>
-                                            <p class="billboard-card-info-value">50.5k</p>
+                                            <p class="billboard-card-info-value">{{$data->avg_daily_views}}</p>
                                         </div>
                                         <div>
                                             <span class="billboard-card-info-icon">
@@ -551,7 +507,7 @@
                                             <p class="billboard-card-info-label">
                                                 Price per day
                                             </p>
-                                            <p class="billboard-card-info-value">5SR 5</p>
+                                            <p class="billboard-card-info-value">{{$data->per_day_price}}</p>
                                         </div>
                                         <div>
                                             <span class="billboard-card-info-icon">
@@ -583,216 +539,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <div
-                                class="billboard-card"
-                                data-bs-toggle="modal"
-                                data-bs-target="#exampleModal">
-                                <img
-                                    src="{{ asset('frontend') }}/images/signage.png"
-                                    alt="Billboard"
-                                    class="billboard-card-image" />
-                                <div class="billboard-card-content">
-                                    <div
-                                        class="d-flex align-items-center justify-content-between gap-2 flex-wrap">
-                                        <div>
-                                            <h3>Billboard Location</h3>
-                                            <p class="billboard-card-id">#255484</p>
-                                        </div>
-                                        <button type="button" class="add-signage">
-                                            Add signage
-                                        </button>
-                                    </div>
-
-                                    <div class="billboard-card-info">
-                                        <div>
-                                            <span class="billboard-card-info-icon">
-                                                <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    width="24"
-                                                    height="24"
-                                                    viewBox="0 0 24 24"
-                                                    fill="none">
-                                                    <path
-                                                        d="M1 12C1 12 5 4 12 4C19 4 23 12 23 12C23 12 19 20 12 20C5 20 1 12 1 12Z"
-                                                        stroke="#4D4D4D"
-                                                        stroke-width="2"
-                                                        stroke-linecap="round"
-                                                        stroke-linejoin="round" />
-                                                    <path
-                                                        d="M12 15C13.6569 15 15 13.6569 15 12C15 10.3431 13.6569 9 12 9C10.3431 9 9 10.3431 9 12C9 13.6569 10.3431 15 12 15Z"
-                                                        stroke="#4D4D4D"
-                                                        stroke-width="2"
-                                                        stroke-linecap="round"
-                                                        stroke-linejoin="round" />
-                                                </svg>
-                                            </span>
-                                            <p class="billboard-card-info-label">
-                                                Estimated views
-                                            </p>
-                                            <p class="billboard-card-info-value">50.5k</p>
-                                        </div>
-                                        <div>
-                                            <span class="billboard-card-info-icon">
-                                                <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    width="24"
-                                                    height="24"
-                                                    viewBox="0 0 24 24"
-                                                    fill="none">
-                                                    <path
-                                                        d="M12 1V23"
-                                                        stroke="#4D4D4D"
-                                                        stroke-width="2"
-                                                        stroke-linecap="round"
-                                                        stroke-linejoin="round" />
-                                                    <path
-                                                        d="M17 5H9.5C8.57174 5 7.6815 5.36875 7.02513 6.02513C6.36875 6.6815 6 7.57174 6 8.5C6 9.42826 6.36875 10.3185 7.02513 10.9749C7.6815 11.6313 8.57174 12 9.5 12H14.5C15.4283 12 16.3185 12.3687 16.9749 13.0251C17.6313 13.6815 18 14.5717 18 15.5C18 16.4283 17.6313 17.3185 16.9749 17.9749C16.3185 18.6313 15.4283 19 14.5 19H6"
-                                                        stroke="#4D4D4D"
-                                                        stroke-width="2"
-                                                        stroke-linecap="round"
-                                                        stroke-linejoin="round" />
-                                                </svg>
-                                            </span>
-                                            <p class="billboard-card-info-label">
-                                                Price per day
-                                            </p>
-                                            <p class="billboard-card-info-value">5SR 5</p>
-                                        </div>
-                                        <div>
-                                            <span class="billboard-card-info-icon">
-                                                <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    width="24"
-                                                    height="24"
-                                                    viewBox="0 0 24 24"
-                                                    fill="none">
-                                                    <path
-                                                        d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
-                                                        stroke="#4D4D4D"
-                                                        stroke-width="2"
-                                                        stroke-linecap="round"
-                                                        stroke-linejoin="round" />
-                                                    <path
-                                                        d="M12 6V12L16 14"
-                                                        stroke="#4D4D4D"
-                                                        stroke-width="2"
-                                                        stroke-linecap="round"
-                                                        stroke-linejoin="round" />
-                                                </svg>
-                                            </span>
-                                            <p class="billboard-card-info-label">Rotations</p>
-                                            <p class="billboard-card-info-value">
-                                                10 seconds
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div
-                                class="billboard-card"
-                                data-bs-toggle="modal"
-                                data-bs-target="#exampleModal">
-                                <img
-                                    src="{{ asset('frontend') }}/images/signage.png"
-                                    alt="Billboard"
-                                    class="billboard-card-image" />
-                                <div class="billboard-card-content">
-                                    <div
-                                        class="d-flex align-items-center justify-content-between gap-2 flex-wrap">
-                                        <div>
-                                            <h3>Billboard Location</h3>
-                                            <p class="billboard-card-id">#255484</p>
-                                        </div>
-                                        <button type="button" class="add-signage">
-                                            Add signage
-                                        </button>
-                                    </div>
-
-                                    <div class="billboard-card-info">
-                                        <div>
-                                            <span class="billboard-card-info-icon">
-                                                <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    width="24"
-                                                    height="24"
-                                                    viewBox="0 0 24 24"
-                                                    fill="none">
-                                                    <path
-                                                        d="M1 12C1 12 5 4 12 4C19 4 23 12 23 12C23 12 19 20 12 20C5 20 1 12 1 12Z"
-                                                        stroke="#4D4D4D"
-                                                        stroke-width="2"
-                                                        stroke-linecap="round"
-                                                        stroke-linejoin="round" />
-                                                    <path
-                                                        d="M12 15C13.6569 15 15 13.6569 15 12C15 10.3431 13.6569 9 12 9C10.3431 9 9 10.3431 9 12C9 13.6569 10.3431 15 12 15Z"
-                                                        stroke="#4D4D4D"
-                                                        stroke-width="2"
-                                                        stroke-linecap="round"
-                                                        stroke-linejoin="round" />
-                                                </svg>
-                                            </span>
-                                            <p class="billboard-card-info-label">
-                                                Estimated views
-                                            </p>
-                                            <p class="billboard-card-info-value">50.5k</p>
-                                        </div>
-                                        <div>
-                                            <span class="billboard-card-info-icon">
-                                                <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    width="24"
-                                                    height="24"
-                                                    viewBox="0 0 24 24"
-                                                    fill="none">
-                                                    <path
-                                                        d="M12 1V23"
-                                                        stroke="#4D4D4D"
-                                                        stroke-width="2"
-                                                        stroke-linecap="round"
-                                                        stroke-linejoin="round" />
-                                                    <path
-                                                        d="M17 5H9.5C8.57174 5 7.6815 5.36875 7.02513 6.02513C6.36875 6.6815 6 7.57174 6 8.5C6 9.42826 6.36875 10.3185 7.02513 10.9749C7.6815 11.6313 8.57174 12 9.5 12H14.5C15.4283 12 16.3185 12.3687 16.9749 13.0251C17.6313 13.6815 18 14.5717 18 15.5C18 16.4283 17.6313 17.3185 16.9749 17.9749C16.3185 18.6313 15.4283 19 14.5 19H6"
-                                                        stroke="#4D4D4D"
-                                                        stroke-width="2"
-                                                        stroke-linecap="round"
-                                                        stroke-linejoin="round" />
-                                                </svg>
-                                            </span>
-                                            <p class="billboard-card-info-label">
-                                                Price per day
-                                            </p>
-                                            <p class="billboard-card-info-value">5SR 5</p>
-                                        </div>
-                                        <div>
-                                            <span class="billboard-card-info-icon">
-                                                <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    width="24"
-                                                    height="24"
-                                                    viewBox="0 0 24 24"
-                                                    fill="none">
-                                                    <path
-                                                        d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
-                                                        stroke="#4D4D4D"
-                                                        stroke-width="2"
-                                                        stroke-linecap="round"
-                                                        stroke-linejoin="round" />
-                                                    <path
-                                                        d="M12 6V12L16 14"
-                                                        stroke="#4D4D4D"
-                                                        stroke-width="2"
-                                                        stroke-linecap="round"
-                                                        stroke-linejoin="round" />
-                                                </svg>
-                                            </span>
-                                            <p class="billboard-card-info-label">Rotations</p>
-                                            <p class="billboard-card-info-value">
-                                                10 seconds
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            @endforeach
+                            
                         </div>
 
                         <div
@@ -839,23 +587,24 @@
                                 </div>
                             </div>
 
+
+                            <input type="hidden" id="selected-signage-id" />
+
                             <div class="billboard-map-card-container">
+                                @foreach($signages as $data)
                                 <div
                                     class="billboard-card"
                                     data-bs-toggle="modal"
                                     data-bs-target="#exampleModal">
-                                    <img
-                                        src="{{ asset('frontend') }}/images/signage.png"
-                                        alt="Billboard"
-                                        class="billboard-card-image" />
+                                    <img src="{{ asset($data->image ??'default/banner.png') }}" alt="Billboard" class="billboard-card-image" />
                                     <div class="billboard-card-content">
                                         <div
                                             class="d-flex align-items-center justify-content-between gap-2 flex-wrap">
                                             <div>
                                                 <h3>Billboard Location</h3>
-                                                <p class="billboard-card-id">#255484</p>
+                                                <p class="billboard-card-id">#{{$data->id}}</p>
                                             </div>
-                                            <button type="button" class="add-signage">
+                                            <button type="button" id="add-signage"  class="add-signage" data-id="{{$data->id}}">
                                                 Add signage
                                             </button>
                                         </div>
@@ -886,7 +635,7 @@
                                                 <p class="billboard-card-info-label">
                                                     Estimated views
                                                 </p>
-                                                <p class="billboard-card-info-value">50.5k</p>
+                                                <p class="billboard-card-info-value">{{$data->avg_daily_views}}</p>
                                             </div>
                                             <div>
                                                 <span class="billboard-card-info-icon">
@@ -947,220 +696,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div
-                                    class="billboard-card"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#exampleModal">
-                                    <img
-                                        src="{{ asset('frontend') }}/images/signage.png"
-                                        alt="Billboard"
-                                        class="billboard-card-image" />
-                                    <div class="billboard-card-content">
-                                        <div
-                                            class="d-flex align-items-center justify-content-between gap-2 flex-wrap">
-                                            <div>
-                                                <h3>Billboard Location</h3>
-                                                <p class="billboard-card-id">#255484</p>
-                                            </div>
-                                            <button class="remove-signage">
-                                                Remove signage
-                                            </button>
-                                        </div>
-
-                                        <div class="billboard-card-info">
-                                            <div>
-                                                <span class="billboard-card-info-icon">
-                                                    <svg
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                        width="24"
-                                                        height="24"
-                                                        viewBox="0 0 24 24"
-                                                        fill="none">
-                                                        <path
-                                                            d="M1 12C1 12 5 4 12 4C19 4 23 12 23 12C23 12 19 20 12 20C5 20 1 12 1 12Z"
-                                                            stroke="#4D4D4D"
-                                                            stroke-width="2"
-                                                            stroke-linecap="round"
-                                                            stroke-linejoin="round" />
-                                                        <path
-                                                            d="M12 15C13.6569 15 15 13.6569 15 12C15 10.3431 13.6569 9 12 9C10.3431 9 9 10.3431 9 12C9 13.6569 10.3431 15 12 15Z"
-                                                            stroke="#4D4D4D"
-                                                            stroke-width="2"
-                                                            stroke-linecap="round"
-                                                            stroke-linejoin="round" />
-                                                    </svg>
-                                                </span>
-                                                <p class="billboard-card-info-label">
-                                                    Estimated views
-                                                </p>
-                                                <p class="billboard-card-info-value">50.5k</p>
-                                            </div>
-                                            <div>
-                                                <span class="billboard-card-info-icon">
-                                                    <svg
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                        width="24"
-                                                        height="24"
-                                                        viewBox="0 0 24 24"
-                                                        fill="none">
-                                                        <path
-                                                            d="M12 1V23"
-                                                            stroke="#4D4D4D"
-                                                            stroke-width="2"
-                                                            stroke-linecap="round"
-                                                            stroke-linejoin="round" />
-                                                        <path
-                                                            d="M17 5H9.5C8.57174 5 7.6815 5.36875 7.02513 6.02513C6.36875 6.6815 6 7.57174 6 8.5C6 9.42826 6.36875 10.3185 7.02513 10.9749C7.6815 11.6313 8.57174 12 9.5 12H14.5C15.4283 12 16.3185 12.3687 16.9749 13.0251C17.6313 13.6815 18 14.5717 18 15.5C18 16.4283 17.6313 17.3185 16.9749 17.9749C16.3185 18.6313 15.4283 19 14.5 19H6"
-                                                            stroke="#4D4D4D"
-                                                            stroke-width="2"
-                                                            stroke-linecap="round"
-                                                            stroke-linejoin="round" />
-                                                    </svg>
-                                                </span>
-                                                <p class="billboard-card-info-label">
-                                                    Price per day
-                                                </p>
-                                                <p class="billboard-card-info-value">5SR 5</p>
-                                            </div>
-                                            <div>
-                                                <span class="billboard-card-info-icon">
-                                                    <svg
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                        width="24"
-                                                        height="24"
-                                                        viewBox="0 0 24 24"
-                                                        fill="none">
-                                                        <path
-                                                            d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
-                                                            stroke="#4D4D4D"
-                                                            stroke-width="2"
-                                                            stroke-linecap="round"
-                                                            stroke-linejoin="round" />
-                                                        <path
-                                                            d="M12 6V12L16 14"
-                                                            stroke="#4D4D4D"
-                                                            stroke-width="2"
-                                                            stroke-linecap="round"
-                                                            stroke-linejoin="round" />
-                                                    </svg>
-                                                </span>
-                                                <p class="billboard-card-info-label">
-                                                    Rotations
-                                                </p>
-                                                <p class="billboard-card-info-value">
-                                                    10 seconds
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div
-                                    class="billboard-card"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#exampleModal">
-                                    <img
-                                        src="{{ asset('frontend') }}/images/signage.png"
-                                        alt="Billboard"
-                                        class="billboard-card-image" />
-                                    <div class="billboard-card-content">
-                                        <div
-                                            class="d-flex align-items-center justify-content-between gap-2 flex-wrap">
-                                            <div>
-                                                <h3>Billboard Location</h3>
-                                                <p class="billboard-card-id">#255484</p>
-                                            </div>
-                                            <button type="button" class="add-signage">
-                                                Add signage
-                                            </button>
-                                        </div>
-
-                                        <div class="billboard-card-info">
-                                            <div>
-                                                <span class="billboard-card-info-icon">
-                                                    <svg
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                        width="24"
-                                                        height="24"
-                                                        viewBox="0 0 24 24"
-                                                        fill="none">
-                                                        <path
-                                                            d="M1 12C1 12 5 4 12 4C19 4 23 12 23 12C23 12 19 20 12 20C5 20 1 12 1 12Z"
-                                                            stroke="#4D4D4D"
-                                                            stroke-width="2"
-                                                            stroke-linecap="round"
-                                                            stroke-linejoin="round" />
-                                                        <path
-                                                            d="M12 15C13.6569 15 15 13.6569 15 12C15 10.3431 13.6569 9 12 9C10.3431 9 9 10.3431 9 12C9 13.6569 10.3431 15 12 15Z"
-                                                            stroke="#4D4D4D"
-                                                            stroke-width="2"
-                                                            stroke-linecap="round"
-                                                            stroke-linejoin="round" />
-                                                    </svg>
-                                                </span>
-                                                <p class="billboard-card-info-label">
-                                                    Estimated views
-                                                </p>
-                                                <p class="billboard-card-info-value">50.5k</p>
-                                            </div>
-                                            <div>
-                                                <span class="billboard-card-info-icon">
-                                                    <svg
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                        width="24"
-                                                        height="24"
-                                                        viewBox="0 0 24 24"
-                                                        fill="none">
-                                                        <path
-                                                            d="M12 1V23"
-                                                            stroke="#4D4D4D"
-                                                            stroke-width="2"
-                                                            stroke-linecap="round"
-                                                            stroke-linejoin="round" />
-                                                        <path
-                                                            d="M17 5H9.5C8.57174 5 7.6815 5.36875 7.02513 6.02513C6.36875 6.6815 6 7.57174 6 8.5C6 9.42826 6.36875 10.3185 7.02513 10.9749C7.6815 11.6313 8.57174 12 9.5 12H14.5C15.4283 12 16.3185 12.3687 16.9749 13.0251C17.6313 13.6815 18 14.5717 18 15.5C18 16.4283 17.6313 17.3185 16.9749 17.9749C16.3185 18.6313 15.4283 19 14.5 19H6"
-                                                            stroke="#4D4D4D"
-                                                            stroke-width="2"
-                                                            stroke-linecap="round"
-                                                            stroke-linejoin="round" />
-                                                    </svg>
-                                                </span>
-                                                <p class="billboard-card-info-label">
-                                                    Price per day
-                                                </p>
-                                                <p class="billboard-card-info-value">5SR 5</p>
-                                            </div>
-                                            <div>
-                                                <span class="billboard-card-info-icon">
-                                                    <svg
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                        width="24"
-                                                        height="24"
-                                                        viewBox="0 0 24 24"
-                                                        fill="none">
-                                                        <path
-                                                            d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
-                                                            stroke="#4D4D4D"
-                                                            stroke-width="2"
-                                                            stroke-linecap="round"
-                                                            stroke-linejoin="round" />
-                                                        <path
-                                                            d="M12 6V12L16 14"
-                                                            stroke="#4D4D4D"
-                                                            stroke-width="2"
-                                                            stroke-linecap="round"
-                                                            stroke-linejoin="round" />
-                                                    </svg>
-                                                </span>
-                                                <p class="billboard-card-info-label">
-                                                    Rotations
-                                                </p>
-                                                <p class="billboard-card-info-value">
-                                                    10 seconds
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                @endforeach
+                                
                             </div>
                         </div>
                     </div>
@@ -1178,23 +715,12 @@
 
                     <div class="upload-box">
                         <input type="file" id="file-input" />
-                        <div class="upload-content">
+                        <div class="upload-content" id="uploadContent">
                             <span class="upload-icon">
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="24"
-                                    height="24"
-                                    viewBox="0 0 24 24"
-                                    fill="none">
-                                    <path
-                                        d="M19 15V17C19 18.1046 18.1046 19 17 19H7C5.89543 19 5 18.1046 5 17V15M12 15L12 5M12 5L14 7M12 5L10 7"
-                                        stroke="#344051"
-                                        stroke-width="1.67"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round" />
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                    <path d="M19 15V17C19 18.1046 18.1046 19 17 19H7C5.89543 19 5 18.1046 5 17V15M12 15L12 5M12 5L14 7M12 5L10 7" stroke="#344051" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round" />
                                 </svg>
                             </span>
-                            <span class="upload-file-text">Upload file</span>
                         </div>
                     </div>
                 </div>
@@ -1214,6 +740,7 @@
             <div class="describe-campaign-details-wrapper form-step">
                 <div class="describe-campaign">
                     <h5>Campaign Details</h5>
+                    
 
                     <div class="campaign-details-wrapper">
                         <div class="campaign-details-input-wrapper">
@@ -1221,7 +748,7 @@
                             <input
                                 type="text"
                                 value="Get 70% OFF Discount from Shashh"
-                                readonly />
+                                readonly  id="detailsName"/>
                         </div>
                         <div class="campaign-details-input-wrapper">
                             <label>What is your Objective?</label>
@@ -1235,16 +762,17 @@
                             <input
                                 type="text"
                                 value="12 signages selected"
+                                id="signage-count"
                                 readonly />
                         </div>
                         <div class="campaign-details-input-wrapper">
                             <label>Design</label>
-                            <input type="text" value="Design File.JPEG" readonly />
+                            <input type="text" value="Design File.JPEG"  readonly id="uploaded-image-preview"/>
                         </div>
 
                         <div class="campaign-details-input-wrapper">
                             <label>Date Range</label>
-                            <input type="text" value="12/11/24 - 21/11/24" readonly />
+                            <input type="text" id="daterange" />
                         </div>
                     </div>
                 </div>
@@ -1254,7 +782,7 @@
                         <table class="signage-table">
                             <thead>
                                 <tr>
-                                    <th>Image</th>
+                                   
                                     <th>Signage Name</th>
                                     <th>Signage ID</th>
                                     <th>Signage Location</th>
@@ -1265,51 +793,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>
-                                        <img
-                                            src="{{ asset('frontend') }}/images/cart-image.png"
-                                            class="cart-table-img"
-                                            alt="billboard image" />
-                                    </td>
-                                    <td>Dammam, Ohh</td>
-                                    <td>#14156</td>
-                                    <td>Dammam City</td>
-                                    <td>Billboard</td>
-                                    <td>SR 5</td>
-                                    <td>5 Seconds</td>
-                                    <td>8k</td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <img
-                                            src="{{ asset('frontend') }}/images/cart-image.png"
-                                            class="cart-table-img"
-                                            alt="billboard image" />
-                                    </td>
-                                    <td>Dammam, Ohh</td>
-                                    <td>#14156</td>
-                                    <td>Dammam City</td>
-                                    <td>Billboard</td>
-                                    <td>SR 5</td>
-                                    <td>5 Seconds</td>
-                                    <td>8k</td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <img
-                                            src="{{ asset('frontend') }}/images/cart-image.png"
-                                            class="cart-table-img"
-                                            alt="billboard image" />
-                                    </td>
-                                    <td>Dammam, Ohh</td>
-                                    <td>#14156</td>
-                                    <td>Dammam City</td>
-                                    <td>Billboard</td>
-                                    <td>SR 5</td>
-                                    <td>5 Seconds</td>
-                                    <td>8k</td>
-                                </tr>
+
                             </tbody>
                         </table>
                     </div>
@@ -1330,3 +814,124 @@
     </section>
 </div>
 @endsection
+
+@push('script')
+<!-- Flatpickr JS -->
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script>
+   $(document).ready(function() {
+    $('.add-signage').click(function() {
+        var button = $(this);
+        var signageId = button.data('id');
+
+        // Check the current button text and toggle it along with the class
+        if (button.text() === "Remove signage") {
+            button.text("Add signage");  // Change text on the first click
+            button.toggleClass('btn-primary').toggleClass('btn-warning');  // Change color to warning
+        } else {
+            button.text("Remove signage");  // Change text back on the second click
+            button.toggleClass('btn-warning').toggleClass('btn-primary');  // Change color back to primary
+        }
+    });
+});
+
+//collect Details name
+function collectName() {
+    let name = document.getElementById('addTitle').value;
+    console.log(name);
+    $('#detailsName').val(name);
+}
+document.getElementById('addTitle').addEventListener('change', collectName);
+
+
+// Function to calculate and store the difference
+function storeDifference() {
+   
+    let startDate = document.getElementById('start-date').value;
+    let endDate = document.getElementById('end-date').value;
+    console.log(startDate, endDate);
+    if (startDate && endDate) {
+        let start = new Date(startDate);  
+        let end = new Date(endDate);      
+        let difference = end - start;
+        let differenceDays = difference / (1000 * 3600 * 24);   
+        $("#daterange").val(differenceDays);
+        
+        document.getElementById('difference').value = difference;
+    }
+}
+document.getElementById('start-date').addEventListener('change', storeDifference);
+document.getElementById('end-date').addEventListener('change', storeDifference);
+
+
+
+const idArray = new Set();
+
+$('.add-signage').click(function() {
+    var signageId = $(this).data('id'); 
+    if (idArray.has(signageId)) {
+
+        idArray.delete(signageId);
+        console.log("Removed Signage ID: ", signageId);
+    } else {
+        
+        idArray.add(signageId); 
+        console.log("Added Signage ID: ", signageId);
+        $(`.signage-table tbody tr[data-id="${signageId}"]`).remove();
+    }
+
+    $('#signage-count').val(idArray.size);
+    localStorage.setItem('selectedSignageIds', JSON.stringify(Array.from(idArray)));
+
+    fetchSignageLocation(signageId);
+});
+
+
+
+//image file upload
+let uploadedFile = null;
+$('#file-input').change(function(event) {
+    $('#uploadContent').html(`<img src="${URL.createObjectURL(event.target.files[0])}" alt="Upload" style="width: 100%;" />`);
+    uploadedFile = event.target.files[0]; 
+    $('#uploaded-image-preview').val(uploadedFile.name);
+    console.log("Uploaded File: ", uploadedFile);
+});
+
+// AJAX function to fetch signage location and display image
+function fetchSignageLocation(signageId) {
+    
+    if (!idArray.has(signageId)) return;
+
+    $.ajax({
+        url: '/get-signage-location/' + signageId,  
+        type: 'GET',  
+        success: function(response) {
+            console.log(response);
+            
+            let imageUrl = uploadedFile ? URL.createObjectURL(uploadedFile) : response.image;
+                        
+            if (idArray.has(signageId)) {
+                let row = `
+                    <tr data-id="${signageId}">
+                        
+                        <td>${response.name}</td>
+                        <td>#${response.signage_id}</td>
+                        <td>${response.location}</td>
+                        <td>${response.category_name}</td>
+                        <td>SR ${response.price_per_day}</td>
+                        <td>${response.rotation_time}</td>
+                        <td>${response.avg_daily_views}</td>
+                    </tr>
+                `;
+                              
+                $('.signage-table tbody').append(row);
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error("AJAX request failed:", error);
+        }
+    });
+
+}
+</script>
+@endpush

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Web\Owner;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 
 class PageController extends Controller
 {
@@ -12,7 +13,8 @@ class PageController extends Controller
     }
     public function signage()
     {
-        return view('owner.layouts.new-signage');
+        $categories= Category::all();
+        return view('owner.layouts.new-signage', compact('categories'));
     }
     public function incomeStatement()
     {
