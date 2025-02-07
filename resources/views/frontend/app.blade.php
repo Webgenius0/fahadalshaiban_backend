@@ -1,4 +1,5 @@
 @php
+$googleLang = new Stichoza\GoogleTranslate\GoogleTranslate(session()->get('locale'));
 $systemSetting = App\Models\Setting::first();
 @endphp
 

@@ -10,15 +10,19 @@
                 </div>
                 <div class="navbar-content">
                     <ul class="nav-items-wrapper">
-                        <li><a href="{{ route('home') }}" class="nav-item-active">Home</a></li>
-                        <li><a href="{{ route('login', ['is_role' => 'client']) }}" class="nav-item">Client</a></li>
+                        <li><a href="{{ route('home') }}" class="nav-item-active">{{ __('menu.home') }}</a></li>
+                        <li><a href="{{ route('login', ['is_role' => 'client']) }}" class="nav-item">{{$googleLang->translate('Client')}}</a></li>
                         <li><a href="{{ route('login', ['is_role' => 'owner']) }}" class="nav-item">Owner</a></li>
                     </ul>
                     <div class="action-lang-wrapper">
-                        <select>
-                            <option value="english">English</option>
-                            <option value="bengali">Bengali</option>
-                        </select>
+
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn tm-new-btn dropdown-toggle text-light" data-bs-toggle="dropdown" aria-expanded="false">Dropdown</button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="{{ route('lang', ['lang' => 'en']) }}">English</a></li>
+                                <li><a class="dropdown-item" href="{{ route('lang', ['lang' => 'ar']) }}">Arabic</a></li>
+                            </ul>
+                        </div>
 
                         <a href="{{ route('login') }}" class="btn-common">
                             Start New Campaign
@@ -53,7 +57,7 @@
             <button class="sidebar-close" aria-label="Close menu">✕</button>
         </div>
         <ul class="mobile-nav-items">
-            <li><a href="{{ route('home') }}">Home</a></li>
+            <li><a href="{{ route('home') }}">{{ __('menu.home') }}</a></li>
             <li><a href="{{ route('login') }}">Sign in</a></li>
         </ul>
     </aside>
