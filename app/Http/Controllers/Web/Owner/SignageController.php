@@ -63,7 +63,7 @@ class SignageController extends Controller
           
             Signage::create($validatedData);
             //Log::info('New signage created', ['signage' => $validatedData]);
-            return redirect()->back()->with('success', 'Created successfully');
+            return redirect()->route('owner.dashboard')->with('success', 'Created successfully');
         } catch (Exception $e) {
            
             //Log::error('Error creating signage', ['error' => $e->getMessage()]);
