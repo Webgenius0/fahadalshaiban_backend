@@ -110,7 +110,8 @@
 
         <div class="describe-campaign-input-wrapper w-100">
             <label>Signage Location<span>*</span></label>
-            <input name="location" type="text" placeholder="Dammam" value="{{ old('location', $signage->location) }}" />
+            <!-- <input name="location" type="text" placeholder="Dammam" value="{{ old('location', $signage->location) }}" /> -->
+            <select name="location" class="form-control" id="cities">
             @error('location')
                 <span class="text-danger">{{ $message }}</span>
             @enderror
@@ -161,10 +162,15 @@
 
 
 @push('script')
+<script src="{{asset('js/CitiesAjax.js')}}"></script>
+
 <!-- toster scrippt -->
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 <script>
+
+    
     @if(Session::has('success'))
   toastr.options = {
     "closeButton": true,

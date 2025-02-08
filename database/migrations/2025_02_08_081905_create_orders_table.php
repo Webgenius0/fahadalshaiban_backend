@@ -12,11 +12,16 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('orders', function (Blueprint $table) {
-            $table->id();  // Primary key for the order
-            $table->decimal('subtotal', 10, 2);  // Subtotal amount
-            $table->decimal('despatch_fee', 10, 2);  // Despatch fee
-            $table->decimal('total', 10, 2);  // Total amount (including despatch fee)
-            $table->enum('status', ['pending', 'completed', 'success', 'failed'])->default('pending');  // Order status
+            $table->id();
+            $table->unsignedBigInteger('user_id');  
+            $table->string('uuid')->unique();
+            $table->decimal('subtotal', 10, 2);
+            $table->decimal('dispatch_fee', 10, 2);
+            $table->decimal('total', 10, 2);
+            $table->string('status')->default('pending');
+           
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade'); 
             $table->timestamps();
         });
     }

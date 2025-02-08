@@ -1,6 +1,7 @@
 <?php 
 
 $totalActivesignages= App\Models\Signage::where('status', 'active')->count();
+
 ?>
 
 @extends('client.app', ['title' => 'Home'])
@@ -127,17 +128,20 @@ $totalActivesignages= App\Models\Signage::where('status', 'active')->count();
                 </div>
             </div>
         </div>
-
+        
         <div class="campaign-list">
             <!-- Campaign Item -->
+            @foreach($orders as $order)
             <article class="campaign-item">
+               
+                
                 <div class="campaign-top">
                     <div id="chart1"></div>
                     <div class="campaign-status">On Going</div>
                 </div>
 
-                <p class="campaign-id">#ADS001245</p>
-                <h2 class="campaign-title">50% OFF Floor Lamp Get it Now!</h2>
+                <p class="campaign-id">#{{ $order->uuid }}</p>
+                <!-- <h2 class="campaign-title">50% OFF Floor Lamp Get it Now!</h2> -->
                 <p class="campaign-details">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -152,7 +156,8 @@ $totalActivesignages= App\Models\Signage::where('status', 'active')->count();
                             stroke-linecap="round"
                             stroke-linejoin="round" />
                     </svg>
-                    Published on 5 March 2024
+                    Published on <span>{{ \Carbon\Carbon::parse($order->created_at)->format('d F Y') }}</span>
+
                 </p>
 
                 <div class="campaign-stats">
@@ -172,241 +177,13 @@ $totalActivesignages= App\Models\Signage::where('status', 'active')->count();
 
                 <div class="campaign-bottom">
                     <div class="campaign-end">Ending on 5 March 2025</div>
-                    <button class="campaign-edit-btn">Edit</button>
+                    <button class="campaign-edit-btn">View</button>
                 </div>
+               
             </article>
-            <!-- Campaign Item -->
-            <article class="campaign-item">
-                <div class="campaign-top">
-                    <div id="chart2"></div>
-                    <div class="campaign-status">On Going</div>
-                </div>
-
-                <p class="campaign-id">#ADS001245</p>
-                <h2 class="campaign-title">50% OFF Floor Lamp Get it Now!</h2>
-                <p class="campaign-details">
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="17"
-                        height="15"
-                        viewBox="0 0 17 15"
-                        fill="none">
-                        <path
-                            d="M15 2.2998L5 12.3098L2 9.3098"
-                            stroke="#737373"
-                            stroke-width="3"
-                            stroke-linecap="round"
-                            stroke-linejoin="round" />
-                    </svg>
-                    Published on 5 March 2024
-                </p>
-
-                <div class="campaign-stats">
-                    <div class="campaign-stat-item">
-                        <p class="campaign-stat-value">SR 63.04</p>
-                        <p class="campaign-stat-label">Today's Spend</p>
-                    </div>
-                    <div class="campaign-stat-item">
-                        <p class="campaign-stat-value">SR 652.86</p>
-                        <p class="campaign-stat-label">All Spends</p>
-                    </div>
-                    <div class="campaign-stat-item">
-                        <p class="campaign-stat-value">6.5k</p>
-                        <p class="campaign-stat-label">Total Views</p>
-                    </div>
-                </div>
-
-                <div class="campaign-bottom">
-                    <div class="campaign-end">Ending on 5 March 2025</div>
-                    <button class="campaign-edit-btn">Edit</button>
-                </div>
-            </article>
-            <!-- Campaign Item -->
-            <article class="campaign-item">
-                <div class="campaign-top">
-                    <div id="chart3"></div>
-                    <div class="campaign-status">On Going</div>
-                </div>
-
-                <p class="campaign-id">#ADS001245</p>
-                <h2 class="campaign-title">50% OFF Floor Lamp Get it Now!</h2>
-                <p class="campaign-details">
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="17"
-                        height="15"
-                        viewBox="0 0 17 15"
-                        fill="none">
-                        <path
-                            d="M15 2.2998L5 12.3098L2 9.3098"
-                            stroke="#737373"
-                            stroke-width="3"
-                            stroke-linecap="round"
-                            stroke-linejoin="round" />
-                    </svg>
-                    Published on 5 March 2024
-                </p>
-
-                <div class="campaign-stats">
-                    <div class="campaign-stat-item">
-                        <p class="campaign-stat-value">SR 63.04</p>
-                        <p class="campaign-stat-label">Today's Spend</p>
-                    </div>
-                    <div class="campaign-stat-item">
-                        <p class="campaign-stat-value">SR 652.86</p>
-                        <p class="campaign-stat-label">All Spends</p>
-                    </div>
-                    <div class="campaign-stat-item">
-                        <p class="campaign-stat-value">6.5k</p>
-                        <p class="campaign-stat-label">Total Views</p>
-                    </div>
-                </div>
-
-                <div class="campaign-bottom">
-                    <div class="campaign-end">Ending on 5 March 2025</div>
-                    <button class="campaign-edit-btn">Edit</button>
-                </div>
-            </article>
-            <!-- Campaign Item -->
-            <article class="campaign-item">
-                <div class="campaign-top">
-                    <div id="chart4"></div>
-                    <div class="campaign-status">On Going</div>
-                </div>
-
-                <p class="campaign-id">#ADS001245</p>
-                <h2 class="campaign-title">50% OFF Floor Lamp Get it Now!</h2>
-                <p class="campaign-details">
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="17"
-                        height="15"
-                        viewBox="0 0 17 15"
-                        fill="none">
-                        <path
-                            d="M15 2.2998L5 12.3098L2 9.3098"
-                            stroke="#737373"
-                            stroke-width="3"
-                            stroke-linecap="round"
-                            stroke-linejoin="round" />
-                    </svg>
-                    Published on 5 March 2024
-                </p>
-
-                <div class="campaign-stats">
-                    <div class="campaign-stat-item">
-                        <p class="campaign-stat-value">SR 63.04</p>
-                        <p class="campaign-stat-label">Today's Spend</p>
-                    </div>
-                    <div class="campaign-stat-item">
-                        <p class="campaign-stat-value">SR 652.86</p>
-                        <p class="campaign-stat-label">All Spends</p>
-                    </div>
-                    <div class="campaign-stat-item">
-                        <p class="campaign-stat-value">6.5k</p>
-                        <p class="campaign-stat-label">Total Views</p>
-                    </div>
-                </div>
-
-                <div class="campaign-bottom">
-                    <div class="campaign-end">Ending on 5 March 2025</div>
-                    <button class="campaign-edit-btn">Edit</button>
-                </div>
-            </article>
-            <!-- Campaign Item -->
-            <article class="campaign-item">
-                <div class="campaign-top">
-                    <div id="chart5"></div>
-                    <div class="campaign-status">On Going</div>
-                </div>
-
-                <p class="campaign-id">#ADS001245</p>
-                <h2 class="campaign-title">50% OFF Floor Lamp Get it Now!</h2>
-                <p class="campaign-details">
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="17"
-                        height="15"
-                        viewBox="0 0 17 15"
-                        fill="none">
-                        <path
-                            d="M15 2.2998L5 12.3098L2 9.3098"
-                            stroke="#737373"
-                            stroke-width="3"
-                            stroke-linecap="round"
-                            stroke-linejoin="round" />
-                    </svg>
-                    Published on 5 March 2024
-                </p>
-
-                <div class="campaign-stats">
-                    <div class="campaign-stat-item">
-                        <p class="campaign-stat-value">SR 63.04</p>
-                        <p class="campaign-stat-label">Today's Spend</p>
-                    </div>
-                    <div class="campaign-stat-item">
-                        <p class="campaign-stat-value">SR 652.86</p>
-                        <p class="campaign-stat-label">All Spends</p>
-                    </div>
-                    <div class="campaign-stat-item">
-                        <p class="campaign-stat-value">6.5k</p>
-                        <p class="campaign-stat-label">Total Views</p>
-                    </div>
-                </div>
-
-                <div class="campaign-bottom">
-                    <div class="campaign-end">Ending on 5 March 2025</div>
-                    <button class="campaign-edit-btn">Edit</button>
-                </div>
-            </article>
-            <!-- Campaign Item -->
-            <article class="campaign-item">
-                <div class="campaign-top">
-                    <div id="chart6"></div>
-                    <div class="campaign-status">On Going</div>
-                </div>
-
-                <p class="campaign-id">#ADS001245</p>
-                <h2 class="campaign-title">50% OFF Floor Lamp Get it Now!</h2>
-                <p class="campaign-details">
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="17"
-                        height="15"
-                        viewBox="0 0 17 15"
-                        fill="none">
-                        <path
-                            d="M15 2.2998L5 12.3098L2 9.3098"
-                            stroke="#737373"
-                            stroke-width="3"
-                            stroke-linecap="round"
-                            stroke-linejoin="round" />
-                    </svg>
-                    Published on 5 March 2024
-                </p>
-
-                <div class="campaign-stats">
-                    <div class="campaign-stat-item">
-                        <p class="campaign-stat-value">SR 63.04</p>
-                        <p class="campaign-stat-label">Today's Spend</p>
-                    </div>
-                    <div class="campaign-stat-item">
-                        <p class="campaign-stat-value">SR 652.86</p>
-                        <p class="campaign-stat-label">All Spends</p>
-                    </div>
-                    <div class="campaign-stat-item">
-                        <p class="campaign-stat-value">6.5k</p>
-                        <p class="campaign-stat-label">Total Views</p>
-                    </div>
-                </div>
-
-                <div class="campaign-bottom">
-                    <div class="campaign-end">Ending on 5 March 2025</div>
-                    <button class="campaign-edit-btn">Edit</button>
-                </div>
-            </article>
+            @endforeach
         </div>
-
+        
         <div class="pagination">
             <button class="prev">Pervious</button>
             <div class="index-btn-wrapper">

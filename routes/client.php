@@ -19,4 +19,7 @@ Route::controller(PageController::class)->group(function () {
     Route::get('page/profile', 'profile')->name('page.profile');
 
     Route::get('/get-signage-location/{id}', 'getLocation')->name('page.location');
+    //filtering
+    Route::get('/signages/filter','filterSignages')->name('filterSignages');
+    Route::get('/checkout','checkout')->name('checkout');
 });

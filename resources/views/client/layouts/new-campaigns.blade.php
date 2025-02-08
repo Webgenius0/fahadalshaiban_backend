@@ -352,22 +352,19 @@
                   </div> -->
                     <!-- Dropdowns for different filters -->
 
-                    <select class="signage-filter-dropdown">
-                        <option data-display="Location">Nothing</option>
-                        <option value="riyadh">Riyadh</option>
-                        <option value="dammam">Dammam</option>
-                        <option value="makkah">Makkah</option>
+                    <select class="signage-filter-dropdown" id="cities">
+                        
                     </select>
 
                     <select class="signage-filter-dropdown">
-                        <option data-display="Signage Type">Nothing</option>
-                        <option value="billboard">Billboard</option>
-                        <option value="digital-screen">Digital Screen</option>
-                        <option value="lcd">LCD</option>
+                        <option data-display="Signage Type">Select Category...</option>
+                        @foreach ($categories as $category)
+                            <option value="{{ $category->name }}">{{ $category->name }}</option>
+                        @endforeach
                     </select>
 
                     <select class="signage-filter-dropdown">
-                        <option data-display="Daily Views">Nothing</option>
+                        <option data-display="Daily Views">Daily Views...</option>
                         <option value="50k-to-100k">50k to 100k</option>
                         <option value="100k-to-200k">100k to 200k</option>
                     </select>
@@ -380,42 +377,10 @@
 
                     <div class="signage-filter-date">
                         <input
-                            type="text"
+                            type="date"
                             id="signage-date-input"
                             placeholder="Date" />
-                        <span class="signage-filter-search-icon">
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="24"
-                                height="24"
-                                viewBox="0 0 24 24"
-                                fill="none">
-                                <path
-                                    d="M19 4H5C3.89543 4 3 4.89543 3 6V20C3 21.1046 3.89543 22 5 22H19C20.1046 22 21 21.1046 21 20V6C21 4.89543 20.1046 4 19 4Z"
-                                    stroke="#4D4D4D"
-                                    stroke-width="2"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round" />
-                                <path
-                                    d="M16 2V6"
-                                    stroke="#4D4D4D"
-                                    stroke-width="2"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round" />
-                                <path
-                                    d="M8 2V6"
-                                    stroke="#4D4D4D"
-                                    stroke-width="2"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round" />
-                                <path
-                                    d="M3 10H21"
-                                    stroke="#4D4D4D"
-                                    stroke-width="2"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round" />
-                            </svg>
-                        </span>
+                       
                     </div>
 
                     <select class="filter-dropdown">
@@ -818,6 +783,9 @@
 @push('script')
 <!-- Flatpickr JS -->
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="{{asset('js/CitiesAjax.js')}}"></script>
+<!-- for fieltering -->
+ <script src="{{asset('js/Filter.js')}}"></script>
 <script>
    $(document).ready(function() {
     $('.add-signage').click(function() {
