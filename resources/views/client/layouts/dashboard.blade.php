@@ -48,6 +48,7 @@ $totalActivesignages= App\Models\Signage::where('status', 'active')->count();
                 </div>
             </div>
         </div>
+        
         <div class="overview-card">
             <h3 class="overview-card-title">Total Views</h3>
             <div class="overview-card-content">
