@@ -894,7 +894,7 @@ $('#file-input').change(function(event) {
     $('#uploadContent').html(`<img src="${URL.createObjectURL(event.target.files[0])}" alt="Upload" style="width: 100%;" />`);
     uploadedFile = event.target.files[0]; 
     $('#uploaded-image-preview').val(uploadedFile.name);
-    console.log("Uploaded File: ", uploadedFile);
+   
 });
 
 // AJAX function to fetch signage location and display image

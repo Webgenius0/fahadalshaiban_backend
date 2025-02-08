@@ -1,3 +1,8 @@
+<?php
+$total_signage = App\Models\Signage::where('user_id', auth()->user()->id)->count();
+
+?>
+
 @extends('owner.app', ['title' => 'Home'])
 @section('content')
 <div class="main-content">
@@ -5,7 +10,7 @@
         <div class="overview-card">
             <h3 class="overview-card-title">Total Signage</h3>
             <div class="overview-card-content">
-                <p class="overview-card-amount">50</p>
+                <p class="overview-card-amount">{{$total_signage}}</p>
 
                 <div class="overview-card-icon card-icon-purple">
                     <svg
