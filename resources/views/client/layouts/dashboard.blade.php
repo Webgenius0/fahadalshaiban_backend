@@ -12,6 +12,7 @@ $totalActivesignages= App\Models\Signage::where('status', 'active')->count();
             <h3 class="overview-card-title">Active Campaigns</h3>
             <div class="overview-card-content">
                 <p class="overview-card-amount">{{$totalActivesignages}}</p>
+                <p class="overview-card-amount">{{$totalActivesignages}}</p>
                 <div class="overview-card-icon card-icon-green">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
