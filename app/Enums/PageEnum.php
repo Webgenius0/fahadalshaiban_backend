@@ -10,4 +10,6 @@ enum PageEnum: string
     //Tutorial
     case ADD_SIGNAGE = 'add_signage';
     case Add_CAMPING = 'add_camping';
+    case LOGIN_TUTORIAL = 'login_tutorial';
+    case INCOME_STATEMENT = 'income_statement';
 }

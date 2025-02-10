@@ -23,6 +23,8 @@ enum SectionEnum: string
     //Tutorial
     case OWNER = 'owner';
     case USER = 'user';
+    case AllUSER = 'all_user';
+    
 
 
     

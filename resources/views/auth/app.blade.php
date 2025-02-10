@@ -2,9 +2,11 @@
 use App\Enums\PageEnum;
 use App\Enums\SectionEnum;
 use App\Models\CMS;
+use App\Models\Tutorial;
 use App\Models\Setting;
 $cms = CMS::where('page', PageEnum::AUTH)->where('section', SectionEnum::BG)->first();
 $settings = Setting::first();
+$tutorial= Tutorial::where('page', PageEnum::LOGIN_TUTORIAL)->first();
 @endphp
 <!DOCTYPE html>
 <html lang="en">
@@ -52,12 +54,14 @@ $settings = Setting::first();
                         aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
+                  
                     <div class="responsive-video-wrapper">
                         <video id="videoIframe" controls>
-                            <source src="{{ asset('frontend') }}/images/signage.mp4" type="video/mp4" />
+                            <source src="{{ asset( $tutorial->video ?? 'n/a') }}" type="video/mp4" />
                             Your browser does not support the video tag.
                         </video>
                     </div>
+                
                 </div>
             </div>
         </div>

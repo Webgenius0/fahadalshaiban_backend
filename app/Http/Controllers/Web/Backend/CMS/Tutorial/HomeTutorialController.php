@@ -104,8 +104,8 @@ class HomeTutorialController extends Controller
 
         try {
             $homeAbout = Tutorial::findOrFail($id);
-            $validatedData['page'] = PageEnum::HOME->value;
-            $validatedData['section'] = SectionEnum::HOME_ABOUT->value;
+            $validatedData['page'] = PageEnum::ADD_SIGNAGE->value;
+            $validatedData['section'] = SectionEnum::OWNER->value;
             $validatedData['slug'] = Str::slug($validatedData['title']);
 
             if ($request->hasFile('video')) {

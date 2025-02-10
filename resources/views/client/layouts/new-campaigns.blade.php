@@ -679,7 +679,7 @@
                     </div>
 
                     <div class="upload-box">
-                        <input type="file" id="file-input" name="image" />
+                        <input type="file" id="file-input"  />
                         <div class="upload-content" id="uploadContent">
                             <span class="upload-icon">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -807,19 +807,13 @@
 function collectName() {
     let name = document.getElementById('addTitle').value;
     let description = document.getElementById('description').value;
-    let image= document.getElementById('file-input').value;
-
+   
+    let image= document.getElementById('input-item').value;
     console.log(name);
     $('#detailsName').val(name);
-    let addData ={
-        name:name,
-        description:description,
-        image:image
-    }
-    localStorage.setItem('adData', JSON.stringify(addData));
-    // let data = localStorage.getItem('addData');
-    // alert(data);
-    
+    localStorage.setItem('adTitle', name);
+    localStorage.setItem('description', description);
+    localStorage.setItem('image', image);
     
 }
 document.getElementById('addTitle').addEventListener('change', collectName);
