@@ -65,7 +65,8 @@ $(document).ready(function() {
         items: [],
         subtotal: 0,
         despatchFee: 0,
-        total: 0
+        total: 0,
+        //addTitle:'',
     };
 
 
