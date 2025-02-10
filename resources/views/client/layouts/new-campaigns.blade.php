@@ -804,9 +804,31 @@
 //collect Details name
 function collectName() {
     let name = document.getElementById('addTitle').value;
-    console.log(name);
-    $('#detailsName').val(name);
-}
+        let campaign_description = document.getElementById('description').value;
+        let startDate = document.getElementById('start-date').value;
+        let endDate = document.getElementById('end-date').value;
+       // let bannerImage= document.getElementById('file-input').value;
+
+        if (startDate && endDate) {
+            let start = new Date(startDate);
+            let end = new Date(endDate);
+            let difference = end - start;
+            let differenceDays = difference / (1000 * 3600 * 24);
+
+            localStorage.setItem('differenceDays', differenceDays);
+            // let sagor = localStorage.getItem('differenceDays');
+            // alert(sagor);
+        }
+        $('#detailsName').val(name);
+        localStorage.setItem('addTitle', name);
+        localStorage.setItem('description', campaign_description);
+        localStorage.setItem('start-date', startDate);
+        localStorage.setItem('end-date', endDate);
+        //localStorage.setItem('file-input', bannerImage);
+        // let sagor = localStorage.getItem('description');
+        // alert(sagor);
+
+    }
 document.getElementById('addTitle').addEventListener('change', collectName);
 
 

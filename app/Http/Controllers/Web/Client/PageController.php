@@ -88,7 +88,7 @@ class PageController extends Controller
 
     public function checkout(Request $request)
     {
-
+        Log::info("Checkout request: " . json_encode($request->all()));
         // Validate incoming request
         $request->validate([
             'items' => 'required|array',
@@ -97,7 +97,9 @@ class PageController extends Controller
             'total' => 'required|numeric',
             'addTitle' => 'nullable|string',
             'description' => 'nullable|string',
-            'image' => 'nullable|string',
+            // 'art_work' => 'nullable|string',
+            'start_date' => 'nullable|date',
+            'end_date' => 'nullable|date',
         ]);
 
         // Start transaction to ensure atomicity
@@ -121,10 +123,10 @@ class PageController extends Controller
             // Log::info("Campaign created for order_id: {$order->id} with ad_title: {$request->ad_title}");
             CampaignDetails::create([
                 'order_id' => $order->id,
-                'ad_title' => $request->addTitle,
-                'description' => $request->description,
-                'image' => $request->hasFile('image') ? Helper::fileUpload($request->file('image'), 'champaign/billboard', time() . '_' . getFileName($request->file('image'))) : null,
-
+                'ad_title' => $request->addTitle ?? '',
+                'campaign_description' => $request->description ?? '',
+                'start_date' => $request->start_date ,
+                'end_date' => $request->end_date ,
             ]);
             // Add order items
             foreach ($request->items as $item) {
