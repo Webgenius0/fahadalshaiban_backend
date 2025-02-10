@@ -11,6 +11,7 @@ use App\Http\Controllers\Web\Backend\CMS\Home\HomeCardController;
 use App\Http\Controllers\Web\Backend\CMS\Home\HomeHeroController;
 use App\Http\Controllers\Web\Backend\CMS\Home\HomeMarqueeController;
 use App\Http\Controllers\Web\Backend\CMS\Home\HomeTestimonialController;
+use App\Http\Controllers\web\Backend\CMS\Tutorial\ClientCampaignController;
 use App\Http\Controllers\Web\Backend\DashboardController;
 use App\Http\Controllers\Web\Backend\NotificationController;
 use App\Http\Controllers\Web\Backend\PageController;
@@ -24,6 +25,7 @@ use App\Http\Controllers\Web\Backend\Settings\StripeController;
 use App\Http\Controllers\Web\Backend\SignageController;
 use App\Http\Controllers\Web\Backend\SocialLinkController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Web\Backend\CMS\Tutorial\HomeTutorialController;
 
 Route::controller(DashboardController::class)->group(function () {
     Route::get('dashboard', 'index')->name('dashboard');
@@ -187,4 +189,24 @@ Route::controller(NotificationController::class)->prefix('notification')->name('
     Route::get('/', 'index')->name('index');
     Route::post('read/single/{id}', 'readSingle')->name('read.single');
     Route::POST('read/all', 'readAll')->name('read.all');
+});
+//! Route for Tutorial
+Route::controller(HomeTutorialController::class)->prefix('tutorial')->name('tutorial.')->group(function () {
+    Route::get('/index', 'index')->name('index');
+    Route::get('/create', 'create')->name('create');
+    Route::post('/store', 'store')->name('store');
+    Route::get('/status/{id}', 'status')->name('status');
+    Route::delete('/delete/{id}', 'destroy')->name('destroy');
+    Route::get('/edit/{id}', 'edit')->name('edit');
+    Route::patch('/update/{id}', 'update')->name('update');
+});
+//! Route for Client  signage Tutorial
+Route::controller(ClientCampaignController::class)->prefix('client/tutorial')->name('client.tutorial.')->group(function () {
+    Route::get('/index', 'index')->name('index');
+    Route::get('/create', 'create')->name('create');
+    Route::post('/store', 'store')->name('store');
+    Route::get('/status/{id}', 'status')->name('status');
+    Route::delete('/delete/{id}', 'destroy')->name('destroy');
+    Route::get('/edit/{id}', 'edit')->name('edit');
+    Route::patch('/update/{id}', 'update')->name('update');
 });

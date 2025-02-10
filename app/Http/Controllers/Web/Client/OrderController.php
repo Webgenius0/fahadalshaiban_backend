@@ -37,5 +37,44 @@ class OrderController extends Controller
         // Return a success response
         return response()->json(['message' => 'Order placed successfully!', 'order' => $order]);
     }
-    
+
+
+    public function getCompletedOrders(Request $request)
+    {
+        // Get the currently logged-in user ID
+        $userId = auth()->id();
+
+        // Fetch completed orders along with the order items
+        $orders = Order::with('orderItems')  // eager load the order items
+            ->where('user_id', $userId)
+            ->where('status', 'completed')
+            ->get(['id', 'order_date']);  // Select only necessary columns
+
+        // Format the orders to be sent to the frontend
+        $events = $orders->map(function ($order) {
+            return $order->orderItems->map(function ($orderItem) use ($order) {
+                return [
+                    'title' => 'Board Rented',
+                    'start' => $order->order_date, // Assuming order_date is in 'YYYY-MM-DD' format
+                    'description' => 'Signage ID: ' . $orderItem->signage_id,
+                    'board_id' => $orderItem->signage_id,
+                ];
+            });
+        })->flatten();
+
+        // Return the events as JSON response
+        return response()->json($events);
+    }
+
+
+    public function index()
+    {
+        // Fetch only the distinct created_at dates (the days when orders were created)
+        $order_dates = Order::selectRaw('DATE(created_at) as created_date')
+                            ->distinct()
+                            ->get();
+
+        // Pass the dates to the view
+        return view('client.layouts.order-calender', compact('order_dates'));
+    }
 }

@@ -3,6 +3,7 @@
 use App\Http\Controllers\Web\Client\DashboardController;
 use App\Http\Controllers\Web\Client\PageController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Web\Client\OrderController;
 
 Route::controller(DashboardController::class)->group(function () {
     Route::get('dashboard', 'index')->name('dashboard');
@@ -22,4 +23,21 @@ Route::controller(PageController::class)->group(function () {
     //filtering
     Route::get('/signages/filter','filterSignages')->name('filterSignages');
     Route::get('/checkout','checkout')->name('checkout');
+
+    //calender
+
+    // Route to get completed orders
+
+
+});
+Route::get('/get-completed-orders', [OrderController::class, 'getCompletedOrders']);
+
+Route::controller(OrderController::class)->group(function () {
+    Route::get('/order', 'index')->name('order.index');
+    // Route::get('/order/{id}', 'show')->name('order.show');
+    // Route::get('/order/{id}/edit', 'edit')->name('order.edit');
+    // Route::get('/order/{id}/status', 'status')->name('order.status');
+    // Route::post('/order', 'store')->name('order.store');
+    // Route::put('/order/{id}', 'update')->name('order.update');
+    // Route::delete('/order/{id}', 'destroy')->name('order.destroy');
 });

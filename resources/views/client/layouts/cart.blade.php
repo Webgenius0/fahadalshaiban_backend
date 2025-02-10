@@ -60,7 +60,8 @@ let orderData = {
     items: [],
     subtotal: 0,
     dispatchFee: 0,
-    total: 0
+    total: 0,
+    ad_title: ''
 };
 
 // On your other route/page (when the page loads):
@@ -77,11 +78,13 @@ $(document).ready(function() {
 
 
 $('#checkoutButton').click(function() {
+    var addTitle = localStorage.getItem('adTitle');
     console.log(orderData.items);
     $.ajax({
         url: '/checkout', 
         type: 'GET',  
         data: {
+            addTitle: addTitle,
             items: orderData.items,  
             subtotal: orderData.subtotal,
             dispatchFee: orderData.dispatchFee,
