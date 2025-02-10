@@ -8,32 +8,24 @@
     </div>
 
     <div class="tutorial-container">
+    @forelse ($tutorials as $tutorial)
         <div class="w-100">
-            <h2 class="campaign-header-title">See how it works</h2>
+          
+            <h2 class="campaign-header-title">{{$tutorial->title ?? ''}}</h2>
             <div class="video-container">
-                <img src="{{ asset('frontend') }}/images/works-thumbnail.png" alt="Video Thumbnail" class="video-thumbnail" id="videoThumbnail" />
-                <div class="play-button" id="playButton">
-                    <div class="circle pulse"></div>
-                    <div class="circle"></div>
-                    <span class="play-icon">&#9654;</span>
-                </div>
+                @if($tutorial->video)
+                    <video  width="100%" height="100%" controls >
+                        <source src="{{ asset( $tutorial->video) }}" type="video/mp4">
+                    </video>
+                @else
+                    <p>No video available</p>
+                @endif
             </div>
+           
         </div>
-        <div class="w-100">
-            <h2 class="campaign-header-title">See how it works</h2>
-            <div class="video-container">
-                <img
-                    src="{{ asset('frontend') }}/images/works-thumbnail.png"
-                    alt="Video Thumbnail"
-                    class="video-thumbnail"
-                    id="videoThumbnail" />
-                <div class="play-button" id="playButton">
-                    <div class="circle pulse"></div>
-                    <div class="circle"></div>
-                    <span class="play-icon">&#9654;</span>
-                </div>
-            </div>
-        </div>
+        @empty
+                <h2 class="campaign-header-title">No Tutorial Found</h2>
+            @endforelse
     </div>
 </div>
 @endsection

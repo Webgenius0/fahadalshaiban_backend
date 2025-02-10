@@ -101,7 +101,10 @@
 
         <div class="describe-campaign-input-wrapper w-100">
             <label>Signage Location<span>*</span></label>
-            <input name="location" type="text" placeholder="Dammam" />
+            <!-- <input name="location" type="text" placeholder="Dammam" /> -->
+            <select name="location" class="form-control" id="cities">
+                   
+                </select>
             @error('location')
                 <span class="text-danger">{{ $message }}</span>
             @enderror
@@ -167,7 +170,7 @@
 @endsection
 
 @push('script')
-
+<script src="{{asset('js/CitiesAjax.js')}}"></script>
         <!-- toster scrippt -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
@@ -203,5 +206,14 @@
   }
   toastr.error("{{ Session('error') }}");
 @endif
+
+//file upload
+let uploadedFile = null;
+$('#file-input').change(function(event) {
+    $('.upload-content').html(`<img src="${URL.createObjectURL(event.target.files[0])}" alt="Upload" style="width: 100%;" />`);
+    uploadedFile = event.target.files[0]; 
+    $('#uploaded-image-preview').val(uploadedFile.name);
+   
+});
   </script>
 @endpush

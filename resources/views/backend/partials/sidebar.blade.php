@@ -40,14 +40,20 @@
                     </a>
                 </li>
                 <li class="slide">
-                    <a class="side-menu__item {{  request()->routeIs('admin.signage') ? 'has-link' : '' }}" href="{{ route('admin.signage.index') }}">
+                    <a class="side-menu__item {{  request()->routeIs('admin.signage.index') ? 'has-link' : '' }}" href="{{ route('admin.signage.index') }}">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="side-menu__icon" viewBox="0 0 16 16">
                             <path d="M3.5 11a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm3.5.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm4.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5z" />
                             <path d="M14 1a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2zM2 14h12a1 1 0 0 0 1-1V5H1v8a1 1 0 0 0 1 1M2 2a1 1 0 0 0-1 1v1h14V3a1 1 0 0 0-1-1z" />
                         </svg>
-                        <span class="side-menu__label">Signage</span>
+                        <span class="side-menu__label">Signage Request</span>
                     </a>
                 </li>
+
+           
+
+
+                
+
                 <li>
                     <h3>Components</h3>
                 </li>
@@ -131,6 +137,26 @@
                         <li><a href="{{ route('admin.cms.home.about.index') }}" class="slide-item">About Section</a></li>
                         <li><a href="{{ route('admin.cms.home.testimonial.index') }}" class="slide-item">Testimonial Section</a></li>
                         <li><a href="{{ route('admin.cms.home.hero.index') }}" class="slide-item">Hero Section</a></li>
+                    </ul>
+                </li>
+
+
+
+                <li class="slide">
+                    <a class="side-menu__item" data-bs-toggle="slide" href="#">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="side-menu__icon" viewBox="0 0 16 16">
+                            <path d="M7.5 5.5a.5.5 0 0 0-1 0v.634l-.549-.317a.5.5 0 1 0-.5.866L6 7l-.549.317a.5.5 0 1 0 .5.866l.549-.317V8.5a.5.5 0 1 0 1 0v-.634l.549.317a.5.5 0 1 0 .5-.866L8 7l.549-.317a.5.5 0 1 0-.5-.866l-.549.317zm-2 4.5a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1zm0 2a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1z" />
+                            <path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2M9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5z" />
+                        </svg>
+                        <span class="side-menu__label">Tutorial</span><i class="angle fa fa-angle-right"></i>
+                    </a>
+
+                    <ul class="slide-menu">
+                        <li><a href="{{ route('admin.tutorial.index') }}" class="slide-item">Owner Add Signage</a></li>
+                        <li><a href="{{ route('admin.client.tutorial.index') }}" class="slide-item">Client New Champaign</a></li>
+                        <li><a href="{{ route('admin.login.index') }}" class="slide-item">Login Tutorial</a></li>
+                        <li><a href="{{ route('admin.income.index') }}" class="slide-item">Income Statement</a></li>
+                        
                     </ul>
                 </li>
             </ul>

@@ -65,7 +65,7 @@
                         <label>Ad Title <span>*</span></label>
                         <input
                             type="text"
-                            placeholder="Get 70% OFF Discount from Shashh" id="addTitle" />
+                            placeholder="Get 70% OFF Discount from Shashh" id="addTitle" name="addTitle" />
                     </div>
 
                     <div class="describe-campaign-input-wrapper">
@@ -350,22 +350,19 @@
                   </div> -->
                     <!-- Dropdowns for different filters -->
 
-                    <select class="signage-filter-dropdown">
-                        <option data-display="Location">Nothing</option>
-                        <option value="riyadh">Riyadh</option>
-                        <option value="dammam">Dammam</option>
-                        <option value="makkah">Makkah</option>
+                    <select class="signage-filter-dropdown" id="cities">
+                        
                     </select>
 
                     <select class="signage-filter-dropdown">
-                        <option data-display="Signage Type">Nothing</option>
-                        <option value="billboard">Billboard</option>
-                        <option value="digital-screen">Digital Screen</option>
-                        <option value="lcd">LCD</option>
+                        <option data-display="Signage Type">Select Category...</option>
+                        @foreach ($categories as $category)
+                            <option value="{{ $category->name }}">{{ $category->name }}</option>
+                        @endforeach
                     </select>
 
                     <select class="signage-filter-dropdown">
-                        <option data-display="Daily Views">Nothing</option>
+                        <option data-display="Daily Views">Daily Views...</option>
                         <option value="50k-to-100k">50k to 100k</option>
                         <option value="100k-to-200k">100k to 200k</option>
                     </select>
@@ -378,42 +375,10 @@
 
                     <div class="signage-filter-date">
                         <input
-                            type="text"
+                            type="date"
                             id="signage-date-input"
                             placeholder="Date" />
-                        <span class="signage-filter-search-icon">
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="24"
-                                height="24"
-                                viewBox="0 0 24 24"
-                                fill="none">
-                                <path
-                                    d="M19 4H5C3.89543 4 3 4.89543 3 6V20C3 21.1046 3.89543 22 5 22H19C20.1046 22 21 21.1046 21 20V6C21 4.89543 20.1046 4 19 4Z"
-                                    stroke="#4D4D4D"
-                                    stroke-width="2"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round" />
-                                <path
-                                    d="M16 2V6"
-                                    stroke="#4D4D4D"
-                                    stroke-width="2"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round" />
-                                <path
-                                    d="M8 2V6"
-                                    stroke="#4D4D4D"
-                                    stroke-width="2"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round" />
-                                <path
-                                    d="M3 10H21"
-                                    stroke="#4D4D4D"
-                                    stroke-width="2"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round" />
-                            </svg>
-                        </span>
+                       
                     </div>
 
                     <select class="filter-dropdown">
@@ -712,7 +677,7 @@
                     </div>
 
                     <div class="upload-box">
-                        <input type="file" id="file-input" />
+                        <input type="file" id="file-input"  />
                         <div class="upload-content" id="uploadContent">
                             <span class="upload-icon">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -816,6 +781,9 @@
 @push('script')
 <!-- Flatpickr JS -->
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="{{asset('js/CitiesAjax.js')}}"></script>
+<!-- for fieltering -->
+ <script src="{{asset('js/Filter.js')}}"></script>
 <script>
     $(document).ready(function() {
         $('.add-signage').click(function() {
@@ -833,93 +801,67 @@
         });
     });
 
-    //collect Details name
-    function collectName() {
-        let name = document.getElementById('addTitle').value;
-        let description = document.getElementById('description').value;
-        let startDate = document.getElementById('start-date').value;
-        let endDate = document.getElementById('end-date').value;
-        let bannerImage= document.getElementById('file-input').value;
+//collect Details name
+function collectName() {
+    let name = document.getElementById('addTitle').value;
+    console.log(name);
+    $('#detailsName').val(name);
+}
+document.getElementById('addTitle').addEventListener('change', collectName);
 
-        if (startDate && endDate) {
-            let start = new Date(startDate);
-            let end = new Date(endDate);
-            let difference = end - start;
-            let differenceDays = difference / (1000 * 3600 * 24);
 
-            localStorage.setItem('differenceDays', differenceDays);
-            // let sagor = localStorage.getItem('differenceDays');
-            // alert(sagor);
-        }
-        console.log(name);
-        $('#detailsName').val(name);
-        localStorage.setItem('addTitle', name);
-        localStorage.setItem('description', description);
-        localStorage.setItem('start-date', startDate);
-        localStorage.setItem('end-date', endDate);
-        localStorage.setItem('file-input', bannerImage);
-        // let sagor = localStorage.getItem('file-input');
-        // alert(sagor);
-
+// Function to calculate and store the difference
+function storeDifference() {
+   
+    let startDate = document.getElementById('start-date').value;
+    let endDate = document.getElementById('end-date').value;
+    console.log(startDate, endDate);
+    if (startDate && endDate) {
+        let start = new Date(startDate);  
+        let end = new Date(endDate);      
+        let difference = end - start;
+        let differenceDays = difference / (1000 * 3600 * 24);   
+        $("#daterange").val(differenceDays);
+        
+        document.getElementById('difference').value = difference;
     }
-    document.getElementById('addTitle').addEventListener('change', collectName);
+}
+document.getElementById('start-date').addEventListener('change', storeDifference);
+document.getElementById('end-date').addEventListener('change', storeDifference);
 
 
-    // Function to calculate and store the difference
-    function storeDifference() {
 
-        let startDate = document.getElementById('start-date').value;
-        let endDate = document.getElementById('end-date').value;
-        console.log(startDate, endDate);
-        if (startDate && endDate) {
-            let start = new Date(startDate);
-            let end = new Date(endDate);
-            let difference = end - start;
-            let differenceDays = difference / (1000 * 3600 * 24);
-            $("#daterange").val(differenceDays);
+const idArray = new Set();
 
-            document.getElementById('difference').value = difference;
-            localStorage.setItem('differenceDays',differenceDays);
-            let sagor = localStorage.getItem('differenceDays');
-            alert(sagor);
-        }
+$('.add-signage').click(function() {
+    var signageId = $(this).data('id'); 
+    if (idArray.has(signageId)) {
+
+        idArray.delete(signageId);
+        console.log("Removed Signage ID: ", signageId);
+    } else {
+        
+        idArray.add(signageId); 
+        console.log("Added Signage ID: ", signageId);
+        $(`.signage-table tbody tr[data-id="${signageId}"]`).remove();
     }
-    document.getElementById('start-date').addEventListener('change', storeDifference);
-    document.getElementById('end-date').addEventListener('change', storeDifference);
 
-
-
-    const idArray = new Set();
-
-    $('.add-signage').click(function() {
-        var signageId = $(this).data('id');
-        if (idArray.has(signageId)) {
-
-            idArray.delete(signageId);
-            console.log("Removed Signage ID: ", signageId);
-        } else {
-
-            idArray.add(signageId);
-            console.log("Added Signage ID: ", signageId);
-            $(`.signage-table tbody tr[data-id="${signageId}"]`).remove();
-        }
-
-        $('#signage-count').val(idArray.size);
-        localStorage.setItem('selectedSignageIds', JSON.stringify(Array.from(idArray)));
+    $('#signage-count').val(idArray.size);
+    localStorage.setItem('selectedSignageIds', JSON.stringify(Array.from(idArray)));
 
         fetchSignageLocation(signageId);
     });
 
 
 
-    //image file upload
-    let uploadedFile = null;
-    $('#file-input').change(function(event) {
-        $('#uploadContent').html(`<img src="${URL.createObjectURL(event.target.files[0])}" alt="Upload" style="width: 100%;" />`);
-        uploadedFile = event.target.files[0];
-        $('#uploaded-image-preview').val(uploadedFile.name);
-
-    });
+//image file upload
+let uploadedFile = null;
+$('#file-input').change(function(event) {
+    $('#uploadContent').html(`<img src="${URL.createObjectURL(event.target.files[0])}" alt="Upload" style="width: 100%;" />`);
+    uploadedFile = event.target.files[0]; 
+    $('#uploaded-image-preview').val(uploadedFile.name);
+   
+});
 
     // AJAX function to fetch signage location and display image
     function fetchSignageLocation(signageId) {

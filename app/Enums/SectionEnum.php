@@ -20,6 +20,11 @@ enum SectionEnum: string
     case FOOTER = 'footer';
     case SOLUTION = "solution";
 
+    //Tutorial
+    case OWNER = 'owner';
+    case USER = 'user';
+    case AllUSER = 'all_user';
+    
 
 
     

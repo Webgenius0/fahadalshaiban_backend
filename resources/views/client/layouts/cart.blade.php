@@ -43,9 +43,9 @@
                 <strong id="total">R</strong>
             </div>
         </div>
-
-        <div class="d-flex justify-content-center w-100">
-            <a href="{{ route('page.billing') }}" class="btn-common">
+    <!-- page.billing -->
+        <div class="d-flex justify-content-center w-100" id="checkoutButtonContainer">
+            <a href="{{ route('checkout') }}" class="btn-common" id="checkoutButton">
                 Proceed to checkout
             </a>
         </div>
@@ -55,24 +55,54 @@
 @push('script')
 
 <script>
+// Initialize an empty orderData object
+let orderData = {
+    items: [],
+    subtotal: 0,
+    dispatchFee: 0,
+    total: 0,
+    ad_title: '',
+    campaign_description: '',
+};
+
 // On your other route/page (when the page loads):
 $(document).ready(function() {
     var selectedSignageIds = JSON.parse(localStorage.getItem('selectedSignageIds')) || [];
     console.log("Retrieved Signage IDs: ", selectedSignageIds);
 
-    // Initialize an empty orderData object
-    let orderData = {
-        items: [],
-        subtotal: 0,
-        despatchFee: 0,
-        total: 0,
-        //addTitle:'',
-    };
-
-
+    // Loop through the selectedSignageIds and fetch data
     selectedSignageIds.forEach(function(id) {
         $('#selectedIdsList').append('<li>Signage ID: ' + id + '</li>');
         fetchDataForSignage(id); 
+    });
+});
+
+
+$('#checkoutButton').click(function() {
+    var addTitle = localStorage.getItem('adTitle');
+    
+    var description = localStorage.getItem('description');
+    var image = localStorage.getItem('image');
+    console.log(orderData.items);
+    $.ajax({
+        url: '/checkout', 
+        type: 'GET',  
+        data: {
+            addTitle: addTitle,
+            description: description,
+            items: orderData.items,  
+            subtotal: orderData.subtotal,
+            dispatchFee: orderData.dispatchFee,
+            total: orderData.total,
+            _token: '{{ csrf_token() }}' 
+        },
+        success: function(response) {
+            
+            window.location.href = "{{ route('page.billing') }}"; 
+        },
+        error: function(xhr, status, error) {
+            console.error("AJAX request failed:", error);
+        }
     });
 });
 
@@ -81,21 +111,30 @@ function fetchDataForSignage(id) {
     $.ajax({
         url: '/get-signage-location/' + id,  
         type: 'GET',  
-        success: function(response) {
-            console.log("Response for Signage ID: ", response);
+        success: function(response) {        
             const despatchFee = "{{ env('DESPATCH_FEE') }}";
-            $("#dispatchFee").text("RS " + despatchFee+"%");
-            let perSignageFee= response.price_per_day;
-            //console.log("Per Signage Fee: ", perSignageFee);
-
+            $("#dispatchFee").text("RS " + despatchFee + "%");
+            let perSignageFee = response.price_per_day;
             totalPrice += perSignageFee;
             $("#subTotal").text("RS " + totalPrice);
-            let TotalwithDespatchFee = totalPrice + ((despatchFee/100)*totalPrice);
-            $("#total").text("RS " + TotalwithDespatchFee);
-            //console.log("Total with Despatch Fee: ", TotalwithDespatchFee);
+            let TotalwithDespatchFee = totalPrice + ((despatchFee / 100) * totalPrice);
+            $("#total").text("RS " + TotalwithDespatchFee);  
+
+            // Add this item to the orderData object
+            orderData.items.push({
+                signage_id: response.signage_id,
+                price_per_day: response.price_per_day,
+                rotation_time: response.rotation_time,
+                avg_daily_views: response.avg_daily_views,
+                total: response.price_per_day * response.rotation_time
+            });
+
+            orderData.subtotal = totalPrice;
+            orderData.dispatchFee = (despatchFee / 100) * totalPrice;
+            orderData.total = TotalwithDespatchFee;
+
             let row = `
                 <tr>
-                  
                     <td>${response.name}</td>
                     <td>#${response.signage_id}</td>
                     <td>${response.location}</td>
@@ -115,7 +154,6 @@ function fetchDataForSignage(id) {
         }
     });
 }
-
 
 
 </script>
