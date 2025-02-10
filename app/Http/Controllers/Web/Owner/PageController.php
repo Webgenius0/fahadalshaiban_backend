@@ -4,12 +4,14 @@ namespace App\Http\Controllers\Web\Owner;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Models\Tutorial;
 
 class PageController extends Controller
 {
     public function tutorials()
     {
-        return view('owner.layouts.tutorial');
+        $tutorials = Tutorial::where('section', 'owner')->get();
+        return view('owner.layouts.tutorial', compact('tutorials'));
     }
     public function signage()
     {

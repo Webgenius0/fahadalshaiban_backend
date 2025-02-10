@@ -9,12 +9,16 @@ use App\Models\Signage;
 use App\Models\Category;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\Tutorial;
+use Illuminate\Support\Facades\DB;
+
 
 class PageController extends Controller
 {
     public function tutorials()
     {
-        return view('client.layouts.tutorial');
+        $tutorials = Tutorial::where('section', 'user')->get();
+        return view('client.layouts.tutorial', compact('tutorials'));
     }
 
     public function profile()
@@ -75,55 +79,76 @@ class PageController extends Controller
  //store 
 
  public function checkout(Request $request)
- {
+{
    
-     // Validate incoming request
-     $request->validate([
-         'items' => 'required|array',
-         'subtotal' => 'required|numeric',
-         'dispatchFee' => 'required|numeric',
-         'total' => 'required|numeric',
-     ]);
+    // Validate incoming request
+    $request->validate([
+        'items' => 'required|array',
+        'subtotal' => 'required|numeric',
+        'dispatchFee' => 'required|numeric',
+        'total' => 'required|numeric',
+       'addTitle' => 'required|string',
+       'description' => 'required|string',
+       'image' => 'required|string',
+    ]);
 
-     
+    // Start transaction to ensure atomicity
+    DB::beginTransaction();
 
-     $shortUuid = $this->generateShortUuid(5);
-     // Create the order
-     $order = Order::create([
-         'user_id' => auth()->id(),  
-         'uuid' => $shortUuid,
-         'subtotal' => $request->subtotal,
-         'dispatch_fee' => $request->dispatchFee,
-         'total' => $request->total,
-         'status' => 'pending',
-     ]);
+    try {
+        // Generate short UUID
+        $shortUuid = $this->generateShortUuid(5);
 
-     
-    //  $campaign = CampaignDetails::create([
-    //     'order_id' => $order->id,  // Associate with the created order
-    //     'ad_title' => $request->ad_title,
-    //     // 'campaign_description' => $request->campaign_description,
-    //     // 'start_date' => $request->start_date,
-    //     // 'end_date' => $request->end_date,
-    //     // 'terms_and_conditions' => $request->terms_and_conditions,
-    //     // 'privacy_policy' => $request->privacy_policy,
-    // ]);
+        // Create the order
+        $order = Order::create([
+            'user_id' => auth()->id(),
+            'uuid' => $shortUuid,
+            'subtotal' => $request->subtotal,
+            'dispatch_fee' => $request->dispatchFee,
+            'total' => $request->total,
+            'status' => 'pending',
+        ]);
 
-     // Add order items
-     foreach ($request->items as $item) {
-         OrderItem::create([
-             'order_id' => $order->id,
-             'signage_id' => $item['signage_id'],
-             'price_per_day' => $item['price_per_day'],
-             'rotation_time' => $item['rotation_time'],
-             'avg_daily_views' => $item['avg_daily_views'],
-             'total' => $item['total'],
-         ]);
-     }
-    Log::info("Order placed successfully");
-     // Return a success response
-     return response()->json(['message' => 'Order placed successfully', 'order_id' => $order->id]);
- }
+        // // Create the campaign
+        // Log::info("Campaign created for order_id: {$order->id} with ad_title: {$request->ad_title}");
+        CampaignDetails::create([
+            'order_id' => $order->id,
+            'ad_title' => $request->addTitle,
+            'description' => $request->description,
+            
+        ]);
+       if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('public');
+            $order->image = $imagePath;
+        }
+        // Add order items
+        foreach ($request->items as $item) {
+            OrderItem::create([
+                'order_id' => $order->id,
+                'signage_id' => $item['signage_id'],
+                'price_per_day' => $item['price_per_day'],
+                'rotation_time' => $item['rotation_time'],
+                'avg_daily_views' => $item['avg_daily_views'],
+                'total' => $item['total'],
+            ]);
+        }
+
+      
+        DB::commit();
+
+        Log::info("Order placed successfully");
+
+        return response()->json(['message' => 'Order placed successfully', 'order_id' => $order->id]);
+    } catch (\Exception $e) {
+       
+        DB::rollback();
+
+        Log::error('Error placing order: ' . $e->getMessage());
+
+        return response()->json(['message' => 'Error placing order'], 500);
+    }
+}
+
 
 
  private function generateShortUuid($length = 5)

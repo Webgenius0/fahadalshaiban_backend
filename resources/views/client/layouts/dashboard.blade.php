@@ -1,5 +1,5 @@
 <?php 
-
+$book=App\Models\Order::where('user_id', auth()->user()->id)->where('status', 'booked')->count();
 $totalActivesignages= App\Models\Signage::where('status', 'active')->count();
 
 ?>
@@ -12,7 +12,7 @@ $totalActivesignages= App\Models\Signage::where('status', 'active')->count();
             <h3 class="overview-card-title">Active Campaigns</h3>
             <div class="overview-card-content">
                 <p class="overview-card-amount">{{$totalActivesignages}}</p>
-                <p class="overview-card-amount">{{$totalActivesignages}}</p>
+               
                 <div class="overview-card-icon card-icon-green">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -30,7 +30,7 @@ $totalActivesignages= App\Models\Signage::where('status', 'active')->count();
         <div class="overview-card">
             <h3 class="overview-card-title">Total Booked Signage</h3>
             <div class="overview-card-content">
-                <p class="overview-card-amount">50</p>
+                <p class="overview-card-amount">{{$book}}</p>
                 <div class="overview-card-icon card-icon-purple">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -48,7 +48,7 @@ $totalActivesignages= App\Models\Signage::where('status', 'active')->count();
                 </div>
             </div>
         </div>
-        
+
         <div class="overview-card">
             <h3 class="overview-card-title">Total Views</h3>
             <div class="overview-card-content">
@@ -91,6 +91,8 @@ $totalActivesignages= App\Models\Signage::where('status', 'active')->count();
             </div>
         </div>
     </section>
+
+    <div id="calendar"></div>
 
     <section class="campaign-wrapper">
         <div class="campaign-header">
@@ -197,3 +199,34 @@ $totalActivesignages= App\Models\Signage::where('status', 'active')->count();
     </section>
 </div>
 @endsection
+
+@push('script')
+<script>
+    $(document).ready(function() {
+    // Fetch the completed orders from the backend
+    $.ajax({
+        url: '/get-completed-orders',
+        method: 'GET',
+        success: function(events) {
+            // Initialize FullCalendar with the events data
+            $('#calendar').fullCalendar({
+                events: events,
+                eventRender: function(event, element) {
+                    element.tooltip({
+                        title: event.description,  // Show the description on hover
+                        placement: 'top'
+                    });
+                },
+                header: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'month,agendaWeek,agendaDay'
+                },
+                eventColor: '#FF5733',  // Optional: Customize event color
+            });
+        }
+    });
+});
+
+</script>
+@endpush

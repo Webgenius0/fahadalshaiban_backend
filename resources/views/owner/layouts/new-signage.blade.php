@@ -104,7 +104,6 @@
             <!-- <input name="location" type="text" placeholder="Dammam" /> -->
             <select name="location" class="form-control" id="cities">
                    
-                   
                 </select>
             @error('location')
                 <span class="text-danger">{{ $message }}</span>

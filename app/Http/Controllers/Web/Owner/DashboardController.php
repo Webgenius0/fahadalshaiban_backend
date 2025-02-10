@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Web\Owner;
-
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Signage;

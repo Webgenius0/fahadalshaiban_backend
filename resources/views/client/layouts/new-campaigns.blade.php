@@ -67,12 +67,12 @@
                         <label>Ad Title <span>*</span></label>
                         <input
                             type="text"
-                            placeholder="Get 70% OFF Discount from Shashh" id="addTitle" />
+                            placeholder="Get 70% OFF Discount from Shashh" id="addTitle" name="addTitle" />
                     </div>
 
                     <div class="describe-campaign-input-wrapper">
                         <label>Campaign Description <span>*</span></label>
-                        <textarea></textarea>
+                        <textarea name="description" id="description"></textarea>
                     </div>
 
                     <div class="objectives-container">
@@ -679,7 +679,7 @@
                     </div>
 
                     <div class="upload-box">
-                        <input type="file" id="file-input" />
+                        <input type="file" id="file-input" name="image" />
                         <div class="upload-content" id="uploadContent">
                             <span class="upload-icon">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -803,67 +803,108 @@
     });
 });
 
-//collect Details name
+// Collect Details name (Ad Title)
 function collectName() {
     let name = document.getElementById('addTitle').value;
+    let description = document.getElementById('description').value;
+    let image= document.getElementById('file-input').value;
+
     console.log(name);
     $('#detailsName').val(name);
+    let addData ={
+        name:name,
+        description:description,
+        image:image
+    }
+    localStorage.setItem('adData', JSON.stringify(addData));
+    // let data = localStorage.getItem('addData');
+    // alert(data);
+    
+    
 }
 document.getElementById('addTitle').addEventListener('change', collectName);
 
 
-// Function to calculate and store the difference
+// Function to calculate and store the difference between dates
 function storeDifference() {
-   
     let startDate = document.getElementById('start-date').value;
     let endDate = document.getElementById('end-date').value;
     console.log(startDate, endDate);
+    
     if (startDate && endDate) {
         let start = new Date(startDate);  
         let end = new Date(endDate);      
         let difference = end - start;
         let differenceDays = difference / (1000 * 3600 * 24);   
         $("#daterange").val(differenceDays);
-        
+       
         document.getElementById('difference').value = difference;
+
+        localStorage.setItem('dateDifference', differenceDays);
+        
+     
+        // alert(localStorage.getItem('dateDifference'));
     }
 }
 document.getElementById('start-date').addEventListener('change', storeDifference);
 document.getElementById('end-date').addEventListener('change', storeDifference);
 
 
-
+// Collect selected Signage IDs
 const idArray = new Set();
 
 $('.add-signage').click(function() {
     var signageId = $(this).data('id'); 
     if (idArray.has(signageId)) {
-
         idArray.delete(signageId);
         console.log("Removed Signage ID: ", signageId);
     } else {
-        
         idArray.add(signageId); 
         console.log("Added Signage ID: ", signageId);
         $(`.signage-table tbody tr[data-id="${signageId}"]`).remove();
     }
 
     $('#signage-count').val(idArray.size);
+    
     localStorage.setItem('selectedSignageIds', JSON.stringify(Array.from(idArray)));
 
     fetchSignageLocation(signageId);
 });
 
 
-
-//image file upload
+// Image file upload handling
 let uploadedFile = null;
 $('#file-input').change(function(event) {
     $('#uploadContent').html(`<img src="${URL.createObjectURL(event.target.files[0])}" alt="Upload" style="width: 100%;" />`);
     uploadedFile = event.target.files[0]; 
     $('#uploaded-image-preview').val(uploadedFile.name);
-   
+    localStorage.setItem('uploadedImage', uploadedFile.name);
+    console.log(localStorage.getItem('uploadedImage'));
 });
+
+
+// Store all the data (form fields + uploaded file)
+function storeAllData() {
+    // const adTitle = document.getElementById('addTitle').value;
+
+    // const description = document.getElementById('description').value;
+    // const termsCondition = document.getElementById('termsCondition').checked ? "Accepted" : "Not Accepted";  
+    // const privacyPolicy = document.getElementById('privacyPolicy').checked ? "Accepted" : "Not Accepted";  
+    const formData = {
+        adTitle: adTitle,
+        description: description,
+        termsCondition: termsCondition,
+        privacyPolicy: privacyPolicy,
+        dateDifference: localStorage.getItem('dateDifference'),  
+        selectedSignageIds: JSON.parse(localStorage.getItem('selectedSignageIds')), 
+        uploadedImage: localStorage.getItem('uploadedImage')  
+    };
+
+    
+    localStorage.setItem('formData', JSON.stringify(formData));
+
+   console.log(localStorage.getItem('formData'));
+}
 
 // AJAX function to fetch signage location and display image
 function fetchSignageLocation(signageId) {
