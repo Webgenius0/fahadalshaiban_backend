@@ -88,8 +88,6 @@ class PageController extends Controller
 
     public function checkout(Request $request)
     {
-        Log::info("Checkout request: " . json_encode($request->all()));
-        // Validate incoming request
         $request->validate([
             'items' => 'required|array',
             'subtotal' => 'required|numeric',
@@ -98,8 +96,9 @@ class PageController extends Controller
             'addTitle' => 'nullable|string',
             'description' => 'nullable|string',
             // 'art_work' => 'nullable|string',
-            'start_date' => 'nullable|date',
-            'end_date' => 'nullable|date',
+            'startDate' => 'nullable|date',
+            'endDate' => 'nullable|date',
+            'artWork' => 'nullable|string',
         ]);
 
         // Start transaction to ensure atomicity
@@ -108,7 +107,6 @@ class PageController extends Controller
         try {
             // Generate short UUID
             $shortUuid = $this->generateShortUuid(5);
-
             // Create the order
             $order = Order::create([
                 'user_id' => auth()->id(),
@@ -119,15 +117,22 @@ class PageController extends Controller
                 'status' => 'pending',
             ]);
 
-            // // Create the campaign
-            // Log::info("Campaign created for order_id: {$order->id} with ad_title: {$request->ad_title}");
+             // Handle Base64 image (artWork)
+        $artWorkUrl = null;
+        if ($request->artWork) {
+          
+            $artWorkUrl = Helper::saveBase64Image($request->artWork);
+        }
+
             CampaignDetails::create([
                 'order_id' => $order->id,
                 'ad_title' => $request->addTitle ?? '',
                 'campaign_description' => $request->description ?? '',
-                'start_date' => $request->start_date ,
-                'end_date' => $request->end_date ,
+                'start_date' => $request->startDate ,
+                'end_date' => $request->endDate ,
+                'art_work' => $artWorkUrl
             ]);
+       
             // Add order items
             foreach ($request->items as $item) {
                 OrderItem::create([
@@ -173,18 +178,4 @@ class PageController extends Controller
 
 
 
- //fieltring
-
-//  public function filterSignages(Request $request)
-//  {
-//      // Get the city from the request
-//      $city = $request->city;
-
-//      // Query signages based on the city
-//      $signages = Signage::where('location', $city)->get(); // Assuming 'location' is the city field in the database
-
-//      // Return the filtered signages HTML (rendering the new view for filtered signages)
-//      return response()->json([
-//          'html' => view('new-campaigns', compact('signages'))->render() // Render the filtered signages
-//      ]);
-// }
+ 

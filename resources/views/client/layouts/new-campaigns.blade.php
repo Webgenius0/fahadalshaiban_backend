@@ -264,26 +264,7 @@
                     </div>
                 </div>
 
-                <div
-                    class="d-flex align-items-center justify-content-center gap-4 mt-4 flex-wrap">
-                    <label class="custom-checkbox-label">
-                        <input
-                            type="checkbox"
-                            name="terms-and-condition"
-                            id="terms-and-condition" />
-                        <span class="custom-checkbox-checkmark"></span>
-                        <a href="{{ route('terms.conditions') }}" class="agree">Terms & Conditions</a>
-                    </label>
-
-                    <label class="custom-checkbox-label">
-                        <input
-                            type="checkbox"
-                            name="privacy-policy"
-                            id="privacy-policy" />
-                        <span class="custom-checkbox-checkmark"></span>
-                        <a href="{{ route('privacy.policy') }}" class="agree">Privacy Policy</a>
-                    </label>
-                </div>
+               
 
                 <button
                     type="button"
@@ -351,13 +332,13 @@
                     <!-- Dropdowns for different filters -->
 
                     <select class="signage-filter-dropdown" id="cities">
-                        
+
                     </select>
 
                     <select class="signage-filter-dropdown">
                         <option data-display="Signage Type">Select Category...</option>
                         @foreach ($categories as $category)
-                            <option value="{{ $category->name }}">{{ $category->name }}</option>
+                        <option value="{{ $category->name }}">{{ $category->name }}</option>
                         @endforeach
                     </select>
 
@@ -378,7 +359,7 @@
                             type="date"
                             id="signage-date-input"
                             placeholder="Date" />
-                       
+
                     </div>
 
                     <select class="filter-dropdown">
@@ -677,7 +658,7 @@
                     </div>
 
                     <div class="upload-box">
-                        <input type="file" id="file-input"  />
+                        <input type="file" id="file-input" />
                         <div class="upload-content" id="uploadContent">
                             <span class="upload-icon">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -783,7 +764,7 @@
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="{{asset('js/CitiesAjax.js')}}"></script>
 <!-- for fieltering -->
- <script src="{{asset('js/Filter.js')}}"></script>
+<script src="{{asset('js/Filter.js')}}"></script>
 <script>
     $(document).ready(function() {
         $('.add-signage').click(function() {
@@ -801,89 +782,147 @@
         });
     });
 
-//collect Details name
-function collectName() {
+    //collect Details name
+    function collectName() {
     let name = document.getElementById('addTitle').value;
-        let campaign_description = document.getElementById('description').value;
+    let campaign_description = document.getElementById('description').value;
+    let startDate = document.getElementById('start-date').value;
+    let endDate = document.getElementById('end-date').value;
+    let artWorkInput = document.getElementById('file-input');
+    // console.log(artWorkInput);
+    let artWork = ''; 
+
+    
+    // if (artWorkInput.files && artWorkInput.files[0]) {
+    //     let file = artWorkInput.files[0];
+
+        
+    //     artWorkUrl = URL.createObjectURL(file);
+
+       
+    //     localStorage.setItem('artWorkUrl', artWorkUrl);
+    // } else {
+    //     artWorkUrl = 'No image uploaded';  // If no file is selected
+    // }
+
+    // Handle file input and Base64 image storage
+  // Handle file input and Base64 image storage
+  if (artWorkInput.files && artWorkInput.files[0]) {
+        let file = artWorkInput.files[0];
+
+        // Create a FileReader to read the file
+        let reader = new FileReader();
+        reader.onloadend = function() {
+            artWorkUrl = reader.result; // Get Base64 string
+            localStorage.setItem('artWorkUrl', artWorkUrl); // Store Base64 string in localStorage
+            
+            // Now that the image is processed, save form data
+            saveFormData(name, campaign_description, startDate, endDate, artWorkUrl);
+        };
+        reader.readAsDataURL(file); // Read the file as a Base64 string
+    } else {
+        artWorkUrl = 'No image uploaded'; // If no file is selected
+        saveFormData(name, campaign_description, startDate, endDate, artWorkUrl);
+    }
+
+    saveFormData(name, campaign_description, startDate, endDate, artWorkUrl);
+
+    // Log the form values for debugging
+    console.log('Name:', name);
+    console.log('Description:', campaign_description);
+    console.log('Start Date:', startDate);
+    console.log('End Date:', endDate);
+    console.log('Art Work:', artWork);
+}
+
+function saveFormData(name, campaign_description, startDate, endDate, artWork) {
+    // Ensure dates are valid before calculating the difference
+    if (startDate && endDate) {
+        let start = new Date(startDate);
+        let end = new Date(endDate);
+        let difference = end - start;
+        let differenceDays = difference / (1000 * 3600 * 24);
+
+        localStorage.setItem('differenceDays', differenceDays);
+        console.log('Difference in days:', differenceDays);  
+    }
+
+    // Construct the formData object and check if it's populated correctly
+    let formData = {
+        name: name || 'Default Name',  
+        campaign_description: campaign_description || 'No Description', 
+        startDate: startDate || 'Not Set', 
+        endDate: endDate || 'Not Set', 
+        artWork: artWork || 'not set'  
+    };
+
+    console.log('Form Data:', formData);
+
+    // Store the formData object in localStorage as a JSON string
+    localStorage.setItem('formData', JSON.stringify(formData));
+}
+
+// Attach event listeners to the form fields
+document.getElementById('addTitle').addEventListener('change', collectName);
+document.getElementById('description').addEventListener('change', collectName);
+document.getElementById('start-date').addEventListener('change', collectName);
+document.getElementById('end-date').addEventListener('change', collectName);
+document.getElementById('file-input').addEventListener('change', collectName);
+
+
+
+    // Function to calculate and store the difference
+    function storeDifference() {
+
         let startDate = document.getElementById('start-date').value;
         let endDate = document.getElementById('end-date').value;
-       // let bannerImage= document.getElementById('file-input').value;
-
+        console.log(startDate, endDate);
         if (startDate && endDate) {
             let start = new Date(startDate);
             let end = new Date(endDate);
             let difference = end - start;
             let differenceDays = difference / (1000 * 3600 * 24);
+            $("#daterange").val(differenceDays);
 
-            localStorage.setItem('differenceDays', differenceDays);
-            // let sagor = localStorage.getItem('differenceDays');
-            // alert(sagor);
+            document.getElementById('difference').value = difference;
         }
-        $('#detailsName').val(name);
-        localStorage.setItem('addTitle', name);
-        localStorage.setItem('description', campaign_description);
-        localStorage.setItem('start-date', startDate);
-        localStorage.setItem('end-date', endDate);
-        //localStorage.setItem('file-input', bannerImage);
-        // let sagor = localStorage.getItem('description');
-        // alert(sagor);
-
     }
-document.getElementById('addTitle').addEventListener('change', collectName);
-
-
-// Function to calculate and store the difference
-function storeDifference() {
-   
-    let startDate = document.getElementById('start-date').value;
-    let endDate = document.getElementById('end-date').value;
-    console.log(startDate, endDate);
-    if (startDate && endDate) {
-        let start = new Date(startDate);  
-        let end = new Date(endDate);      
-        let difference = end - start;
-        let differenceDays = difference / (1000 * 3600 * 24);   
-        $("#daterange").val(differenceDays);
-        
-        document.getElementById('difference').value = difference;
-    }
-}
-document.getElementById('start-date').addEventListener('change', storeDifference);
-document.getElementById('end-date').addEventListener('change', storeDifference);
+    document.getElementById('start-date').addEventListener('change', storeDifference);
+    document.getElementById('end-date').addEventListener('change', storeDifference);
 
 
 
-const idArray = new Set();
+    const idArray = new Set();
 
-$('.add-signage').click(function() {
-    var signageId = $(this).data('id'); 
-    if (idArray.has(signageId)) {
+    $('.add-signage').click(function() {
+        var signageId = $(this).data('id');
+        if (idArray.has(signageId)) {
 
-        idArray.delete(signageId);
-        console.log("Removed Signage ID: ", signageId);
-    } else {
-        
-        idArray.add(signageId); 
-        console.log("Added Signage ID: ", signageId);
-        $(`.signage-table tbody tr[data-id="${signageId}"]`).remove();
-    }
+            idArray.delete(signageId);
+            console.log("Removed Signage ID: ", signageId);
+        } else {
 
-    $('#signage-count').val(idArray.size);
-    localStorage.setItem('selectedSignageIds', JSON.stringify(Array.from(idArray)));
+            idArray.add(signageId);
+            console.log("Added Signage ID: ", signageId);
+            $(`.signage-table tbody tr[data-id="${signageId}"]`).remove();
+        }
+
+        $('#signage-count').val(idArray.size);
+        localStorage.setItem('selectedSignageIds', JSON.stringify(Array.from(idArray)));
 
         fetchSignageLocation(signageId);
     });
 
 
 
-//image file upload
-let uploadedFile = null;
-$('#file-input').change(function(event) {
-    $('#uploadContent').html(`<img src="${URL.createObjectURL(event.target.files[0])}" alt="Upload" style="width: 100%;" />`);
-    uploadedFile = event.target.files[0]; 
-    $('#uploaded-image-preview').val(uploadedFile.name);
-   
-});
+    //image file upload
+    let uploadedFile = null;
+    $('#file-input').change(function(event) {
+        $('#uploadContent').html(`<img src="${URL.createObjectURL(event.target.files[0])}" alt="Upload" style="width: 100%;" />`);
+        uploadedFile = event.target.files[0];
+        $('#uploaded-image-preview').val(uploadedFile.name);
+
+    });
 
     // AJAX function to fetch signage location and display image
     function fetchSignageLocation(signageId) {

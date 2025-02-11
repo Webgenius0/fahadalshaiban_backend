@@ -85,39 +85,28 @@ $(document).ready(function() {
 $('#checkoutButton').click(function(event) {
     event.preventDefault();
 
-    var addTitle = localStorage.getItem('addTitle');
-    var campaign_description = localStorage.getItem('campaign_description');
-    //var artWork = localStorage.getItem('art_work');
-   // var image = localStorage.getItem('image');
-   var start_date= localStorage.getItem('start-date');
-   var end_date= localStorage.getItem('end-date');
-   var differenceDays= localStorage.getItem('differenceDays');
+    // console.log(orderData.items);
+    let storedFormData = JSON.parse(localStorage.getItem('formData'));
+    let artWorkUrl = storedFormData ? storedFormData.artWork : 'No image uploaded';
+    const  totdoList  = {
+        addTitle: storedFormData.name,
+        description: storedFormData.campaign_description,   
+        startDate: storedFormData.startDate,
+        endDate: storedFormData.endDate,
+        artWork: artWorkUrl,
+        items: orderData.items,  
+        subtotal: orderData.subtotal,
+        dispatchFee: orderData.dispatchFee,
+        total: orderData.total,
+        _token: '{{ csrf_token() }}' 
+    };
+   
 
-    // if (!addTitle || !description || !start_date || !end_date || !differenceDays) {
-    //     alert('Please fill all the fields');
-    //     return;
-    // }
-
-    console.log(orderData.items);
-
-    
     $.ajax({
         url: '/checkout', 
-        type: 'GET',  
-        data: {
-            addTitle: addTitle,
-            campaign_description: campaign_description,
-            // art_work: art_work,
-            // image: image,
-            start_date: start_date,
-            end_date: end_date,
-            differenceDays: differenceDays,  //days difference between start and end date
-            items: orderData.items,  
-            subtotal: orderData.subtotal,
-            dispatchFee: orderData.dispatchFee,
-            total: orderData.total,
-            _token: '{{ csrf_token() }}' 
-        },
+        type: 'POST',  
+        data:  totdoList ,
+
         success: function(response) {
             
             window.location.href = "{{ route('page.billing') }}"; 

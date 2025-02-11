@@ -22,7 +22,7 @@ Route::controller(PageController::class)->group(function () {
     Route::get('/get-signage-location/{id}', 'getLocation')->name('page.location');
     //filtering
     Route::get('/signages/filter','filterSignages')->name('filterSignages');
-    Route::get('/checkout','checkout')->name('checkout');
+    Route::post('/checkout','checkout')->name('checkout');
 
     //calender
 
