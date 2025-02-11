@@ -1,7 +1,8 @@
 <?php
 
 return [
-    'home' => 'Home dfgdsfg',
+    'home' => 'Home',
+    'owner' => 'sagor',
     'about' => 'About',
     'contact' => 'Contact',    
     'login' => 'Login',

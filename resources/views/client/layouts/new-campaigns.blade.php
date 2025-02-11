@@ -65,12 +65,12 @@
                         <label>Ad Title <span>*</span></label>
                         <input
                             type="text"
-                            placeholder="Get 70% OFF Discount from Shashh" id="addTitle" name="addTitle" />
+                            placeholder="Get 70% OFF Discount from Shashh" id="addTitle" name="addTitle" required  />
                     </div>
 
                     <div class="describe-campaign-input-wrapper">
                         <label>Campaign Description <span>*</span></label>
-                        <textarea name="description" id="description"></textarea>
+                        <textarea name="description" id="description" required></textarea>
                     </div>
 
                     <div class="objectives-container">
@@ -246,7 +246,7 @@
                                 type="date"
                                 id="start-date"
                                 class="date-input"
-                                placeholder="12 /06 / 24" />
+                                placeholder="12 /06 / 24" required />
 
                         </div>
                     </div>
@@ -258,7 +258,7 @@
                                 type="date"
                                 id="end-date"
                                 class="date-input"
-                                placeholder="DD / MM / YY" />
+                                placeholder="DD / MM / YY" required />
 
                         </div>
                     </div>
@@ -711,7 +711,7 @@
                         </div>
                         <div class="campaign-details-input-wrapper">
                             <label>Design</label>
-                            <input type="text" value="Design File.JPEG" readonly id="uploaded-image-preview" />
+                            <input type="text" value="Design File.JPEG" readonly id="uploaded-image-preview" required />
                         </div>
 
                         <div class="campaign-details-input-wrapper">
@@ -791,21 +791,6 @@
     let artWorkInput = document.getElementById('file-input');
     // console.log(artWorkInput);
     let artWork = ''; 
-
-    
-    // if (artWorkInput.files && artWorkInput.files[0]) {
-    //     let file = artWorkInput.files[0];
-
-        
-    //     artWorkUrl = URL.createObjectURL(file);
-
-       
-    //     localStorage.setItem('artWorkUrl', artWorkUrl);
-    // } else {
-    //     artWorkUrl = 'No image uploaded';  // If no file is selected
-    // }
-
-    // Handle file input and Base64 image storage
   // Handle file input and Base64 image storage
   if (artWorkInput.files && artWorkInput.files[0]) {
         let file = artWorkInput.files[0];
