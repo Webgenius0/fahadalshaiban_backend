@@ -9,12 +9,10 @@
     /* Optional: Custom button styles */
 
 
-.add-signage.btn-warning {
-    background-color: #ff9800; /* warning yellow/orange */
-}
-
-
-
+    .add-signage.btn-warning {
+        background-color: #ff9800;
+        /* warning yellow/orange */
+    }
 </style>
 @endpush
 @section('content')
@@ -249,7 +247,7 @@
                                 id="start-date"
                                 class="date-input"
                                 placeholder="12 /06 / 24" />
-                            
+
                         </div>
                     </div>
 
@@ -261,7 +259,7 @@
                                 id="end-date"
                                 class="date-input"
                                 placeholder="DD / MM / YY" />
-                           
+
                         </div>
                     </div>
                 </div>
@@ -353,13 +351,13 @@
                     <!-- Dropdowns for different filters -->
 
                     <select class="signage-filter-dropdown" id="cities">
-                        
+
                     </select>
 
                     <select class="signage-filter-dropdown">
                         <option data-display="Signage Type">Select Category...</option>
                         @foreach ($categories as $category)
-                            <option value="{{ $category->name }}">{{ $category->name }}</option>
+                        <option value="{{ $category->name }}">{{ $category->name }}</option>
                         @endforeach
                     </select>
 
@@ -380,7 +378,7 @@
                             type="date"
                             id="signage-date-input"
                             placeholder="Date" />
-                       
+
                     </div>
 
                     <select class="filter-dropdown">
@@ -394,12 +392,7 @@
 
                 <h2 class="results-heading">Results</h2>
                 <div class="tab-content" id="nav-tabContent">
-                    <div
-                        class="tab-pane fade show active"
-                        id="nav-home"
-                        role="tabpanel"
-                        aria-labelledby="nav-home-tab"
-                        tabindex="0">
+                    <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab" tabindex="0">
                         <div class="billboard-card-container">
                             @foreach($signages as $data)
                             <div
@@ -505,7 +498,7 @@
                                 </div>
                             </div>
                             @endforeach
-                            
+
                         </div>
 
                         <div
@@ -527,15 +520,7 @@
                         tabindex="0">
                         <div class="billboard-map-container">
                             <div class="billboard-map">
-                                <iframe
-                                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d228792.2532672344!2d49.82773211300567!3d26.36277673468037!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e361d32276b3403%3A0xefd901ec7a5e5676!2sDammam%20Saudi%20Arabia!5e0!3m2!1sen!2sbd!4v1731218948083!5m2!1sen!2sbd"
-                                    width="600"
-                                    height="450"
-                                    style="border: 0"
-                                    allowfullscreen=""
-                                    loading="lazy"
-                                    referrerpolicy="no-referrer-when-downgrade"></iframe>
-
+                                <div style="height:600px" id="mapDiv"></div>
                                 <div
                                     class="d-flex align-items-center justify-content-center gap-5 mt-5">
                                     <button
@@ -544,12 +529,11 @@
                                         Previous
                                     </button>
 
-                                    <button
-                                        type="button"
-                                        class="next-btn change-step next">
+                                    <button type="button" class="next-btn change-step next">
                                         Next
                                     </button>
                                 </div>
+
                             </div>
 
 
@@ -569,7 +553,10 @@
                                                 <h3>Billboard Location</h3>
                                                 <p class="billboard-card-id">#{{$data->id}}</p>
                                             </div>
-                                            <button type="button" id="add-signage"  class="add-signage" data-id="{{$data->id}}">
+                                            <button class="btn btn-primary" onclick="changeLocation(event, '{{ $data->lat }}', '{{ $data->lan }}')">
+                                                <i class="fa fa-location-arrow"></i>
+                                            </button>
+                                            <button type="button" id="add-signage" class="add-signage" data-id="{{$data->id}}">
                                                 Add signage
                                             </button>
                                         </div>
@@ -662,7 +649,7 @@
                                     </div>
                                 </div>
                                 @endforeach
-                                
+
                             </div>
                         </div>
                     </div>
@@ -705,7 +692,7 @@
             <div class="describe-campaign-details-wrapper form-step">
                 <div class="describe-campaign">
                     <h5>Campaign Details</h5>
-                    
+
 
                     <div class="campaign-details-wrapper">
                         <div class="campaign-details-input-wrapper">
@@ -713,7 +700,7 @@
                             <input
                                 type="text"
                                 value="Get 70% OFF Discount from Shashh"
-                                readonly  id="detailsName"/>
+                                readonly id="detailsName" />
                         </div>
                         <div class="campaign-details-input-wrapper">
                             <label>What is your Objective?</label>
@@ -732,7 +719,7 @@
                         </div>
                         <div class="campaign-details-input-wrapper">
                             <label>Design</label>
-                            <input type="text" value="Design File.JPEG"  readonly id="uploaded-image-preview"/>
+                            <input type="text" value="Design File.JPEG" readonly id="uploaded-image-preview" />
                         </div>
 
                         <div class="campaign-details-input-wrapper">
@@ -747,7 +734,7 @@
                         <table class="signage-table">
                             <thead>
                                 <tr>
-                                   
+
                                     <th>Signage Name</th>
                                     <th>Signage ID</th>
                                     <th>Signage Location</th>
@@ -785,144 +772,144 @@
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="{{asset('js/CitiesAjax.js')}}"></script>
 <!-- for fieltering -->
- <script src="{{asset('js/Filter.js')}}"></script>
+<script src="{{asset('js/Filter.js')}}"></script>
 <script>
-   $(document).ready(function() {
-    $('.add-signage').click(function() {
-        var button = $(this);
-        var signageId = button.data('id');
+    $(document).ready(function() {
+        $('.add-signage').click(function() {
+            var button = $(this);
+            var signageId = button.data('id');
 
-        // Check the current button text and toggle it along with the class
-        if (button.text() === "Remove signage") {
-            button.text("Add signage");  // Change text on the first click
-            button.toggleClass('btn-primary').toggleClass('btn-warning');  // Change color to warning
-        } else {
-            button.text("Remove signage");  // Change text back on the second click
-            button.toggleClass('btn-warning').toggleClass('btn-primary');  // Change color back to primary
-        }
+            // Check the current button text and toggle it along with the class
+            if (button.text() === "Remove signage") {
+                button.text("Add signage"); // Change text on the first click
+                button.toggleClass('btn-primary').toggleClass('btn-warning'); // Change color to warning
+            } else {
+                button.text("Remove signage"); // Change text back on the second click
+                button.toggleClass('btn-warning').toggleClass('btn-primary'); // Change color back to primary
+            }
+        });
     });
-});
 
-// Collect Details name (Ad Title)
-function collectName() {
-    let name = document.getElementById('addTitle').value;
-    let description = document.getElementById('description').value;
-    let image= document.getElementById('file-input').value;
+    // Collect Details name (Ad Title)
+    function collectName() {
+        let name = document.getElementById('addTitle').value;
+        let description = document.getElementById('description').value;
+        let image = document.getElementById('file-input').value;
 
-    console.log(name);
-    $('#detailsName').val(name);
-    let addData ={
-        name:name,
-        description:description,
-        image:image
+        console.log(name);
+        $('#detailsName').val(name);
+        let addData = {
+            name: name,
+            description: description,
+            image: image
+        }
+        localStorage.setItem('adData', JSON.stringify(addData));
+        // let data = localStorage.getItem('addData');
+        // alert(data);
+
+
     }
-    localStorage.setItem('adData', JSON.stringify(addData));
-    // let data = localStorage.getItem('addData');
-    // alert(data);
-    
-    
-}
-document.getElementById('addTitle').addEventListener('change', collectName);
+    document.getElementById('addTitle').addEventListener('change', collectName);
 
 
-// Function to calculate and store the difference between dates
-function storeDifference() {
-    let startDate = document.getElementById('start-date').value;
-    let endDate = document.getElementById('end-date').value;
-    console.log(startDate, endDate);
-    
-    if (startDate && endDate) {
-        let start = new Date(startDate);  
-        let end = new Date(endDate);      
-        let difference = end - start;
-        let differenceDays = difference / (1000 * 3600 * 24);   
-        $("#daterange").val(differenceDays);
-       
-        document.getElementById('difference').value = difference;
+    // Function to calculate and store the difference between dates
+    function storeDifference() {
+        let startDate = document.getElementById('start-date').value;
+        let endDate = document.getElementById('end-date').value;
+        console.log(startDate, endDate);
 
-        localStorage.setItem('dateDifference', differenceDays);
-        
-     
-        // alert(localStorage.getItem('dateDifference'));
+        if (startDate && endDate) {
+            let start = new Date(startDate);
+            let end = new Date(endDate);
+            let difference = end - start;
+            let differenceDays = difference / (1000 * 3600 * 24);
+            $("#daterange").val(differenceDays);
+
+            document.getElementById('difference').value = difference;
+
+            localStorage.setItem('dateDifference', differenceDays);
+
+
+            // alert(localStorage.getItem('dateDifference'));
+        }
     }
-}
-document.getElementById('start-date').addEventListener('change', storeDifference);
-document.getElementById('end-date').addEventListener('change', storeDifference);
+    document.getElementById('start-date').addEventListener('change', storeDifference);
+    document.getElementById('end-date').addEventListener('change', storeDifference);
 
 
-// Collect selected Signage IDs
-const idArray = new Set();
+    // Collect selected Signage IDs
+    const idArray = new Set();
 
-$('.add-signage').click(function() {
-    var signageId = $(this).data('id'); 
-    if (idArray.has(signageId)) {
-        idArray.delete(signageId);
-        console.log("Removed Signage ID: ", signageId);
-    } else {
-        idArray.add(signageId); 
-        console.log("Added Signage ID: ", signageId);
-        $(`.signage-table tbody tr[data-id="${signageId}"]`).remove();
+    $('.add-signage').click(function() {
+        var signageId = $(this).data('id');
+        if (idArray.has(signageId)) {
+            idArray.delete(signageId);
+            console.log("Removed Signage ID: ", signageId);
+        } else {
+            idArray.add(signageId);
+            console.log("Added Signage ID: ", signageId);
+            $(`.signage-table tbody tr[data-id="${signageId}"]`).remove();
+        }
+
+        $('#signage-count').val(idArray.size);
+
+        localStorage.setItem('selectedSignageIds', JSON.stringify(Array.from(idArray)));
+
+        fetchSignageLocation(signageId);
+    });
+
+
+    // Image file upload handling
+    let uploadedFile = null;
+    $('#file-input').change(function(event) {
+        $('#uploadContent').html(`<img src="${URL.createObjectURL(event.target.files[0])}" alt="Upload" style="width: 100%;" />`);
+        uploadedFile = event.target.files[0];
+        $('#uploaded-image-preview').val(uploadedFile.name);
+        localStorage.setItem('uploadedImage', uploadedFile.name);
+        console.log(localStorage.getItem('uploadedImage'));
+    });
+
+
+    // Store all the data (form fields + uploaded file)
+    function storeAllData() {
+        // const adTitle = document.getElementById('addTitle').value;
+
+        // const description = document.getElementById('description').value;
+        // const termsCondition = document.getElementById('termsCondition').checked ? "Accepted" : "Not Accepted";
+        // const privacyPolicy = document.getElementById('privacyPolicy').checked ? "Accepted" : "Not Accepted";
+        const formData = {
+            adTitle: adTitle,
+            description: description,
+            termsCondition: termsCondition,
+            privacyPolicy: privacyPolicy,
+            dateDifference: localStorage.getItem('dateDifference'),
+            selectedSignageIds: JSON.parse(localStorage.getItem('selectedSignageIds')),
+            uploadedImage: localStorage.getItem('uploadedImage')
+        };
+
+
+        localStorage.setItem('formData', JSON.stringify(formData));
+
+        console.log(localStorage.getItem('formData'));
     }
 
-    $('#signage-count').val(idArray.size);
-    
-    localStorage.setItem('selectedSignageIds', JSON.stringify(Array.from(idArray)));
+    // AJAX function to fetch signage location and display image
+    function fetchSignageLocation(signageId) {
 
-    fetchSignageLocation(signageId);
-});
+        if (!idArray.has(signageId)) return;
 
+        $.ajax({
+            url: '/get-signage-location/' + signageId,
+            type: 'GET',
+            success: function(response) {
+                console.log(response);
 
-// Image file upload handling
-let uploadedFile = null;
-$('#file-input').change(function(event) {
-    $('#uploadContent').html(`<img src="${URL.createObjectURL(event.target.files[0])}" alt="Upload" style="width: 100%;" />`);
-    uploadedFile = event.target.files[0]; 
-    $('#uploaded-image-preview').val(uploadedFile.name);
-    localStorage.setItem('uploadedImage', uploadedFile.name);
-    console.log(localStorage.getItem('uploadedImage'));
-});
+                let imageUrl = uploadedFile ? URL.createObjectURL(uploadedFile) : response.image;
 
-
-// Store all the data (form fields + uploaded file)
-function storeAllData() {
-    // const adTitle = document.getElementById('addTitle').value;
-
-    // const description = document.getElementById('description').value;
-    // const termsCondition = document.getElementById('termsCondition').checked ? "Accepted" : "Not Accepted";  
-    // const privacyPolicy = document.getElementById('privacyPolicy').checked ? "Accepted" : "Not Accepted";  
-    const formData = {
-        adTitle: adTitle,
-        description: description,
-        termsCondition: termsCondition,
-        privacyPolicy: privacyPolicy,
-        dateDifference: localStorage.getItem('dateDifference'),  
-        selectedSignageIds: JSON.parse(localStorage.getItem('selectedSignageIds')), 
-        uploadedImage: localStorage.getItem('uploadedImage')  
-    };
-
-    
-    localStorage.setItem('formData', JSON.stringify(formData));
-
-   console.log(localStorage.getItem('formData'));
-}
-
-// AJAX function to fetch signage location and display image
-function fetchSignageLocation(signageId) {
-    
-    if (!idArray.has(signageId)) return;
-
-    $.ajax({
-        url: '/get-signage-location/' + signageId,  
-        type: 'GET',  
-        success: function(response) {
-            console.log(response);
-            
-            let imageUrl = uploadedFile ? URL.createObjectURL(uploadedFile) : response.image;
-                        
-            if (idArray.has(signageId)) {
-                let row = `
+                if (idArray.has(signageId)) {
+                    let row = `
                     <tr data-id="${signageId}">
-                        
+
                         <td>${response.name}</td>
                         <td>#${response.signage_id}</td>
                         <td>${response.location}</td>
@@ -932,15 +919,34 @@ function fetchSignageLocation(signageId) {
                         <td>${response.avg_daily_views}</td>
                     </tr>
                 `;
-                              
-                $('.signage-table tbody').append(row);
-            }
-        },
-        error: function(xhr, status, error) {
-            console.error("AJAX request failed:", error);
-        }
-    });
 
-}
+                    $('.signage-table tbody').append(row);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error("AJAX request failed:", error);
+            }
+        });
+
+    }
+</script>
+<script>
+    function changeLocation(event, lat, lan) { 
+        event.preventDefault();
+        const apiKey = "{{ env('GOOGLE_MAPS_API_KEY') }}";
+        const url = `https://www.google.com/maps/embed/v1/view?key=${apiKey}&center=${parseInt(lat)},${parseInt(lan)}&zoom=5`;
+        document.getElementById('mapDiv').innerHTML = `
+            <iframe
+                width="100%"
+                height="100%"
+                frameborder="0"
+                style="border:0"
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"
+                src="${url}"
+                allowfullscreen>
+            </iframe>
+        `;
+    }
 </script>
 @endpush
