@@ -2,7 +2,6 @@
 use App\Enums\PageEnum;
 use App\Enums\SectionEnum;
 $home_banner = $cms->firstWhere('section', SectionEnum::HOME_BANNER);
-
 $home_marquee = $cms->firstWhere('section', SectionEnum::HOME_MARQUEE);
 $home_cards = $cms->where('section', SectionEnum::HOME_CARD);
 $home_about = $cms->firstWhere('section', SectionEnum::HOME_ABOUT);
@@ -30,7 +29,8 @@ $googleLang = new Stichoza\GoogleTranslate\GoogleTranslate(session()->get('local
                       {{ __('banner.description') }} 
                     </p>
                     <a href="{{ route('login') }}" class="btn-common banner-home-btn">
-                    {{ $googleLang->translate($home_banner->btn_text);}}
+                    {{ $googleLang->translate($home_banner->btn_text ?? ''); }}
+
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                             <path d="M4 12L20 12M20 12L14 18M20 12L14 6" stroke="white" stroke-width="1.5" stroke-linecap="round"
                                 stroke-linejoin="round" />
