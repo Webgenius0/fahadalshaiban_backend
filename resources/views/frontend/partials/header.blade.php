@@ -17,10 +17,10 @@
                     <div class="action-lang-wrapper">
 
                         <div class="btn-group" role="group">
-                            <button type="button" class="btn tm-new-btn dropdown-toggle text-light" data-bs-toggle="dropdown" aria-expanded="false">{{__('menu.dropdown')}}</button>
+                            <button type="button" class="btn tm-new-btn dropdown-toggle text-light" data-bs-toggle="dropdown" aria-expanded="false">{{session()->get('locale') == 'en' ? 'English' : 'العربية'}}</button>
                             <ul class="dropdown-menu">
                                 <li><a class="dropdown-item" href="{{ route('lang', ['lang' => 'en']) }}">English</a></li>
-                                <li><a class="dropdown-item" href="{{ route('lang', ['lang' => 'ar']) }}">Arabic</a></li>
+                                <li><a class="dropdown-item" href="{{ route('lang', ['lang' => 'ar']) }}">{{__('menu.arabic')}}</a></li>
                             </ul>
                         </div>
 

@@ -14,6 +14,7 @@ return [
                     cutting-edge solution is designed to make your advertising
                     experience seamless, efficient, and incredibly effective.',
     'dropdown' => 'Language',
+    'arabic' => 'العربية',
     'terms&condition'=> 'Terms & Conditions',
     'privacypolicy'=> 'Privacy Policy',
     'refundpolicy'=> 'Refund Policy',
