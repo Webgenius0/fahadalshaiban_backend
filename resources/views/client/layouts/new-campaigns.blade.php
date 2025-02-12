@@ -9,12 +9,10 @@
     /* Optional: Custom button styles */
 
 
-.add-signage.btn-warning {
-    background-color: #ff9800; /* warning yellow/orange */
-}
-
-
-
+    .add-signage.btn-warning {
+        background-color: #ff9800;
+        /* warning yellow/orange */
+    }
 </style>
 @endpush
 @section('content')
@@ -67,12 +65,12 @@
                         <label>Ad Title <span>*</span></label>
                         <input
                             type="text"
-                            placeholder="Get 70% OFF Discount from Shashh" id="addTitle" name="addTitle" />
+                            placeholder="Get 70% OFF Discount from Shashh" id="addTitle" name="addTitle" required  />
                     </div>
 
                     <div class="describe-campaign-input-wrapper">
                         <label>Campaign Description <span>*</span></label>
-                        <textarea name="description" id="description"></textarea>
+                        <textarea name="description" id="description" required></textarea>
                     </div>
 
                     <div class="objectives-container">
@@ -248,8 +246,8 @@
                                 type="date"
                                 id="start-date"
                                 class="date-input"
-                                placeholder="12 /06 / 24" />
-                            
+                                placeholder="12 /06 / 24" required />
+
                         </div>
                     </div>
 
@@ -260,32 +258,13 @@
                                 type="date"
                                 id="end-date"
                                 class="date-input"
-                                placeholder="DD / MM / YY" />
-                           
+                                placeholder="DD / MM / YY" required />
+
                         </div>
                     </div>
                 </div>
 
-                <div
-                    class="d-flex align-items-center justify-content-center gap-4 mt-4 flex-wrap">
-                    <label class="custom-checkbox-label">
-                        <input
-                            type="checkbox"
-                            name="terms-and-condition"
-                            id="terms-and-condition" />
-                        <span class="custom-checkbox-checkmark"></span>
-                        <a href="{{ route('terms.conditions') }}" class="agree">Terms & Conditions</a>
-                    </label>
-
-                    <label class="custom-checkbox-label">
-                        <input
-                            type="checkbox"
-                            name="privacy-policy"
-                            id="privacy-policy" />
-                        <span class="custom-checkbox-checkmark"></span>
-                        <a href="{{ route('privacy.policy') }}" class="agree">Privacy Policy</a>
-                    </label>
-                </div>
+               
 
                 <button
                     type="button"
@@ -353,13 +332,13 @@
                     <!-- Dropdowns for different filters -->
 
                     <select class="signage-filter-dropdown" id="cities">
-                        
+
                     </select>
 
                     <select class="signage-filter-dropdown">
                         <option data-display="Signage Type">Select Category...</option>
                         @foreach ($categories as $category)
-                            <option value="{{ $category->name }}">{{ $category->name }}</option>
+                        <option value="{{ $category->name }}">{{ $category->name }}</option>
                         @endforeach
                     </select>
 
@@ -380,7 +359,7 @@
                             type="date"
                             id="signage-date-input"
                             placeholder="Date" />
-                       
+
                     </div>
 
                     <select class="filter-dropdown">
@@ -505,7 +484,7 @@
                                 </div>
                             </div>
                             @endforeach
-                            
+
                         </div>
 
                         <div
@@ -569,7 +548,7 @@
                                                 <h3>Billboard Location</h3>
                                                 <p class="billboard-card-id">#{{$data->id}}</p>
                                             </div>
-                                            <button type="button" id="add-signage"  class="add-signage" data-id="{{$data->id}}">
+                                            <button type="button" id="add-signage" class="add-signage" data-id="{{$data->id}}">
                                                 Add signage
                                             </button>
                                         </div>
@@ -662,7 +641,7 @@
                                     </div>
                                 </div>
                                 @endforeach
-                                
+
                             </div>
                         </div>
                     </div>
@@ -679,7 +658,7 @@
                     </div>
 
                     <div class="upload-box">
-                        <input type="file" id="file-input" name="image" />
+                        <input type="file" id="file-input" />
                         <div class="upload-content" id="uploadContent">
                             <span class="upload-icon">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -705,7 +684,7 @@
             <div class="describe-campaign-details-wrapper form-step">
                 <div class="describe-campaign">
                     <h5>Campaign Details</h5>
-                    
+
 
                     <div class="campaign-details-wrapper">
                         <div class="campaign-details-input-wrapper">
@@ -713,7 +692,7 @@
                             <input
                                 type="text"
                                 value="Get 70% OFF Discount from Shashh"
-                                readonly  id="detailsName"/>
+                                readonly id="detailsName" />
                         </div>
                         <div class="campaign-details-input-wrapper">
                             <label>What is your Objective?</label>
@@ -732,7 +711,7 @@
                         </div>
                         <div class="campaign-details-input-wrapper">
                             <label>Design</label>
-                            <input type="text" value="Design File.JPEG"  readonly id="uploaded-image-preview"/>
+                            <input type="text" value="Design File.JPEG" readonly id="uploaded-image-preview" required />
                         </div>
 
                         <div class="campaign-details-input-wrapper">
@@ -747,7 +726,7 @@
                         <table class="signage-table">
                             <thead>
                                 <tr>
-                                   
+
                                     <th>Signage Name</th>
                                     <th>Signage ID</th>
                                     <th>Signage Location</th>
@@ -785,142 +764,166 @@
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="{{asset('js/CitiesAjax.js')}}"></script>
 <!-- for fieltering -->
- <script src="{{asset('js/Filter.js')}}"></script>
+<script src="{{asset('js/Filter.js')}}"></script>
 <script>
-   $(document).ready(function() {
-    $('.add-signage').click(function() {
-        var button = $(this);
-        var signageId = button.data('id');
+    $(document).ready(function() {
+        $('.add-signage').click(function() {
+            var button = $(this);
+            var signageId = button.data('id');
 
-        // Check the current button text and toggle it along with the class
-        if (button.text() === "Remove signage") {
-            button.text("Add signage");  // Change text on the first click
-            button.toggleClass('btn-primary').toggleClass('btn-warning');  // Change color to warning
-        } else {
-            button.text("Remove signage");  // Change text back on the second click
-            button.toggleClass('btn-warning').toggleClass('btn-primary');  // Change color back to primary
-        }
+            // Check the current button text and toggle it along with the class
+            if (button.text() === "Remove signage") {
+                button.text("Add signage"); // Change text on the first click
+                button.toggleClass('btn-primary').toggleClass('btn-warning'); // Change color to warning
+            } else {
+                button.text("Remove signage"); // Change text back on the second click
+                button.toggleClass('btn-warning').toggleClass('btn-primary'); // Change color back to primary
+            }
+        });
     });
-});
 
-// Collect Details name (Ad Title)
-function collectName() {
+    //collect Details name
+    function collectName() {
     let name = document.getElementById('addTitle').value;
-    let description = document.getElementById('description').value;
-    let image= document.getElementById('file-input').value;
-
-    console.log(name);
-    $('#detailsName').val(name);
-    let addData ={
-        name:name,
-        description:description,
-        image:image
-    }
-    localStorage.setItem('adData', JSON.stringify(addData));
-    // let data = localStorage.getItem('addData');
-    // alert(data);
-    
-    
-}
-document.getElementById('addTitle').addEventListener('change', collectName);
-
-
-// Function to calculate and store the difference between dates
-function storeDifference() {
+    let campaign_description = document.getElementById('description').value;
     let startDate = document.getElementById('start-date').value;
     let endDate = document.getElementById('end-date').value;
-    console.log(startDate, endDate);
-    
-    if (startDate && endDate) {
-        let start = new Date(startDate);  
-        let end = new Date(endDate);      
-        let difference = end - start;
-        let differenceDays = difference / (1000 * 3600 * 24);   
-        $("#daterange").val(differenceDays);
-       
-        document.getElementById('difference').value = difference;
+    let artWorkInput = document.getElementById('file-input');
+    // console.log(artWorkInput);
+    let artWork = ''; 
+  // Handle file input and Base64 image storage
+  if (artWorkInput.files && artWorkInput.files[0]) {
+        let file = artWorkInput.files[0];
 
-        localStorage.setItem('dateDifference', differenceDays);
-        
-     
-        // alert(localStorage.getItem('dateDifference'));
-    }
-}
-document.getElementById('start-date').addEventListener('change', storeDifference);
-document.getElementById('end-date').addEventListener('change', storeDifference);
-
-
-// Collect selected Signage IDs
-const idArray = new Set();
-
-$('.add-signage').click(function() {
-    var signageId = $(this).data('id'); 
-    if (idArray.has(signageId)) {
-        idArray.delete(signageId);
-        console.log("Removed Signage ID: ", signageId);
+        // Create a FileReader to read the file
+        let reader = new FileReader();
+        reader.onloadend = function() {
+            artWorkUrl = reader.result; // Get Base64 string
+            localStorage.setItem('artWorkUrl', artWorkUrl); // Store Base64 string in localStorage
+            
+            // Now that the image is processed, save form data
+            saveFormData(name, campaign_description, startDate, endDate, artWorkUrl);
+        };
+        reader.readAsDataURL(file); // Read the file as a Base64 string
     } else {
-        idArray.add(signageId); 
-        console.log("Added Signage ID: ", signageId);
-        $(`.signage-table tbody tr[data-id="${signageId}"]`).remove();
+        artWorkUrl = 'No image uploaded'; // If no file is selected
+        saveFormData(name, campaign_description, startDate, endDate, artWorkUrl);
     }
 
-    $('#signage-count').val(idArray.size);
-    
-    localStorage.setItem('selectedSignageIds', JSON.stringify(Array.from(idArray)));
+    saveFormData(name, campaign_description, startDate, endDate, artWorkUrl);
 
-    fetchSignageLocation(signageId);
-});
+    // Log the form values for debugging
+    console.log('Name:', name);
+    console.log('Description:', campaign_description);
+    console.log('Start Date:', startDate);
+    console.log('End Date:', endDate);
+    console.log('Art Work:', artWork);
+}
 
+function saveFormData(name, campaign_description, startDate, endDate, artWork) {
+    // Ensure dates are valid before calculating the difference
+    if (startDate && endDate) {
+        let start = new Date(startDate);
+        let end = new Date(endDate);
+        let difference = end - start;
+        let differenceDays = difference / (1000 * 3600 * 24);
 
-// Image file upload handling
-let uploadedFile = null;
-$('#file-input').change(function(event) {
-    $('#uploadContent').html(`<img src="${URL.createObjectURL(event.target.files[0])}" alt="Upload" style="width: 100%;" />`);
-    uploadedFile = event.target.files[0]; 
-    $('#uploaded-image-preview').val(uploadedFile.name);
-    localStorage.setItem('uploadedImage', uploadedFile.name);
-    console.log(localStorage.getItem('uploadedImage'));
-});
+        localStorage.setItem('differenceDays', differenceDays);
+        console.log('Difference in days:', differenceDays);  
+    }
 
-
-// Store all the data (form fields + uploaded file)
-function storeAllData() {
-    // const adTitle = document.getElementById('addTitle').value;
-
-    // const description = document.getElementById('description').value;
-    // const termsCondition = document.getElementById('termsCondition').checked ? "Accepted" : "Not Accepted";  
-    // const privacyPolicy = document.getElementById('privacyPolicy').checked ? "Accepted" : "Not Accepted";  
-    const formData = {
-        adTitle: adTitle,
-        description: description,
-        termsCondition: termsCondition,
-        privacyPolicy: privacyPolicy,
-        dateDifference: localStorage.getItem('dateDifference'),  
-        selectedSignageIds: JSON.parse(localStorage.getItem('selectedSignageIds')), 
-        uploadedImage: localStorage.getItem('uploadedImage')  
+    // Construct the formData object and check if it's populated correctly
+    let formData = {
+        name: name || 'Default Name',  
+        campaign_description: campaign_description || 'No Description', 
+        startDate: startDate || 'Not Set', 
+        endDate: endDate || 'Not Set', 
+        artWork: artWork || 'not set'  
     };
 
-    
-    localStorage.setItem('formData', JSON.stringify(formData));
+    console.log('Form Data:', formData);
 
-   console.log(localStorage.getItem('formData'));
+    // Store the formData object in localStorage as a JSON string
+    localStorage.setItem('formData', JSON.stringify(formData));
 }
 
-// AJAX function to fetch signage location and display image
-function fetchSignageLocation(signageId) {
-    
-    if (!idArray.has(signageId)) return;
+// Attach event listeners to the form fields
+document.getElementById('addTitle').addEventListener('change', collectName);
+document.getElementById('description').addEventListener('change', collectName);
+document.getElementById('start-date').addEventListener('change', collectName);
+document.getElementById('end-date').addEventListener('change', collectName);
+document.getElementById('file-input').addEventListener('change', collectName);
 
-    $.ajax({
-        url: '/get-signage-location/' + signageId,  
-        type: 'GET',  
-        success: function(response) {
-            console.log(response);
-            
-            let imageUrl = uploadedFile ? URL.createObjectURL(uploadedFile) : response.image;
-                        
-            if (idArray.has(signageId)) {
-                let row = `
+
+
+    // Function to calculate and store the difference
+    function storeDifference() {
+
+        let startDate = document.getElementById('start-date').value;
+        let endDate = document.getElementById('end-date').value;
+        console.log(startDate, endDate);
+        if (startDate && endDate) {
+            let start = new Date(startDate);
+            let end = new Date(endDate);
+            let difference = end - start;
+            let differenceDays = difference / (1000 * 3600 * 24);
+            $("#daterange").val(differenceDays);
+
+            document.getElementById('difference').value = difference;
+        }
+    }
+    document.getElementById('start-date').addEventListener('change', storeDifference);
+    document.getElementById('end-date').addEventListener('change', storeDifference);
+
+
+
+    const idArray = new Set();
+
+    $('.add-signage').click(function() {
+        var signageId = $(this).data('id');
+        if (idArray.has(signageId)) {
+
+            idArray.delete(signageId);
+            console.log("Removed Signage ID: ", signageId);
+        } else {
+
+            idArray.add(signageId);
+            console.log("Added Signage ID: ", signageId);
+            $(`.signage-table tbody tr[data-id="${signageId}"]`).remove();
+        }
+
+        $('#signage-count').val(idArray.size);
+        localStorage.setItem('selectedSignageIds', JSON.stringify(Array.from(idArray)));
+
+        fetchSignageLocation(signageId);
+    });
+
+
+
+    //image file upload
+    let uploadedFile = null;
+    $('#file-input').change(function(event) {
+        $('#uploadContent').html(`<img src="${URL.createObjectURL(event.target.files[0])}" alt="Upload" style="width: 100%;" />`);
+        uploadedFile = event.target.files[0];
+        $('#uploaded-image-preview').val(uploadedFile.name);
+
+    });
+
+    // AJAX function to fetch signage location and display image
+    function fetchSignageLocation(signageId) {
+
+        if (!idArray.has(signageId)) return;
+
+        $.ajax({
+            url: '/get-signage-location/' + signageId,
+            type: 'GET',
+            success: function(response) {
+                console.log(response);
+
+                let imageUrl = uploadedFile ? URL.createObjectURL(uploadedFile) : response.image;
+
+                if (idArray.has(signageId)) {
+                    let row = `
                     <tr data-id="${signageId}">
                         
                         <td>${response.name}</td>
@@ -932,15 +935,15 @@ function fetchSignageLocation(signageId) {
                         <td>${response.avg_daily_views}</td>
                     </tr>
                 `;
-                              
-                $('.signage-table tbody').append(row);
-            }
-        },
-        error: function(xhr, status, error) {
-            console.error("AJAX request failed:", error);
-        }
-    });
 
-}
+                    $('.signage-table tbody').append(row);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error("AJAX request failed:", error);
+            }
+        });
+
+    }
 </script>
 @endpush

@@ -8,46 +8,37 @@ use App\Enums\SectionEnum;
 <section class="banner-common">
     <div class="my-container">
         <div class="banner-common-header-title">
-            <h2>Privacy Policy</h2>
+            <h2>{{__('privacy.herotitle')}}</h2>
         </div>
     </div>
 </section>
 
 <section class="policy">
     <div class="my-container">
-        <h3 class="policy-title">Privacy Policy</h3>
+        <h3 class="policy-title">{{__('privacy.herotitle')}}</h3>
         <div class="policy-wrapper">
             <div class="policy-item">
-                <h4>1. Introduction</h4>
+                <h4>{{__('privacy.title1')}}</h4>
                 <p>
-                    This Privacy Policy explains how we collect, use, disclose, and
-                    protect your personal information when you use the Signage
-                    Booking Website ShaShh.
+                {{__('privacy.description1')}}
                 </p>
             </div>
             <div class="policy-item">
-                <h4>​2. Information We Collect</h4>
+                <h4>{{__('privacy.title2')}}</h4>
                 <p>
-                    We collect information that you provide to us when you create an
-                    account, make a booking, or upload content. This may include
-                    your name, email address, payment information, and any other
-                    information you choose to provide.
+                {{__('privacy.description2')}}
                 </p>
             </div>
             <div class="policy-item">
-                <h4>3. Use of Information</h4>
+                <h4>{{__('privacy.title3')}}</h4>
                 <p>
-                    We use the information we collect to provide and improve our
-                    services, process payments, communicate with you, and for other
-                    customer service purposes. We may also use your information for
-                    marketing and promotional purposes.
+                {{__('privacy.description3')}}
                 </p>
             </div>
             <div class="policy-item">
-                <h4>​4. Disclosure of Information</h4>
+                <h4>​{{__('privacy.title4')}}</h4>
                 <p>
-                    We may disclose your information to third parties in the
-                    following circumstances:
+                {{__('privacy.description4')}}
                 </p>
                 <ul>
                     <li>
@@ -58,29 +49,21 @@ use App\Enums\SectionEnum;
                 </ul>
             </div>
             <div class="policy-item">
-                <h4>5. Security</h4>
+                <h4>{{__('privacy.title5')}}</h4>
                 <p>
-                    We take reasonable measures to protect your personal information
-                    from unauthorized access, use, or disclosure. However, no
-                    internet-based service can be completely secure, and we cannot
-                    guarantee the absolute security of your information.
+                {{__('privacy.description5')}}
                 </p>
             </div>
             <div class="policy-item">
-                <h4>6. Your Rights</h4>
+                <h4>{{__('privacy.title6')}}</h4>
                 <p>
-                    You have the right to access, correct, or delete your personal
-                    information. You can exercise these rights by contacting us
-                    at support@shashh.com
+                {{__('privacy.description6')}}
                 </p>
             </div>
             <div class="policy-item">
-                <h4>7. Changes to Privacy Policy</h4>
+                <h4>{{__('privacy.title7')}}</h4>
                 <p>
-                    We may update this Privacy Policy from time to time. Any changes
-                    will be posted on the App, and your continued use of the App
-                    after such changes have been posted will constitute your
-                    acceptance of the changes.
+                {{__('privacy.description7')}}
                 </p>
             </div>
         </div>
