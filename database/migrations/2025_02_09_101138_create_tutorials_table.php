@@ -11,8 +11,6 @@ return new class extends Migration
      */
     public function up(): void
     {
-
-        // create tutorials table
         Schema::create('tutorials', function (Blueprint $table) {
             $table->id();
             $table->string('title')->nullable();
