@@ -61,7 +61,12 @@ let orderData = {
     subtotal: 0,
     dispatchFee: 0,
     total: 0,
-    ad_title: ''
+    ad_title: '',
+    campaign_description: '',
+    art_work:'',
+    start_date: '',
+    end_date: '',
+    differenceDays:'',
 };
 
 // On your other route/page (when the page loads):
@@ -77,20 +82,31 @@ $(document).ready(function() {
 });
 
 
-$('#checkoutButton').click(function() {
-    var addTitle = localStorage.getItem('adTitle');
-    console.log(orderData.items);
+$('#checkoutButton').click(function(event) {
+    event.preventDefault();
+
+    // console.log(orderData.items);
+    let storedFormData = JSON.parse(localStorage.getItem('formData'));
+    let artWorkUrl = storedFormData ? storedFormData.artWork : 'No image uploaded';
+    const  totdoList  = {
+        addTitle: storedFormData.name,
+        description: storedFormData.campaign_description,   
+        startDate: storedFormData.startDate,
+        endDate: storedFormData.endDate,
+        artWork: artWorkUrl,
+        items: orderData.items,  
+        subtotal: orderData.subtotal,
+        dispatchFee: orderData.dispatchFee,
+        total: orderData.total,
+        _token: '{{ csrf_token() }}' 
+    };
+   
+
     $.ajax({
         url: '/checkout', 
-        type: 'GET',  
-        data: {
-            addTitle: addTitle,
-            items: orderData.items,  
-            subtotal: orderData.subtotal,
-            dispatchFee: orderData.dispatchFee,
-            total: orderData.total,
-            _token: '{{ csrf_token() }}' 
-        },
+        type: 'POST',  
+        data:  totdoList ,
+
         success: function(response) {
             
             window.location.href = "{{ route('page.billing') }}"; 

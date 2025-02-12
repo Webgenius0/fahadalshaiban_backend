@@ -108,7 +108,7 @@ class ClientCampaignController extends Controller
 
         try {
             $homeAbout = Tutorial::findOrFail($id);
-            $validatedData['page'] = PageEnum::ADD_SIGNAGE->value;
+            $validatedData['page'] = PageEnum::Add_CAMPING->value;
             $validatedData['section'] = SectionEnum::USER->value;
             $validatedData['slug'] = Str::slug($validatedData['title']);
 

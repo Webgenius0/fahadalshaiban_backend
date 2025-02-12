@@ -8,7 +8,7 @@ use App\Enums\SectionEnum;
 <section class="banner-common">
     <div class="my-container">
         <div class="banner-common-header-title">
-            <h2>Contact Us</h2>
+            <h2>{{__('contactus.contactus')}}</h2>
         </div>
     </div>
 </section>
@@ -17,7 +17,7 @@ use App\Enums\SectionEnum;
     <div class="my-container">
         <div class="contact-us-page-wrapper">
             <div class="contact-info">
-                <h2 class="contact-info__title">Contact Us</h2>
+                <h2 class="contact-info__title">{{__('contactus.contactus')}}</h2>
                 <div class="contact-info__item-wraper">
                     <div class="contact-info__item">
                         <span class="contact-info__icon email-icon">
@@ -35,7 +35,7 @@ use App\Enums\SectionEnum;
                             </svg>
                         </span>
                         <div>
-                            <p class="contact-info__label">Email:</p>
+                            <p class="contact-info__label">{{__('contactus.email')}}:</p>
                             <p class="contact-info__text">sales@shashh.com</p>
                         </div>
                     </div>
@@ -56,7 +56,7 @@ use App\Enums\SectionEnum;
                             </svg>
                         </span>
                         <div>
-                            <p class="contact-info__label">Phone:</p>
+                            <p class="contact-info__label">{{__('contactus.phone')}}:</p>
                             <p class="contact-info__text">+966 54 873 0002</p>
                         </div>
                     </div>
@@ -83,9 +83,9 @@ use App\Enums\SectionEnum;
                             </svg>
                         </span>
                         <div>
-                            <p class="contact-info__label">Address:</p>
+                            <p class="contact-info__label">{{__('contactus.address')}}:</p>
                             <p class="contact-info__text">
-                                Dammam - Eastern Province, Saudi Arabia
+                                {{__('contactus.addressDetails')}}
                             </p>
                         </div>
                     </div>
@@ -93,10 +93,10 @@ use App\Enums\SectionEnum;
             </div>
 
             <div class="send-message">
-                <h2 class="send-message__title">Send Message</h2>
+                <h2 class="send-message__title">{{__('contactus.sendmessage')}}</h2>
                 <form class="send-message__form">
                     <div class="send-message-input-wrapper">
-                        <label for="name">Full Name <span>*</span></label>
+                        <label for="name">{{__('contactus.name')}} <span>*</span></label>
                         <input
                             type="text"
                             id="name"
@@ -105,7 +105,7 @@ use App\Enums\SectionEnum;
                             required />
                     </div>
                     <div class="send-message-input-wrapper">
-                        <label for="email">Email <span>*</span></label>
+                        <label for="email">{{__('contactus.email')}} <span>*</span></label>
                         <input
                             type="email"
                             id="email"
@@ -114,7 +114,7 @@ use App\Enums\SectionEnum;
                             required />
                     </div>
                     <div class="send-message-input-wrapper">
-                        <label for="phone">Phone Number <span>*</span></label>
+                        <label for="phone">{{__('contactus.phone')}} <span>*</span></label>
                         <input
                             type="tel"
                             id="phone"
@@ -123,14 +123,14 @@ use App\Enums\SectionEnum;
                             required />
                     </div>
                     <div class="send-message-input-wrapper">
-                        <label for="message">Message</label>
+                        <label for="message">{{__('contactus.message')}}</label>
                         <textarea
                             id="message"
                             name="message"
                             rows="4"
                             placeholder="Your message"></textarea>
                     </div>
-                    <button type="submit" class="btn-common">Send</button>
+                    <button type="submit" class="btn-common">{{__('contactus.send')}}</button>
                 </form>
             </div>
         </div>

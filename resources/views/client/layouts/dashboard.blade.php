@@ -1,6 +1,6 @@
-<?php 
-$book=App\Models\Order::where('user_id', auth()->user()->id)->where('status', 'booked')->count();
-$totalActivesignages= App\Models\Signage::where('status', 'active')->count();
+<?php
+$book = App\Models\Order::where('user_id', auth()->user()->id)->where('status', 'booked')->count();
+$totalActivesignages = App\Models\Signage::where('status', 'active')->count();
 
 ?>
 
@@ -12,7 +12,7 @@ $totalActivesignages= App\Models\Signage::where('status', 'active')->count();
             <h3 class="overview-card-title">Active Campaigns</h3>
             <div class="overview-card-content">
                 <p class="overview-card-amount">{{$totalActivesignages}}</p>
-               
+
                 <div class="overview-card-icon card-icon-green">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -132,16 +132,28 @@ $totalActivesignages= App\Models\Signage::where('status', 'active')->count();
                 </div>
             </div>
         </div>
-        
+
         <div class="campaign-list">
             <!-- Campaign Item -->
             @foreach($orders as $order)
             <article class="campaign-item">
-               
-                
+
+
                 <div class="campaign-top">
                     <div id="chart1"></div>
-                    <div class="campaign-status">On Going</div>
+                    <div class="">
+
+                        @if(\Carbon\Carbon::parse($order->end_date)->isPast())
+
+                        <span class="campaign-status bg-danger">Expired Date, Renew Again</span>
+                        @elseif($order->status == 'pending')
+
+                        <span class="campaign-end">Pending</span>
+                        @else
+
+                        <span class="campaign-status ">On Going</span>
+                        @endif
+                    </div>
                 </div>
 
                 <p class="campaign-id">#{{ $order->uuid }}</p>
@@ -180,14 +192,14 @@ $totalActivesignages= App\Models\Signage::where('status', 'active')->count();
                 </div>
 
                 <div class="campaign-bottom">
-                    <div class="campaign-end">Ending on 5 March 2025</div>
+                    <div class="campaign-end">Ending on <span>{{ \Carbon\Carbon::parse($order->end_date?? '2023-01-01')->format('d F Y') }}</div>
                     <button class="campaign-edit-btn">View</button>
                 </div>
-               
+
             </article>
             @endforeach
         </div>
-        
+
         <div class="pagination">
             <button class="prev">Pervious</button>
             <div class="index-btn-wrapper">
@@ -203,30 +215,29 @@ $totalActivesignages= App\Models\Signage::where('status', 'active')->count();
 @push('script')
 <script>
     $(document).ready(function() {
-    // Fetch the completed orders from the backend
-    $.ajax({
-        url: '/get-completed-orders',
-        method: 'GET',
-        success: function(events) {
-            // Initialize FullCalendar with the events data
-            $('#calendar').fullCalendar({
-                events: events,
-                eventRender: function(event, element) {
-                    element.tooltip({
-                        title: event.description,  // Show the description on hover
-                        placement: 'top'
-                    });
-                },
-                header: {
-                    left: 'prev,next today',
-                    center: 'title',
-                    right: 'month,agendaWeek,agendaDay'
-                },
-                eventColor: '#FF5733',  // Optional: Customize event color
-            });
-        }
+        // Fetch the completed orders from the backend
+        $.ajax({
+            url: '/get-completed-orders',
+            method: 'GET',
+            success: function(events) {
+                // Initialize FullCalendar with the events data
+                $('#calendar').fullCalendar({
+                    events: events,
+                    eventRender: function(event, element) {
+                        element.tooltip({
+                            title: event.description, // Show the description on hover
+                            placement: 'top'
+                        });
+                    },
+                    header: {
+                        left: 'prev,next today',
+                        center: 'title',
+                        right: 'month,agendaWeek,agendaDay'
+                    },
+                    eventColor: '#FF5733', // Optional: Customize event color
+                });
+            }
+        });
     });
-});
-
 </script>
 @endpush

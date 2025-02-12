@@ -30,7 +30,7 @@ return new class extends Migration
             $table->string('image')->nullable();
             $table->enum('terms_and_conditions', ['on', 'off'])->default('on');
             $table->enum('privacy_policy', ['on', 'off'])->default('on');
-            $table->enum('status', ['active', 'inactive'])->default('inactive');
+            $table->enum('status', ['active', 'inactive','rejected'])->default('inactive');
             $table->timestamps();
         });
     }

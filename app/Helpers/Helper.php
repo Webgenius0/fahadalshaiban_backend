@@ -9,6 +9,7 @@ use Illuminate\Support\Str;
 use Kreait\Firebase\Factory;
 use Kreait\Firebase\Messaging\CloudMessage;
 use Kreait\Firebase\Messaging\Notification;
+use Illuminate\Support\Facades\Storage;
 
 class Helper
 {
@@ -131,4 +132,28 @@ class Helper
         return;
     }
 
+
+    public static  function saveBase64Image($base64Image)
+    {
+        if (preg_match('/^data:image\/(\w+);base64,/', $base64Image, $type)) {
+            $base64Image = substr($base64Image, strpos($base64Image, ',') + 1);
+            $type = strtolower($type[1]); 
+            $base64Image = base64_decode($base64Image);         
+            $fileName = time() . '_' . uniqid() . '.' . $type;
+
+            $path = public_path('images/' . $fileName);
+
+            // Ensure the directory exists
+            if (!file_exists(public_path('images'))) {
+                mkdir(public_path('images'), 0755, true);
+            }
+            $saved = file_put_contents($path, $base64Image);
+
+            if ($saved) {
+                return 'images/' . $fileName;
+            }
+        }
+
+        return null;
+    }
 }
