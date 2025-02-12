@@ -3,7 +3,6 @@ use App\Enums\PageEnum;
 use App\Enums\SectionEnum;
 $home_banner = $cms->firstWhere('section', SectionEnum::HOME_BANNER);
 
-$titleParts = explode(' ', $home_banner->title, 2);
 $home_marquee = $cms->firstWhere('section', SectionEnum::HOME_MARQUEE);
 $home_cards = $cms->where('section', SectionEnum::HOME_CARD);
 $home_about = $cms->firstWhere('section', SectionEnum::HOME_ABOUT);
