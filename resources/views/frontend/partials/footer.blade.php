@@ -12,7 +12,7 @@
 
                     <div>
                         <a href="{{ route('pro.tips') }}" class="btn-common">
-                            Pro Tips
+                        {{__('menu.protips')}}
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 width="24"
@@ -31,37 +31,34 @@
                 </div>
 
                 <p class="footer-desc">
-                    Welcome to Shashh, the game-changer in how businesses and
-                    individuals book and utilize public signage spaces. Our
-                    cutting-edge solution is designed to make your advertising
-                    experience seamless, efficient, and incredibly effective.
+                {{__('menu.protipsDescription')}}
                 </p>
             </div>
             <div class="footer-item">
-                <h4>Quick links</h4>
+                <h4>{{__('menu.quicklinks')}}</h4>
                 <div class="footer-links-wrapper">
-                    <a href="{{ route('home') }}">Home</a>
+                    <a href="{{ route('home') }}">{{__('menu.home')}}</a>
                     <a href="./dashboard-new-campaigns.html">Find Signage</a>
-                    <a href="{{ route('contact.us') }}">Contact Us</a>
-                    <a href="{{ route('login', ['is_role' => 'admin']) }}">Sign In</a>
-                    <a href="{{ route('join.signage.owner') }}" class="text-hightlight">Join as a signage owner</a>
+                    <a href="{{ route('contact.us') }}">{{__('menu.contact')}}</a>
+                    <a href="{{ route('login', ['is_role' => 'admin']) }}">{{__('menu.login')}}</a>
+                    <a href="{{ route('join.signage.owner') }}" class="text-hightlight">{{__('menu.joinusowner')}}</a>
                 </div>
             </div>
             <div class="footer-item">
-                <h4>Policies</h4>
+                <h4>{{__('menu.policies')}}</h4>
                 <div class="footer-links-wrapper">
-                    <a href="{{ route('terms.conditions') }}">Terms & Conditions</a>
-                    <a href="{{ route('privacy.policy') }}">Privacy Policy</a>
-                    <a href="{{ route('refund.policy') }}">Refund Policy</a>
-                    <a href="{{ route('cookie.policy') }}">Cookie Policy</a>
+                    <a href="{{ route('terms.conditions') }}">{{__('menu.terms&condition')}}</a>
+                    <a href="{{ route('privacy.policy') }}">{{__('menu.privacypolicy')}}</a>
+                    <a href="{{ route('refund.policy') }}">{{__('menu.refundpolicy')}}</a>
+                    <a href="{{ route('cookie.policy') }}">{{__('menu.cookiespolicy')}}</a>
                 </div>
             </div>
             <div class="footer-item">
-                <h4>Subscribe us</h4>
+                <h4>{{__('menu.subscribeus')}}</h4>
                 <form class="newsletter-input-wrapper">
                     <input type="text" placeholder="Your Email Goes Here" />
                     <button type="submit" class="btn-common">
-                        Subscribe
+                    {{__('menu.subscribe')}}
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             width="24"
@@ -77,7 +74,7 @@
                         </svg>
                     </button>
                 </form>
-                <h4>Follow us on</h4>
+                <h4>{{__('menu.followus')}}</h4>
                 <div class="footer-social">
                     <a href="#">
                         <svg
@@ -206,7 +203,7 @@
             </div>
         </div>
         <div class="copyright">
-            <p>All Rights Reserved © 2024 . Made with ShaShh™</p>
+            <p>{{__('menu.copyright')}}</p>
         </div>
     </div>
 </footer>

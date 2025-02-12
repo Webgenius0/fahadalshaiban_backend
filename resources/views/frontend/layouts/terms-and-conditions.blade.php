@@ -9,99 +9,73 @@ use App\Enums\SectionEnum;
     <section class="banner-common">
         <div class="my-container">
             <div class="banner-common-header-title">
-                <h2>Terms & Conditions</h2>
+                <h2>{{__('terms.herotitle')}}</h2>
             </div>
         </div>
     </section>
 
     <section class="policy">
         <div class="my-container">
-            <h3 class="policy-title">Terms & Conditions</h3>
+            <h3 class="policy-title">{{__('terms.herotitle')}}</h3>
             <div class="policy-wrapper">
                 <div class="policy-item">
-                    <h4>1. Introduction</h4>
+                    <h4> {{__('terms.title1')}}</h4>
                     <p>
-                        Welcome to the Signage Booking Platform ShaShh. These Terms and
-                        Conditions govern your use of the Website and the services
-                        provided through it. By using the Website, you agree to comply
-                        with these Terms. If you do not agree with any part of these
-                        Terms, please do not use the App.
+                    {{__('terms.description1')}}
                     </p>
                 </div>
                 <div class="policy-item">
-                    <h4>​2. Services</h4>
+                    <h4>{{__('terms.title2')}}</h4>
                     <p>
-                        he App allows users to locate, book, and make payments for
-                        public signage spaces. Additional services include content
-                        display, artwork services, and promotional features.
+                    {{__('terms.description2')}}
                     </p>
                 </div>
                 <div class="policy-item">
-                    <h4>​3. ​User Accounts</h4>
+                    <h4>​{{__('terms.title3')}}</h4>
                     <p>
-                        he App allows users to locate, book, and make payments for
-                        public signage spaces. Additional services include content
-                        display, artwork services, and promotional features.
+                    {{__('terms.description3')}}
                     </p>
                 </div>
                 <div class="policy-item">
-                    <h4>4. Booking and Payments</h4>
+                    <h4>{{__('terms.title4')}}</h4>
                     <p>
-                        All bookings and payments made through the App are subject to
-                        availability and confirmation. Payment methods include Mada,
-                        Visa, Mastercard, Apple Pay, and STC Pay.
+                    {{__('terms.description4')}}
                     </p>
                 </div>
                 <div class="policy-item">
-                    <h4>​5. Content Upload</h4>
+                    <h4>​{{__('terms.title5')}}</h4>
                     <p>
-                        Users can upload content (images or short videos) for display on
-                        public signage. All content must comply with our content
-                        guidelines, and we reserve the right to remove any content that
-                        violates these guidelines.
+                    {{__('terms.description5')}}
                     </p>
                 </div>
                 <div class="policy-item">
-                    <h4>6. Cancellations and Refunds</h4>
+                    <h4>{{__('terms.title6')}}</h4>
                     <p>
-                        Bookings can be canceled according to our Refund Policy. Refunds
-                        will be processed as per the conditions outlined in the Refund
-                        Policy.
+                    {{__('terms.description6')}}
                     </p>
                 </div>
                 <div class="policy-item">
-                    <h4>​7. Intellectual Property</h4>
+                    <h4>{{__('terms.title7')}}</h4>
                     <p>
-                        All content and materials available on the App, including but
-                        not limited to text, graphics, logos, and software, are the
-                        property of the App or its licensors and are protected by
-                        copyright and other intellectual property laws.
+                    {{__('terms.description7')}}
                     </p>
                 </div>
                 <div class="policy-item">
-                    <h4>8. Limitation of Liability</h4>
+                    <h4>{{__('terms.title8')}}</h4>
                     <p>
-                        Bookings can be canceled according to our Refund Policy. Refunds
-                        will be processed as per the conditions outlined in the Refund
-                        Policy.
+                    {{__('terms.description8')}}
                     </p>
                 </div>
                 <div class="policy-item">
-                    <h4>9. Governing Law</h4>
+                    <h4>{{__('terms.title9')}}</h4>
                     <p>
-                        These Terms are governed by and construed in accordance with the
-                        laws of Saudi Arabia. Any disputes arising under these Terms
-                        shall be subject to the exclusive jurisdiction of the courts of
-                        Saudi Arabia.
+                    {{__('terms.description9')}}
                     </p>
                 </div>
                 <div class="policy-item">
-                    <h4>10. Changes to Terms</h4>
+                    <h4>{{__('terms.title10')}}</h4>
                     <p>
-                        We reserve the right to modify these Terms at any time. Any
-                        changes will be posted on the App, and your continued use of the
-                        App after such changes have been posted will constitute your
-                        acceptance of the changes.
+                    {{__('terms.description10')}}
                     </p>
                 </div>
             </div>
