@@ -6,6 +6,7 @@ return [
     'contact' => 'Contact',    
     'login' => 'Login',
     'register' => 'Register',
+    'findsignage' => 'Find Signage',
     'signup' => 'Sign Up',
     'logout' => 'Logout',
     'startnewcampaign' => 'Start New Campaign',

@@ -65,7 +65,7 @@
                         <label>Ad Title <span>*</span></label>
                         <input
                             type="text"
-                            placeholder="Get 70% OFF Discount from Shashh" id="addTitle" name="addTitle" required  />
+                            placeholder="Get 70% OFF Discount from Shashh" id="addTitle" name="addTitle" required />
                     </div>
 
                     <div class="describe-campaign-input-wrapper">
@@ -264,7 +264,7 @@
                     </div>
                 </div>
 
-               
+
 
                 <button
                     type="button"
@@ -759,55 +759,71 @@
 </div>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
+    $(document).ready(function() {
+        $('.add-signage').click(function() {
+            var button = $(this);
+            var signageId = button.data('id');
 
-
-       //fieltering
-
-       $(document).ready(function () {
-    // Fetch and populate cities dynamically
-    function loadCities() {
-        $.ajax({
-            url: "{{ route('page.new.campaigns') }}",  // Adjust this route if needed
-            method: "GET",
-            dataType: "json",
-            success: function(response) {
-                // Dynamically populate the cities dropdown
-                let citiesDropdown = $('#cities');
-                citiesDropdown.empty(); // Clear existing options
-                citiesDropdown.append('<option value="">Select City</option>'); // Default option
-
-                response.cities.forEach(function(city) {
-                    citiesDropdown.append('<option value="' + city.location + '">' + city.location + '</option>');
-                });
-            },
-            error: function (xhr, status, error) {
-                console.error("Error loading cities:", error);
+            // Check the current button text and toggle it along with the class
+            if (button.text() === "Remove signage") {
+                button.text("Add signage"); // Change text on the first click
+                button.toggleClass('btn-primary').toggleClass('btn-warning'); // Change color to warning
+            } else {
+                button.text("Remove signage"); // Change text back on the second click
+                button.toggleClass('btn-warning').toggleClass('btn-primary'); // Change color back to primary
             }
         });
-    }
+    });
+    //fieltering
 
-    // Call loadCities() to populate cities when the page loads
-    loadCities();
+    $(document).ready(function() {
+        // Fetch and populate cities dynamically
+        function loadCities() {
+            $.ajax({
+                url: "{{ route('page.new.campaigns') }}", // Adjust this route if needed
+                method: "GET",
+                dataType: "json",
+                success: function(response) {
+                    // Dynamically populate the cities dropdown
+                    let citiesDropdown = $('#cities');
+                    citiesDropdown.empty(); // Clear existing options
+                    citiesDropdown.append('<option value="">Select City</option>'); // Default option
 
-    // Handle city and category change
-    function filterBillboards() {
-        let selectedCity = $('#cities').val();
-        let selectedCategory = $('#category').val();
+                    response.cities.forEach(function(city) {
+                        citiesDropdown.append('<option value="' + city.location + '">' + city.location + '</option>');
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error loading cities:", error);
+                }
+            });
+        }
 
-        $.ajax({
-            url: "{{ route('page.new.campaigns') }}",
-            method: "GET",
-            data: { city: selectedCity, category: selectedCategory },
-            dataType: "json",
-            success: function(response) {
-                let container = $('.billboard-card-container');
-                container.html('');
+        // Call loadCities() to populate cities when the page loads
+        loadCities();
 
-                if (response.signages.length > 0) {
-                    response.signages.forEach(function(data) {
-                        let imageUrl = data.image ? '/' + data.image : '/default/banner.png';
+        // Handle city and category change
+        function filterBillboards() {
+            let selectedCity = $('#cities').val();
+            let selectedCategory = $('#category').val();
 
-                        let cardHtml = `
+            $.ajax({
+                url: "{{ route('page.new.campaigns') }}",
+                method: "GET",
+                data: {
+                    city: selectedCity,
+                    category: selectedCategory
+                },
+                dataType: "json",
+                success: function(response) {
+                    let container = $('.billboard-card-container');
+                    container.html('');
+
+                    if (response.signages.length > 0) {
+                        response.signages.forEach(function(data) {
+                            let imageUrl = data.image ? '/' + data.image : '/default/banner.png';
+
+                            let cardHtml = `
                             <div
                                 class="billboard-card"
                                 data-bs-toggle="modal"
@@ -911,30 +927,30 @@
                                 </div>
                             </div>
                         `;
-                        container.append(cardHtml);
-                    });
-                } else {
-                    container.html('<p class="text-center">No billboards found for this selection.</p>');
+                            container.append(cardHtml);
+                        });
+                    } else {
+                        container.html('<p class="text-center">No billboards found for this selection.</p>');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error("AJAX Error:", error);
+                    console.log(xhr.responseText);
                 }
-            },
-            error: function (xhr, status, error) {
-                console.error("AJAX Error:", error);
-                console.log(xhr.responseText);
-            }
-        });
-    }
+            });
+        }
 
-    // Trigger filtering when city or category is changed
-    $('#cities, #category').on('change', function () {
-        filterBillboards();
+        // Trigger filtering when city or category is changed
+        $('#cities, #category').on('change', function() {
+            filterBillboards();
+        });
     });
-});
 </script>
 @endsection
 
 @push('script')
 <!-- Flatpickr JS -->
- 
+
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="{{asset('js/CitiesAjax.js')}}"></script>
 <!-- for fieltering -->
@@ -958,75 +974,75 @@
 
     //collect Details name
     function collectName() {
-    let name = document.getElementById('addTitle').value;
-    let campaign_description = document.getElementById('description').value;
-    let startDate = document.getElementById('start-date').value;
-    let endDate = document.getElementById('end-date').value;
-    let artWorkInput = document.getElementById('file-input');
-    // console.log(artWorkInput);
-    let artWork = ''; 
-  // Handle file input and Base64 image storage
-  if (artWorkInput.files && artWorkInput.files[0]) {
-        let file = artWorkInput.files[0];
+        let name = document.getElementById('addTitle').value;
+        let campaign_description = document.getElementById('description').value;
+        let startDate = document.getElementById('start-date').value;
+        let endDate = document.getElementById('end-date').value;
+        let artWorkInput = document.getElementById('file-input');
+        // console.log(artWorkInput);
+        let artWork = '';
+        // Handle file input and Base64 image storage
+        if (artWorkInput.files && artWorkInput.files[0]) {
+            let file = artWorkInput.files[0];
 
-        // Create a FileReader to read the file
-        let reader = new FileReader();
-        reader.onloadend = function() {
-            artWorkUrl = reader.result; // Get Base64 string
-            localStorage.setItem('artWorkUrl', artWorkUrl); // Store Base64 string in localStorage
-            
-            // Now that the image is processed, save form data
+            // Create a FileReader to read the file
+            let reader = new FileReader();
+            reader.onloadend = function() {
+                artWorkUrl = reader.result; // Get Base64 string
+                localStorage.setItem('artWorkUrl', artWorkUrl); // Store Base64 string in localStorage
+
+                // Now that the image is processed, save form data
+                saveFormData(name, campaign_description, startDate, endDate, artWorkUrl);
+            };
+            reader.readAsDataURL(file); // Read the file as a Base64 string
+        } else {
+            artWorkUrl = 'No image uploaded'; // If no file is selected
             saveFormData(name, campaign_description, startDate, endDate, artWorkUrl);
-        };
-        reader.readAsDataURL(file); // Read the file as a Base64 string
-    } else {
-        artWorkUrl = 'No image uploaded'; // If no file is selected
+        }
+
         saveFormData(name, campaign_description, startDate, endDate, artWorkUrl);
+
+        // Log the form values for debugging
+        console.log('Name:', name);
+        console.log('Description:', campaign_description);
+        console.log('Start Date:', startDate);
+        console.log('End Date:', endDate);
+        console.log('Art Work:', artWork);
     }
 
-    saveFormData(name, campaign_description, startDate, endDate, artWorkUrl);
+    function saveFormData(name, campaign_description, startDate, endDate, artWork) {
+        // Ensure dates are valid before calculating the difference
+        if (startDate && endDate) {
+            let start = new Date(startDate);
+            let end = new Date(endDate);
+            let difference = end - start;
+            let differenceDays = difference / (1000 * 3600 * 24);
 
-    // Log the form values for debugging
-    console.log('Name:', name);
-    console.log('Description:', campaign_description);
-    console.log('Start Date:', startDate);
-    console.log('End Date:', endDate);
-    console.log('Art Work:', artWork);
-}
+            localStorage.setItem('differenceDays', differenceDays);
+            console.log('Difference in days:', differenceDays);
+        }
 
-function saveFormData(name, campaign_description, startDate, endDate, artWork) {
-    // Ensure dates are valid before calculating the difference
-    if (startDate && endDate) {
-        let start = new Date(startDate);
-        let end = new Date(endDate);
-        let difference = end - start;
-        let differenceDays = difference / (1000 * 3600 * 24);
+        // Construct the formData object and check if it's populated correctly
+        let formData = {
+            name: name || 'Default Name',
+            campaign_description: campaign_description || 'No Description',
+            startDate: startDate || 'Not Set',
+            endDate: endDate || 'Not Set',
+            artWork: artWork || 'not set'
+        };
 
-        localStorage.setItem('differenceDays', differenceDays);
-        console.log('Difference in days:', differenceDays);  
+        console.log('Form Data:', formData);
+
+        // Store the formData object in localStorage as a JSON string
+        localStorage.setItem('formData', JSON.stringify(formData));
     }
 
-    // Construct the formData object and check if it's populated correctly
-    let formData = {
-        name: name || 'Default Name',  
-        campaign_description: campaign_description || 'No Description', 
-        startDate: startDate || 'Not Set', 
-        endDate: endDate || 'Not Set', 
-        artWork: artWork || 'not set'  
-    };
-
-    console.log('Form Data:', formData);
-
-    // Store the formData object in localStorage as a JSON string
-    localStorage.setItem('formData', JSON.stringify(formData));
-}
-
-// Attach event listeners to the form fields
-document.getElementById('addTitle').addEventListener('change', collectName);
-document.getElementById('description').addEventListener('change', collectName);
-document.getElementById('start-date').addEventListener('change', collectName);
-document.getElementById('end-date').addEventListener('change', collectName);
-document.getElementById('file-input').addEventListener('change', collectName);
+    // Attach event listeners to the form fields
+    document.getElementById('addTitle').addEventListener('change', collectName);
+    document.getElementById('description').addEventListener('change', collectName);
+    document.getElementById('start-date').addEventListener('change', collectName);
+    document.getElementById('end-date').addEventListener('change', collectName);
+    document.getElementById('file-input').addEventListener('change', collectName);
 
 
 
@@ -1119,7 +1135,5 @@ document.getElementById('file-input').addEventListener('change', collectName);
         });
 
     }
-
- 
 </script>
 @endpush

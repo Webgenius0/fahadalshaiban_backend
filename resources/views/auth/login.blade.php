@@ -8,14 +8,14 @@ $is_role = request()->query('is_role') ?? 'client';
     <div class="authentication-box">
         <div class="authentication-box-header">
             <img src="{{ asset('frontend') }}/images/favicon.png" alt="logo" />
-            <h4>Login your {{ $is_role }} account</h4>
+            <h4>{{__('login.title')}}</h4>
         </div>
 
         <form class="authentication-form" method="POST" action="{{ route('login', ['is_role' => $is_role]) }}">
             @csrf
             <div class="input-wrapper-wrapper">
                 <div class="input-wrapper">
-                    <label>Email Address</label>
+                    <label>{{__('login.email')}}</label>
                     <input type="email" placeholder="johndoe@email.com" name="email" />
                 </div>
                 @error('email')
@@ -23,8 +23,8 @@ $is_role = request()->query('is_role') ?? 'client';
                 @enderror
                 <div>
                     <div class="label-password">
-                        <label>Password</label>
-                        <a href="{{ route('password.request') }}">Forgot Password?</a>
+                        <label>{{__('login.password')}}</label>
+                        <a href="{{ route('password.request') }}">{{__('login.forgot')}}</a>
                     </div>
                     <div class="input-password-wrapper">
                         <input type="password" placeholder="*****" name="password"/>
@@ -56,15 +56,15 @@ $is_role = request()->query('is_role') ?? 'client';
 
             <div class="keep-login">
                 <input type="checkbox" id="customCheckbox" />
-                <label for="customCheckbox">Keep me signed in</label>
+                <label for="customCheckbox">{{__('login.keep')}}</label>
             </div>
 
-            <button class="auth-submit-btn">Login</button>
+            <button class="auth-submit-btn">{{__('menu.login')}}</button>
         </form>
 
         <div class="divider">
             <div class="divider-line"></div>
-            <span>or sign in with</span>
+            <span>{{__('login.or')}}</span>
             <div class="divider-line"></div>
         </div>
 
@@ -144,26 +144,26 @@ $is_role = request()->query('is_role') ?? 'client';
                         fill="#4285F4" />
                 </g>
             </svg>
-            Continue with Google
+            {{__('login.google')}}
         </button>
 
         <div class="auth-navigate">
-            <a href="{{ route('register') }}">Create an account</a>
+            <a href="{{ route('register') }}">{{__('login.createtitle')}}</a>
         </div>
 
         <!-- home-tutorials -->
         <div class="home-tutorials-wrapper">
-            <a href="{{ route('home') }}">Home</a>
+            <a href="{{ route('home') }}">{{__('menu.home')}}</a>
             <div data-bs-toggle="modal" data-bs-target="#videoModal">
-                Tutorials
+            {{__('login.tutorial')}}
             </div>
         </div>
         <!-- home-tutorials -->
     </div>
     <div class="greeting-box">
         <div class="greeting-content">
-            <h2>Welcome</h2>
-            <p>New Here? Create a account to start a new campaign?</p>
+            <h2>{{__('login.welcometitle')}}</h2>
+            <p>{{__('login.welcomedesc')}}</p>
         </div>
     </div>
 </section>
