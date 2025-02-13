@@ -35,8 +35,12 @@
                 </p>
             </div>
             <div class="footer-item">
+
             <h4>{{__('menu.quicklinks')}}</h4>
             <div class="footer-links-wrapper">
+
+              
+
                     <a href="{{ route('home') }}">{{__('menu.home')}}</a>
                     <a href="./dashboard-new-campaigns.html">Find Signage</a>
                     <a href="{{ route('contact.us') }}">{{__('menu.contact')}}</a>

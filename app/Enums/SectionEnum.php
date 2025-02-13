@@ -14,6 +14,7 @@ enum SectionEnum: string
     case HOME_ABOUT = 'home_about';
     case HOME_TESTIMONIALS = 'home_testimonials';
     case HOME_HERO = 'home_hero';
+    case HOME_PAGE='home_page';
 
 
     //Footer

@@ -11,12 +11,14 @@
                 <div class="navbar-content">
                     <ul class="nav-items-wrapper">
                         <li><a href="{{ route('home') }}" class="nav-item-active">{{ __('menu.home') }}</a></li>
-                        
+
                     </ul>
                     <div class="action-lang-wrapper">
 
                         <div class="btn-group" role="group">
+
                             <button type="button" class="btn tm-new-btn dropdown-toggle text-light" data-bs-toggle="dropdown" aria-expanded="false">{{session()->get('locale')=='ar'?'العربية':'English'}}</button>
+
                             <ul class="dropdown-menu">
                                 <li><a class="dropdown-item" href="{{ route('lang', ['lang' => 'en']) }}">English</a></li>
                                 <li><a class="dropdown-item" href="{{ route('lang', ['lang' => 'ar']) }}">{{__('menu.arabic')}}</a></li>
@@ -24,7 +26,9 @@
                         </div>
 
                         <a href="{{ route('login') }}" class="btn-common">
+
                         {{ __('menu.startnewcampaign') }}
+
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 width="24"
