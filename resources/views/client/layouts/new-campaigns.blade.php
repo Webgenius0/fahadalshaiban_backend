@@ -938,16 +938,16 @@
         var button = $(this);
         var signageId = button.data('id'); 
 
-        // Check the current button text and toggle it along with the class
+        
         if (button.text() === "Remove signage") {
-            button.text("Add signage"); // Change text to "Add signage"
-            button.toggleClass('btn-primary').toggleClass('btn-warning'); // Change color to warning
+            button.text("Add signage"); 
+            button.toggleClass('btn-primary').toggleClass('btn-warning'); 
         } else {
-            button.text("Remove signage"); // Change text back to "Remove signage"
-            button.toggleClass('btn-warning').toggleClass('btn-primary'); // Change color back to primary
+            button.text("Remove signage"); 
+            button.toggleClass('btn-warning').toggleClass('btn-primary'); 
         }
 
-        console.log('Signage ID:', signageId); // Check if the correct signage ID is passed
+        console.log('Signage ID:', signageId);
     });
     });
 
@@ -958,24 +958,24 @@
     let startDate = document.getElementById('start-date').value;
     let endDate = document.getElementById('end-date').value;
     let artWorkInput = document.getElementById('file-input');
-    // console.log(artWorkInput);
+   
     let artWork = ''; 
-  // Handle file input and Base64 image storage
+  
   if (artWorkInput.files && artWorkInput.files[0]) {
         let file = artWorkInput.files[0];
 
-        // Create a FileReader to read the file
+        
         let reader = new FileReader();
         reader.onloadend = function() {
-            artWorkUrl = reader.result; // Get Base64 string
+            artWorkUrl = reader.result; 
             localStorage.setItem('artWorkUrl', artWorkUrl); // Store Base64 string in localStorage
             
             // Now that the image is processed, save form data
             saveFormData(name, campaign_description, startDate, endDate, artWorkUrl);
         };
-        reader.readAsDataURL(file); // Read the file as a Base64 string
+        reader.readAsDataURL(file); 
     } else {
-        artWorkUrl = 'No image uploaded'; // If no file is selected
+        artWorkUrl = 'No image uploaded';
         saveFormData(name, campaign_description, startDate, endDate, artWorkUrl);
     }
 
