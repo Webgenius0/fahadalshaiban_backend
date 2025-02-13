@@ -337,8 +337,8 @@
 
                     </select>
 
-                    <select class="signage-filter-dropdown">
-                        <option data-display="Signage Type">Select Category...</option>
+                    <select class="signage-filter-dropdown" >
+                        <option data-display="Signage Type" >Select Category...</option>
                         @foreach ($categories as $category)
                         <option value="{{ $category->name }}">{{ $category->name }}</option>
                         @endforeach
@@ -749,23 +749,7 @@
 </div>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    $(document).ready(function() {
-        $(document).on('click', '.add-signage', function() {
-        var button = $(this);
-        var signageId = button.data('id'); // Get the data-id (signage id) of the clicked button
-
-        // Check the current button text and toggle it along with the class
-        if (button.text() === "Remove signage") {
-            button.text("Add signage"); // Change text to "Add signage"
-            button.toggleClass('btn-primary').toggleClass('btn-warning'); // Change color to warning
-        } else {
-            button.text("Remove signage"); // Change text back to "Remove signage"
-            button.toggleClass('btn-warning').toggleClass('btn-primary'); // Change color back to primary
-        }
-
-        console.log('Signage ID:', signageId); // Check if the correct signage ID is passed
-    });
-    });
+   
     //fieltering
 
     $(document).ready(function() {
@@ -949,20 +933,22 @@
 <!-- for fieltering -->
 <script src="{{asset('js/Filter.js')}}"></script>
 <script>
-    $(document).ready(function() {
-        $('.add-signage').click(function() {
-            var button = $(this);
-            var signageId = button.data('id');
+     $(document).ready(function() {
+        $(document).on('click', '.add-signage', function() {
+        var button = $(this);
+        var signageId = button.data('id'); 
 
-            // Check the current button text and toggle it along with the class
-            if (button.text() === "Remove signage") {
-                button.text("Add signage"); // Change text on the first click
-                button.toggleClass('btn-primary').toggleClass('btn-warning'); // Change color to warning
-            } else {
-                button.text("Remove signage"); // Change text back on the second click
-                button.toggleClass('btn-warning').toggleClass('btn-primary'); // Change color back to primary
-            }
-        });
+        // Check the current button text and toggle it along with the class
+        if (button.text() === "Remove signage") {
+            button.text("Add signage"); // Change text to "Add signage"
+            button.toggleClass('btn-primary').toggleClass('btn-warning'); // Change color to warning
+        } else {
+            button.text("Remove signage"); // Change text back to "Remove signage"
+            button.toggleClass('btn-warning').toggleClass('btn-primary'); // Change color back to primary
+        }
+
+        console.log('Signage ID:', signageId); // Check if the correct signage ID is passed
+    });
     });
 
     //collect Details name
@@ -1058,29 +1044,26 @@ document.getElementById('file-input').addEventListener('change', collectName);
     document.getElementById('start-date').addEventListener('change', storeDifference);
     document.getElementById('end-date').addEventListener('change', storeDifference);
 
-
-
     const idArray = new Set();
 
-    $('.add-signage').click(function() {
-        var signageId = $(this).data('id');
-        if (idArray.has(signageId)) {
+    $(document).on('click', '.add-signage', function() {
+    var signageId = $(this).data('id'); 
+    if (idArray.has(signageId)) {
+        
+        idArray.delete(signageId);
+        console.log("Removed Signage ID: ", signageId);
+    } else {
+        
+        idArray.add(signageId);
+        console.log("Added Signage ID: ", signageId);
+        $(`.signage-table tbody tr[data-id="${signageId}"]`).remove(); 
+    }
 
-            idArray.delete(signageId);
-            console.log("Removed Signage ID: ", signageId);
-        } else {
+    $('#signage-count').val(idArray.size);
 
-            idArray.add(signageId);
-            console.log("Added Signage ID: ", signageId);
-            $(`.signage-table tbody tr[data-id="${signageId}"]`).remove();
-        }
-
-        $('#signage-count').val(idArray.size);
-        localStorage.setItem('selectedSignageIds', JSON.stringify(Array.from(idArray)));
-
-        fetchSignageLocation(signageId);
-    });
-
+    localStorage.setItem('selectedSignageIds', JSON.stringify(Array.from(idArray)));
+    fetchSignageLocation(signageId);
+});
 
 
     //image file upload
