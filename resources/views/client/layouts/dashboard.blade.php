@@ -3,7 +3,17 @@ $book = App\Models\Order::where('user_id', auth()->user()->id)->where('status', 
 $totalActivesignages = App\Models\Signage::where('status', 'active')->count();
 
 ?>
-
+@push('style')
+<!-- FullCalendar CSS -->
+<link href="https://cdn.jsdelivr.net/npm/fullcalendar@3.3.0/dist/fullcalendar.min.css" rel="stylesheet">
+<style>
+    /* Highlight booked dates */
+    .fc-event {
+        background-color: yellow !important;
+        color: black !important;
+    }
+</style>
+@endpush
 @extends('client.app', ['title' => 'Home'])
 @section('content')
 <div class="main-content">
@@ -133,13 +143,30 @@ $totalActivesignages = App\Models\Signage::where('status', 'active')->count();
             </div>
         </div>
 
+
+        <!-- Modal with FullCalendar -->
+        <div class="modal fade" id="bookedDaysModal" tabindex="-1" aria-labelledby="bookedDaysModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="bookedDaysModalLabel">Booked Dates</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="calendar"></div> <!-- Calendar goes here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
         <div class="campaign-list">
             <!-- Campaign Item -->
             @foreach($orders as $order)
             <article class="campaign-item">
-            <button class="campaign-edit-btn" data-bs-toggle="modal" data-bs-target="#bookedDaysModal" data-order-id="{{ $order->id }}" data-booked-dates="{{ json_encode($order->created_at) }}">
-            View Booked Days
-        </button>
+                <button class="campaign-edit-btn" data-bs-toggle="modal" data-bs-target="#bookedDaysModal" data-order-id="{{ $order->id }}" data-booked-dates="{{ json_encode($order->created_at) }}">
+                    View Booked Days
+                </button>
 
                 <div class="campaign-top">
                     <div id="chart1"></div>
@@ -215,6 +242,13 @@ $totalActivesignages = App\Models\Signage::where('status', 'active')->count();
 @endsection
 
 @push('script')
+<!-- FullCalendar JS -->
+<script src="https://cdn.jsdelivr.net/npm/moment@2.29.1/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@3.3.0/dist/fullcalendar.min.js"></script>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
 <script>
     $(document).ready(function() {
         // Fetch the completed orders from the backend
@@ -239,6 +273,48 @@ $totalActivesignages = App\Models\Signage::where('status', 'active')->count();
                     eventColor: '#FF5733', // Optional: Customize event color
                 });
             }
+        });
+    });
+
+
+    $(document).ready(function() {
+        // Initialize FullCalendar outside the modal
+        $('#calendar').fullCalendar({
+            header: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'month,agendaWeek,agendaDay'
+            },
+            defaultView: 'month', // Default view
+            eventColor: '#FF5733', // Customize event color
+            eventRender: function(event, element) {
+                element.tooltip({
+                    title: event.description, // Show the description on hover
+                    placement: 'top'
+                });
+            }
+        });
+
+        // When the "View Booked Days" button is clicked
+        $('.campaign-edit-btn').on('click', function() {
+            var bookedDates = $(this).data('booked-dates'); // Get booked dates from the button data
+            var orderId = $(this).data('order-id'); // Get order ID from the button data
+
+            // Format the booked dates for FullCalendar
+            var events = bookedDates.map(function(date) {
+                return {
+                    title: 'Booked',
+                    start: date, // Date format should be 'YYYY-MM-DD'
+                    allDay: true, // Make it an all-day event
+                    backgroundColor: 'yellow', // Highlight booked dates
+                    borderColor: 'yellow'
+                };
+            });
+
+            // Update the calendar with the new events
+            $('#calendar').fullCalendar('removeEvents'); // Clear existing events
+            $('#calendar').fullCalendar('addEventSource', events); // Add new events
+            $('#calendar').fullCalendar('rerenderEvents'); // Re-render the calendar
         });
     });
 </script>
