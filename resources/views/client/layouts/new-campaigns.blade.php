@@ -249,6 +249,9 @@
 
                                 placeholder="12 /06 / 24" />
                              
+
+                                placeholder="12 /06 / 24" />
+                             
                         </div>
                     </div>
 
@@ -522,7 +525,7 @@
 
                             <input type="hidden" id="selected-signage-id" />
 
-                            <!-- <div class="billboard-map-card-container">
+                            <div class="billboard-map-card-container">
                                 @foreach($signages as $data)
                                 <div
                                     class="billboard-card"
@@ -631,7 +634,7 @@
                                 </div>
                                 @endforeach
 
-                            </div> -->
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -750,19 +753,21 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function() {
-        $('.add-signage').click(function() {
-            var button = $(this);
-            var signageId = button.data('id');
+        $(document).on('click', '.add-signage', function() {
+        var button = $(this);
+        var signageId = button.data('id'); // Get the data-id (signage id) of the clicked button
 
-            // Check the current button text and toggle it along with the class
-            if (button.text() === "Remove signage") {
-                button.text("Add signage"); // Change text on the first click
-                button.toggleClass('btn-primary').toggleClass('btn-warning'); // Change color to warning
-            } else {
-                button.text("Remove signage"); // Change text back on the second click
-                button.toggleClass('btn-warning').toggleClass('btn-primary'); // Change color back to primary
-            }
-        });
+        // Check the current button text and toggle it along with the class
+        if (button.text() === "Remove signage") {
+            button.text("Add signage"); // Change text to "Add signage"
+            button.toggleClass('btn-primary').toggleClass('btn-warning'); // Change color to warning
+        } else {
+            button.text("Remove signage"); // Change text back to "Remove signage"
+            button.toggleClass('btn-warning').toggleClass('btn-primary'); // Change color back to primary
+        }
+
+        console.log('Signage ID:', signageId); // Check if the correct signage ID is passed
+    });
     });
     //fieltering
 
@@ -770,14 +775,14 @@
         // Fetch and populate cities dynamically
         function loadCities() {
             $.ajax({
-                url: "{{ route('page.new.campaigns') }}", // Adjust this route if needed
+                url: "{{ route('page.new.campaigns') }}", 
                 method: "GET",
                 dataType: "json",
                 success: function(response) {
-                    // Dynamically populate the cities dropdown
+                    
                     let citiesDropdown = $('#cities');
-                    citiesDropdown.empty(); // Clear existing options
-                    citiesDropdown.append('<option value="">Select City</option>'); // Default option
+                    citiesDropdown.empty(); 
+                    citiesDropdown.append('<option value="">Select City</option>');
 
                     response.cities.forEach(function(city) {
                         citiesDropdown.append('<option value="' + city.location + '">' + city.location + '</option>');
@@ -788,8 +793,6 @@
                 }
             });
         }
-
-        // Call loadCities() to populate cities when the page loads
         loadCities();
 
         // Handle city and category change
@@ -935,6 +938,9 @@
             filterBillboards();
         });
     });
+
+
+    
 </script>
 @endsection
 
@@ -1082,75 +1088,75 @@
 =======
     //collect Details name
     function collectName() {
-        let name = document.getElementById('addTitle').value;
-        let campaign_description = document.getElementById('description').value;
-        let startDate = document.getElementById('start-date').value;
-        let endDate = document.getElementById('end-date').value;
-        let artWorkInput = document.getElementById('file-input');
-        // console.log(artWorkInput);
-        let artWork = '';
-        // Handle file input and Base64 image storage
-        if (artWorkInput.files && artWorkInput.files[0]) {
-            let file = artWorkInput.files[0];
+    let name = document.getElementById('addTitle').value;
+    let campaign_description = document.getElementById('description').value;
+    let startDate = document.getElementById('start-date').value;
+    let endDate = document.getElementById('end-date').value;
+    let artWorkInput = document.getElementById('file-input');
+    // console.log(artWorkInput);
+    let artWork = ''; 
+  // Handle file input and Base64 image storage
+  if (artWorkInput.files && artWorkInput.files[0]) {
+        let file = artWorkInput.files[0];
 
-            // Create a FileReader to read the file
-            let reader = new FileReader();
-            reader.onloadend = function() {
-                artWorkUrl = reader.result; // Get Base64 string
-                localStorage.setItem('artWorkUrl', artWorkUrl); // Store Base64 string in localStorage
-
-                // Now that the image is processed, save form data
-                saveFormData(name, campaign_description, startDate, endDate, artWorkUrl);
-            };
-            reader.readAsDataURL(file); // Read the file as a Base64 string
-        } else {
-            artWorkUrl = 'No image uploaded'; // If no file is selected
+        // Create a FileReader to read the file
+        let reader = new FileReader();
+        reader.onloadend = function() {
+            artWorkUrl = reader.result; // Get Base64 string
+            localStorage.setItem('artWorkUrl', artWorkUrl); // Store Base64 string in localStorage
+            
+            // Now that the image is processed, save form data
             saveFormData(name, campaign_description, startDate, endDate, artWorkUrl);
-        }
-
-        saveFormData(name, campaign_description, startDate, endDate, artWorkUrl);
-
-        // Log the form values for debugging
-        console.log('Name:', name);
-        console.log('Description:', campaign_description);
-        console.log('Start Date:', startDate);
-        console.log('End Date:', endDate);
-        console.log('Art Work:', artWork);
-    }
-
-    function saveFormData(name, campaign_description, startDate, endDate, artWork) {
-        // Ensure dates are valid before calculating the difference
-        if (startDate && endDate) {
-            let start = new Date(startDate);
-            let end = new Date(endDate);
-            let difference = end - start;
-            let differenceDays = difference / (1000 * 3600 * 24);
-
-            localStorage.setItem('differenceDays', differenceDays);
-            console.log('Difference in days:', differenceDays);
-        }
-
-        // Construct the formData object and check if it's populated correctly
-        let formData = {
-            name: name || 'Default Name',
-            campaign_description: campaign_description || 'No Description',
-            startDate: startDate || 'Not Set',
-            endDate: endDate || 'Not Set',
-            artWork: artWork || 'not set'
         };
-
-        console.log('Form Data:', formData);
-
-        // Store the formData object in localStorage as a JSON string
-        localStorage.setItem('formData', JSON.stringify(formData));
+        reader.readAsDataURL(file); // Read the file as a Base64 string
+    } else {
+        artWorkUrl = 'No image uploaded'; // If no file is selected
+        saveFormData(name, campaign_description, startDate, endDate, artWorkUrl);
     }
 
-    // Attach event listeners to the form fields
-    document.getElementById('addTitle').addEventListener('change', collectName);
-    document.getElementById('description').addEventListener('change', collectName);
-    document.getElementById('start-date').addEventListener('change', collectName);
-    document.getElementById('end-date').addEventListener('change', collectName);
-    document.getElementById('file-input').addEventListener('change', collectName);
+    saveFormData(name, campaign_description, startDate, endDate, artWorkUrl);
+
+    // Log the form values for debugging
+    console.log('Name:', name);
+    console.log('Description:', campaign_description);
+    console.log('Start Date:', startDate);
+    console.log('End Date:', endDate);
+    console.log('Art Work:', artWork);
+}
+
+function saveFormData(name, campaign_description, startDate, endDate, artWork) {
+    // Ensure dates are valid before calculating the difference
+    if (startDate && endDate) {
+        let start = new Date(startDate);
+        let end = new Date(endDate);
+        let difference = end - start;
+        let differenceDays = difference / (1000 * 3600 * 24);
+
+        localStorage.setItem('differenceDays', differenceDays);
+        console.log('Difference in days:', differenceDays);  
+    }
+
+    // Construct the formData object and check if it's populated correctly
+    let formData = {
+        name: name || 'Default Name',  
+        campaign_description: campaign_description || 'No Description', 
+        startDate: startDate || 'Not Set', 
+        endDate: endDate || 'Not Set', 
+        artWork: artWork || 'not set'  
+    };
+
+    console.log('Form Data:', formData);
+
+    // Store the formData object in localStorage as a JSON string
+    localStorage.setItem('formData', JSON.stringify(formData));
+}
+
+// Attach event listeners to the form fields
+document.getElementById('addTitle').addEventListener('change', collectName);
+document.getElementById('description').addEventListener('change', collectName);
+document.getElementById('start-date').addEventListener('change', collectName);
+document.getElementById('end-date').addEventListener('change', collectName);
+document.getElementById('file-input').addEventListener('change', collectName);
 
 
 
@@ -1248,6 +1254,27 @@
 
  
 
+</script>
+<script>
+    function changeLocation(event, lat, lan) { 
+        event.preventDefault();
+        const apiKey = "{{ env('GOOGLE_MAPS_API_KEY') }}";
+        const url = `https://www.google.com/maps/embed/v1/view?key=${apiKey}&center=${parseInt(lat)},${parseInt(lan)}&zoom=5`;
+        document.getElementById('mapDiv').innerHTML = `
+            <iframe
+                width="100%"
+                height="100%"
+                frameborder="0"
+                style="border:0"
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"
+                src="${url}"
+                allowfullscreen>
+            </iframe>
+        `;
+    }
+
+ 
 </script>
 <script>
     function changeLocation(event, lat, lan) { 
