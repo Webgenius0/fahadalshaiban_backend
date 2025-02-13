@@ -42,7 +42,7 @@
               
 
                     <a href="{{ route('home') }}">{{__('menu.home')}}</a>
-                    <a href="./dashboard-new-campaigns.html">Find Signage</a>
+                    <a href="{{ route('page.new.campaigns') }}">{{__('menu.findsignage')}}</a>
                     <a href="{{ route('contact.us') }}">{{__('menu.contact')}}</a>
                     <a href="{{ route('login', ['is_role' => 'admin']) }}">{{__('menu.login')}}</a>
                     <a href="{{ route('join.signage.owner') }}" class="text-hightlight">{{__('menu.joinusowner')}}</a>

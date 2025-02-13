@@ -5,7 +5,7 @@
     <div class="authentication-box">
         <div class="authentication-box-header">
             <img src="{{ asset('frontend') }}/images/favicon.png" alt="logo" />
-            <h4>Create an account</h4>
+            <h4>{{__('register.title')}}</h4>
         </div>
 
         <form class="authentication-form" method="POST" action="{{ route('register') }}">
@@ -13,11 +13,11 @@
             <div class="input-wrapper-wrapper">
                 
                 <div class="input-wrapper">
-                    <label>Choose your role:</label>
+                    <label>{{__('register.roletitle')}}:</label>
                     <select name="is_role" id="is_role" class="form-control">
-                        <option value="" disabled selected>Select your role</option>
-                        <option value="client">Client</option>
-                        <option value="owner">Owner</option>
+                        <option value="" disabled selected>{{__('register.selectrole')}}</option>
+                        <option value="client">{{__('register.client')}}</option>
+                        <option value="owner">{{__('register.owner')}}</option>
                     </select>
                 </div>
                 @error('is_role')
@@ -25,14 +25,14 @@
                 @enderror
 
                 <div class="input-wrapper">
-                    <label>Name</label>
+                    <label>{{__('register.name')}}</label>
                     <input type="text" value="{{ old('name') }}" placeholder="johndoe" name="name" />
                 </div>
                 @error('name')
                 <span class="text-danger">{{ $message }}</span>
                 @enderror
                 <div class="input-wrapper">
-                    <label>Email Address</label>
+                    <label>{{__('register.email')}}</label>
                     <input type="email" value="{{ old('email') }}" placeholder="johndoe@email.com" name="email" />
                 </div>
                 @error('email')
@@ -40,7 +40,7 @@
                 @enderror
                 <div>
                     <div class="label-password">
-                        <label>Password</label>
+                        <label>{{__('register.password')}}</label>
                     </div>
                     <div class="input-password-wrapper">
                         <input type="password" value="{{ old('password') }}" placeholder="*****" name="password" />
@@ -70,7 +70,7 @@
                 @enderror
                 <div>
                     <div class="label-password">
-                        <label>Confirm Password</label>
+                        <label>{{__('register.confirm')}}</label>
                     </div>
                     <div class="input-password-wrapper">
                         <input type="password" value="{{ old('password_confirmation') }}" placeholder="*****" name="password_confirmation" />
@@ -101,16 +101,16 @@
             </div>
 
             <p class="agree-to-terms">
-                By continuing, You agree to our
-                <a href="{{ route('terms.conditions') }}">terms of service</a>
+            {{__('register.agree')}}
+                <a href="{{ route('terms.conditions') }}">{{__('register.terms')}}</a>
             </p>
 
-            <button type="submit" class="auth-submit-btn">Register</button>
+            <button type="submit" class="auth-submit-btn">{{__('register.register')}}</button>
         </form>
 
         <div class="divider">
             <div class="divider-line"></div>
-            <span>or sign in with</span>
+            <span>{{__('register.or')}}</span>
             <div class="divider-line"></div>
         </div>
 
@@ -190,27 +190,27 @@
                         fill="#4285F4" />
                 </g>
             </svg>
-            Continue with Google
+            {{__('register.google')}}
         </button>
 
         <div class="auth-navigate">
             <p>
-                Already have an account? <a href="{{ route('login') }}">Sign in here</a>
+            {{__('register.already')}} <a href="{{ route('login') }}">{{__('register.signhere')}}</a>
             </p>
         </div>
         <!-- home-tutorials -->
         <div class="home-tutorials-wrapper">
-            <a href="{{ route('home') }}">Home</a>
+            <a href="{{ route('home') }}">{{__('menu.home')}}</a>
             <div data-bs-toggle="modal" data-bs-target="#videoModal">
-                Tutorials
+            {{__('login.tutorial')}}
             </div>
         </div>
         <!-- home-tutorials -->
     </div>
     <div class="greeting-box">
         <div class="greeting-content">
-            <h2>Welcome</h2>
-            <p>New Here? Create a account to start a new campaign?</p>
+            <h2>{{__('login.welcometitle')}}</h2>
+            <p>{{__('register.welcomedes')}}</p>
         </div>
     </div>
 </section>
