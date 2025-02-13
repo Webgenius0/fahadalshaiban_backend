@@ -42,14 +42,14 @@ class PageController extends Controller
     {
         if ($request->ajax()) {
             $query = Signage::query();
-    
+            
             // Filter by city
             if ($request->has('city') && !empty($request->city)) {
                 $query->where('location', $request->city);
             }
     
             // Filter by category
-            if ($request->has('category') && !empty($request->category)) {
+            if ($request->has('category') && !empty(trim($request->category))) {
                 $query->where('category_name', $request->category);
             }
     
@@ -66,12 +66,13 @@ class PageController extends Controller
         }
     
         // Normal page load
-        $signages = Signage::all();
+        $signages = Signage::take(20)->get(); // You can limit the number of results for better performance
         $categories = Category::all();
         $cities = Signage::select('location')->distinct()->get(); // Get unique cities
         
         return view('client.layouts.new-campaigns', compact('signages', 'categories', 'cities'));
     }
+    
 
     public function billing()
     {

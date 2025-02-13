@@ -77,4 +77,27 @@ class OrderController extends Controller
         // Pass the dates to the view
         return view('client.layouts.order-calender', compact('order_dates'));
     }
+
+
+    //for modal 
+    public function getBookedDates($orderId)
+{
+    // Fetch the order by ID for the authenticated user
+    $order = Order::where('id', $orderId)
+                  ->where('user_id', auth('web')->user()->id)  // Ensure the order belongs to the current user
+                  ->first();
+
+    // Check if the order exists and belongs to the current user
+    if (!$order) {
+        return response()->json(['error' => 'Order not found or not authorized'], 403);
+    }
+
+    // Assume the booked dates are stored in a related table 'bookings'
+    // and you have a 'booking_date' column
+    $bookedDates = $order->bookings()->pluck('booking_date');  // Adjust this according to your table structure
+
+    // Return the booked dates in a response
+    return response()->json(['bookedDates' => $bookedDates]);
+}
+
 }

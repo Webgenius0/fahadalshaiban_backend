@@ -4,6 +4,7 @@ use App\Http\Controllers\Web\Client\DashboardController;
 use App\Http\Controllers\Web\Client\PageController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Web\Client\OrderController;
+use App\Models\Order;
 
 Route::controller(DashboardController::class)->group(function () {
     Route::get('dashboard', 'index')->name('dashboard');
@@ -41,3 +42,4 @@ Route::controller(OrderController::class)->group(function () {
     // Route::put('/order/{id}', 'update')->name('order.update');
     // Route::delete('/order/{id}', 'destroy')->name('order.destroy');
 });
+Route::get('/get-booked-dates/{orderId}', [OrderController::class, 'getBookedDates'])->name('getBookedDates');

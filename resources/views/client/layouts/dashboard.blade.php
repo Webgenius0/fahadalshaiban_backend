@@ -137,7 +137,9 @@ $totalActivesignages = App\Models\Signage::where('status', 'active')->count();
             <!-- Campaign Item -->
             @foreach($orders as $order)
             <article class="campaign-item">
-
+            <button class="campaign-edit-btn" data-bs-toggle="modal" data-bs-target="#bookedDaysModal" data-order-id="{{ $order->id }}" data-booked-dates="{{ json_encode($order->created_at) }}">
+            View Booked Days
+        </button>
 
                 <div class="campaign-top">
                     <div id="chart1"></div>

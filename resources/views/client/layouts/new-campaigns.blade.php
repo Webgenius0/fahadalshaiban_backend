@@ -337,7 +337,7 @@
 
                     </select>
 
-                    <select class="signage-filter-dropdown" >
+                    <select class="signage-filter-dropdown" id="categories-fielter" >
                         <option data-display="Signage Type" >Select Category...</option>
                         @foreach ($categories as $category)
                         <option value="{{ $category->name }}">{{ $category->name }}</option>
@@ -779,7 +779,7 @@
         // Handle city and category change
         function filterBillboards() {
             let selectedCity = $('#cities').val();
-            let selectedCategory = $('#category').val();
+            let selectedCategory = $('#categories-fielte').val();
 
             $.ajax({
                 url: "{{ route('page.new.campaigns') }}",
@@ -915,7 +915,7 @@
         }
 
         // Trigger filtering when city or category is changed
-        $('#cities, #category').on('change', function() {
+        $('#cities, #categories-fielter').on('change', function() {
             filterBillboards();
         });
     });
