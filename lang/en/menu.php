@@ -6,6 +6,7 @@ return [
     'contact' => 'Contact',    
     'login' => 'Login',
     'register' => 'Register',
+    'signup' => 'Sign Up',
     'logout' => 'Logout',
     'startnewcampaign' => 'Start New Campaign',
     'protips' => 'Pro Tips',

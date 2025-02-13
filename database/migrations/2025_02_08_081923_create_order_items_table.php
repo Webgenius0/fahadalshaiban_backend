@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('order_id');
             $table->unsignedBigInteger('signage_id');
             $table->decimal('price_per_day', 10, 2);
-            $table->integer('rotation_time');
+            $table->integer('rotation_time')->nullable();
             $table->integer('avg_daily_views')->nullable();
             $table->decimal('total', 10, 2);  
             $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');

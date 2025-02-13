@@ -6,6 +6,7 @@ return [
     'about' => 'من نحن',
     'contact' => 'اتصل بنا',
     'login' => 'تسجيل الدخول',
+    'signup' => 'انشاء حساب',
     'register' => 'تسجيل جديد',
     'logout' => 'تسجيل الخروج',
     'startnewcampaign' => 'ابداء حملة جديدة',

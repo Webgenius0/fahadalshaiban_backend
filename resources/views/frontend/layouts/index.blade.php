@@ -9,7 +9,335 @@ $home_testimonials = $cms->where('section', SectionEnum::HOME_TESTIMONIALS)->val
 $home_hero = $cms->firstWhere('section', SectionEnum::HOME_HERO);
 $googleLang = new Stichoza\GoogleTranslate\GoogleTranslate(session()->get('locale'));
 @endphp
+@push('style')
+<style>
+        /* homepage testimonial carousel content design start */
+        .review-flex {
+            min-height: max-content;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
+        .slide-container {
+            max-width: 1120px;
+            width: 100%;
+            padding: 40px 20px;
+        }
+
+        .slide-content {
+            margin: 0 40px;
+            overflow: hidden;
+        }
+
+        .card {
+            background-color: #FFF;
+        }
+
+        .image-content,
+        .card-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px 14px;
+        }
+
+        .image-content {
+            position: relative;
+            row-gap: 5px;
+            padding: 25px 0;
+        }
+
+        .overlay {
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 100%;
+            background-color: #174f31;
+            border-radius: 25px 25px 0 25px;
+        }
+
+        .overlay::before,
+        .overlay::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            bottom: -40px;
+            height: 40px;
+            width: 40px;
+            background-color: #174f31;
+        }
+
+        .overlay::after {
+            border-radius: 0 25px 0 0;
+            background-color: #FFF;
+        }
+
+        .card-image {
+            position: relative;
+            height: 150px;
+            width: 150px;
+            border-radius: 50%;
+            background: #FFF;
+            padding: 3px;
+        }
+
+        .card-image .card-img {
+            height: 100%;
+            width: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 4px solid #174f31;
+        }
+
+        .name {
+            font-size: 18px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .description {
+            font-size: 14px;
+            color: #707070;
+            text-align: center;
+        }
+
+        .button {
+            border: none;
+            font-size: 16px;
+            color: #FFF;
+            padding: 8px 16px;
+            background-color: #174f31;
+            border-radius: 6px;
+            margin: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .button:hover {
+            background: #174f31;
+        }
+
+        .swiper-navBtn {
+            color: #34b26f;
+            transition: color 0.3s ease;
+        }
+
+        .swiper-navBtn:hover {
+            color: #28a25f;
+        }
+
+        .swiper-navBtn::before,
+        .swiper-navBtn::after {
+            font-size: 35px;
+        }
+
+        .swiper-button-next {
+            right: 0;
+        }
+
+        .swiper-button-prev {
+            left: 0;
+        }
+
+        .swiper-pagination-bullet {
+            background-color: #174f31;
+            opacity: 1;
+        }
+
+        .swiper-pagination-bullet-active {
+            background-color: #174f31;
+        }
+
+        /* testimonial starts */
+        .testimonial {
+            padding-top: 120px;
+        }
+
+        .review-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-top: 30px;
+        }
+
+        .review-card {
+            background: #f8f8f8;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .review-header h3 {
+            color: #333;
+            font-size: 24px;
+            font-weight: 700;
+            line-height: 32px;
+        }
+
+        .review-header img {
+            width: 34px;
+            height: 34px;
+        }
+
+        .review-rating {
+            color: #ffc107;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .review-date {
+            font-size: 12px;
+            color: #777;
+            margin-bottom: 10px;
+        }
+
+        .review-text {
+            font-size: 14px;
+            color: #333;
+            height: 80px;
+            overflow-y: auto;
+            line-height: 1.5;
+            padding-left: 6px;
+            text-align: justify;
+        }
+
+        .review-text::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .review-text::-webkit-scrollbar-thumb {
+            background: #ccc;
+            border-radius: 20px;
+        }
+
+        .review-text::-webkit-scrollbar-thumb:hover {
+            background: #b3b3b3;
+        }
+
+        /* testimonial ends */
+
+
+        .section-title {
+            color: #333;
+            font-size: 60px;
+            font-weight: 700;
+            line-height: 72px;
+            text-align: center;
+        }
+
+        @media screen and (max-width: 1350px) {
+            .section-title {
+                font-size: 50px;
+                line-height: 60px;
+            }
+        }
+
+        /* 1024px and below */
+        @media (max-width: 1024px) {
+
+            .section-title {
+                font-size: 40px;
+                line-height: 50px;
+            }
+
+            /* testimonial starts */
+            .testimonial {
+                padding-top: 100px;
+            }
+
+            .review-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            /* testimonial ends */
+        }
+
+        /* 768px and below */
+        @media (max-width: 768px) {
+            .section-title {
+                font-size: 36px;
+                line-height: 46px;
+            }
+
+            .slide-content {
+                margin: 0 10px;
+            }
+
+            /* testimonial starts */
+            .testimonial {
+                padding-top: 70px;
+            }
+
+            .testimonial-title {
+                width: 90%;
+                margin: 0 auto;
+            }
+
+            .testimonial-title br {
+                display: none;
+            }
+
+            .review-grid {
+                grid-template-columns: repeat(1, 1fr);
+            }
+
+            /* testimonial ends */
+        }
+
+        /* 480px and below */
+        @media (max-width: 480px) {
+
+            .section-title {
+                font-size: 26px;
+                line-height: 32px;
+            }
+
+            /* testimonial starts */
+            .testimonial {
+                padding-top: 50px;
+            }
+
+            .testimonial-title {
+                width: 100%;
+
+            }
+
+            .review-header h3 {
+                font-size: 18px;
+            }
+
+            /* testimonial ends */
+        }
+
+        /* 375px and below */
+        @media (max-width: 375px) {
+
+            .section-title {
+                font-size: 22px;
+                line-height: 30px;
+            }
+
+            * testimonial starts */ .testimonial {
+                padding-top: 30px;
+            }
+
+            /* testimonial ends */
+
+        }
+   
+</style>
+@endpush
 @extends('frontend.app', ['title' => 'Home'])
 @section('content')
 <!-- banner starts -->
@@ -17,10 +345,9 @@ $googleLang = new Stichoza\GoogleTranslate\GoogleTranslate(session()->get('local
     <div class="my-container">
         <div class="banner-content">
             <h2 class="banner-title">
-                <!-- <span>{{ $googleLang->translate( $titleParts[0] ?? '')}}</span><br /> 
-                <span>{{ $googleLang->translate( $titleParts[1] ?? '')}}</span>  -->
 
-                {{ __('banner.title') }}
+               {{ __('banner.title') }}
+
             </h2>
             <div class="banner-details">
                 <div class="banner-line"></div>
@@ -29,9 +356,9 @@ $googleLang = new Stichoza\GoogleTranslate\GoogleTranslate(session()->get('local
                       {{ __('banner.description') }} 
                     </p>
                     <a href="{{ route('login') }}" class="btn-common banner-home-btn">
-                    {{ $googleLang->translate($home_banner->btn_text ?? ''); }}
 
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    {{ __('menu.signup') }} 
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                             <path d="M4 12L20 12M20 12L14 18M20 12L14 6" stroke="white" stroke-width="1.5" stroke-linecap="round"
                                 stroke-linejoin="round" />
                         </svg>
@@ -44,10 +371,10 @@ $googleLang = new Stichoza\GoogleTranslate\GoogleTranslate(session()->get('local
 <!-- banner ends -->
 
 <!-- marquee starts -->
-<section class="marquee" dir="ltr">
-    <h1>
-        {{__('banner.marquee') }}
-    </h1>
+
+<section class="marquee">
+    <h1> {{__('banner.marquee') }}</h1>
+
 </section>
 <!-- marquee ends -->
 
@@ -245,3 +572,4 @@ $googleLang = new Stichoza\GoogleTranslate\GoogleTranslate(session()->get('local
 </section>
 <!-- grow-business ends -->
 @endsection
+

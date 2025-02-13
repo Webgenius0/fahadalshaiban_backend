@@ -18,8 +18,8 @@ return new class extends Migration
             $table->string('campaign_description');
             $table->date('start_date');
             $table->date('end_date');
-            $table->boolean('terms_and_conditions');
-            $table->boolean('privacy_policy');
+            $table->boolean('terms_and_conditions')->nullable();
+            $table->boolean('privacy_policy')->nullable();
             $table->string('art_work')->nullable();
             $table->timestamps();
         });
