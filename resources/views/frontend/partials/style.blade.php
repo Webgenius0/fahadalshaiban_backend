@@ -10,4 +10,8 @@
 <link rel="stylesheet" type="text/css" href="{{ asset('frontend') }}/css/common.css" />
 <link rel="stylesheet" type="text/css" href="{{ asset('frontend') }}/css/responsive.css" />
 <link rel="stylesheet" href="{{ asset('frontend') }}/css/style.css" />
+
+<!-- for carousel -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/freeps2/a7rarpress@main/swiper-bundle.min.css">
+
 @stack('style')

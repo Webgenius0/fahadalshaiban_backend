@@ -38,12 +38,39 @@ class PageController extends Controller
         return view('client.layouts.invoice');
     }
 
-    public function newCampaigns()
+    public function newCampaigns(Request $request)
     {
+        if ($request->ajax()) {
+            $query = Signage::query();
+    
+            // Filter by city
+            if ($request->has('city') && !empty($request->city)) {
+                $query->where('location', $request->city);
+            }
+    
+            // Filter by category
+            if ($request->has('category') && !empty($request->category)) {
+                $query->where('category_name', $request->category);
+            }
+    
+            // Get the filtered signages
+            $signages = $query->get();
+    
+            // Return JSON response with filtered signages and cities
+            $cities = Signage::select('location')->distinct()->get(); // Get unique cities
+    
+            return response()->json([
+                'signages' => $signages,
+                'cities' => $cities
+            ]);
+        }
+    
+        // Normal page load
         $signages = Signage::all();
         $categories = Category::all();
-
-        return view('client.layouts.new-campaigns', compact('signages', 'categories'));
+        $cities = Signage::select('location')->distinct()->get(); // Get unique cities
+        
+        return view('client.layouts.new-campaigns', compact('signages', 'categories', 'cities'));
     }
 
     public function billing()
@@ -95,7 +122,7 @@ class PageController extends Controller
             'total' => 'required|numeric',
             'addTitle' => 'nullable|string',
             'description' => 'nullable|string',
-            // 'art_work' => 'nullable|string',
+            'art_work' => 'nullable|string',
             'startDate' => 'nullable|date',
             'endDate' => 'nullable|date',
             'artWork' => 'nullable|string',

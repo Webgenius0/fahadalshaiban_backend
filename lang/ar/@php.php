@@ -3,361 +3,27 @@ use App\Enums\PageEnum;
 use App\Enums\SectionEnum;
 $home_banner = $cms->firstWhere('section', SectionEnum::HOME_BANNER);
 $home_marquee = $cms->firstWhere('section', SectionEnum::HOME_MARQUEE);
-$home_cards = $cms->where('section', SectionEnum::HOME_CARD);
+$home_card = $cms->where('section', SectionEnum::HOME_CARD)->take(4)->values();
 $home_about = $cms->firstWhere('section', SectionEnum::HOME_ABOUT);
 $home_testimonials = $cms->where('section', SectionEnum::HOME_TESTIMONIALS)->values();
 $home_hero = $cms->firstWhere('section', SectionEnum::HOME_HERO);
 @endphp
-@push('style')
-<style>
-        /* homepage testimonial carousel content design start */
-        .review-flex {
-            min-height: max-content;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
 
-        .slide-container {
-            max-width: 1120px;
-            width: 100%;
-            padding: 40px 20px;
-        }
-
-        .slide-content {
-            margin: 0 40px;
-            overflow: hidden;
-        }
-
-        .card {
-            background-color: #FFF;
-        }
-
-        .image-content,
-        .card-content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 10px 14px;
-        }
-
-        .image-content {
-            position: relative;
-            row-gap: 5px;
-            padding: 25px 0;
-        }
-
-        .overlay {
-            position: absolute;
-            left: 0;
-            top: 0;
-            height: 100%;
-            width: 100%;
-            background-color: #174f31;
-            border-radius: 25px 25px 0 25px;
-        }
-
-        .overlay::before,
-        .overlay::after {
-            content: '';
-            position: absolute;
-            right: 0;
-            bottom: -40px;
-            height: 40px;
-            width: 40px;
-            background-color: #174f31;
-        }
-
-        .overlay::after {
-            border-radius: 0 25px 0 0;
-            background-color: #FFF;
-        }
-
-        .card-image {
-            position: relative;
-            height: 150px;
-            width: 150px;
-            border-radius: 50%;
-            background: #FFF;
-            padding: 3px;
-        }
-
-        .card-image .card-img {
-            height: 100%;
-            width: 100%;
-            object-fit: cover;
-            border-radius: 50%;
-            border: 4px solid #174f31;
-        }
-
-        .name {
-            font-size: 18px;
-            font-weight: 500;
-            color: #333;
-        }
-
-        .description {
-            font-size: 14px;
-            color: #707070;
-            text-align: center;
-        }
-
-        .button {
-            border: none;
-            font-size: 16px;
-            color: #FFF;
-            padding: 8px 16px;
-            background-color: #174f31;
-            border-radius: 6px;
-            margin: 14px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .button:hover {
-            background: #174f31;
-        }
-
-        .swiper-navBtn {
-            color: #34b26f;
-            transition: color 0.3s ease;
-        }
-
-        .swiper-navBtn:hover {
-            color: #28a25f;
-        }
-
-        .swiper-navBtn::before,
-        .swiper-navBtn::after {
-            font-size: 35px;
-        }
-
-        .swiper-button-next {
-            right: 0;
-        }
-
-        .swiper-button-prev {
-            left: 0;
-        }
-
-        .swiper-pagination-bullet {
-            background-color: #174f31;
-            opacity: 1;
-        }
-
-        .swiper-pagination-bullet-active {
-            background-color: #174f31;
-        }
-
-        /* testimonial starts */
-        .testimonial {
-            padding-top: 120px;
-        }
-
-        .review-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 24px;
-            margin-top: 30px;
-        }
-
-        .review-card {
-            background: #f8f8f8;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .review-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-        .review-header h3 {
-            color: #333;
-            font-size: 24px;
-            font-weight: 700;
-            line-height: 32px;
-        }
-
-        .review-header img {
-            width: 34px;
-            height: 34px;
-        }
-
-        .review-rating {
-            color: #ffc107;
-            font-size: 16px;
-            margin-bottom: 10px;
-        }
-
-        .review-date {
-            font-size: 12px;
-            color: #777;
-            margin-bottom: 10px;
-        }
-
-        .review-text {
-            font-size: 14px;
-            color: #333;
-            height: 80px;
-            overflow-y: auto;
-            line-height: 1.5;
-            padding-left: 6px;
-            text-align: justify;
-        }
-
-        .review-text::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        .review-text::-webkit-scrollbar-thumb {
-            background: #ccc;
-            border-radius: 20px;
-        }
-
-        .review-text::-webkit-scrollbar-thumb:hover {
-            background: #b3b3b3;
-        }
-
-        /* testimonial ends */
-
-
-        .section-title {
-            color: #333;
-            font-size: 60px;
-            font-weight: 700;
-            line-height: 72px;
-            text-align: center;
-        }
-
-        @media screen and (max-width: 1350px) {
-            .section-title {
-                font-size: 50px;
-                line-height: 60px;
-            }
-        }
-
-        /* 1024px and below */
-        @media (max-width: 1024px) {
-
-            .section-title {
-                font-size: 40px;
-                line-height: 50px;
-            }
-
-            /* testimonial starts */
-            .testimonial {
-                padding-top: 100px;
-            }
-
-            .review-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            /* testimonial ends */
-        }
-
-        /* 768px and below */
-        @media (max-width: 768px) {
-            .section-title {
-                font-size: 36px;
-                line-height: 46px;
-            }
-
-            .slide-content {
-                margin: 0 10px;
-            }
-
-            /* testimonial starts */
-            .testimonial {
-                padding-top: 70px;
-            }
-
-            .testimonial-title {
-                width: 90%;
-                margin: 0 auto;
-            }
-
-            .testimonial-title br {
-                display: none;
-            }
-
-            .review-grid {
-                grid-template-columns: repeat(1, 1fr);
-            }
-
-            /* testimonial ends */
-        }
-
-        /* 480px and below */
-        @media (max-width: 480px) {
-
-            .section-title {
-                font-size: 26px;
-                line-height: 32px;
-            }
-
-            /* testimonial starts */
-            .testimonial {
-                padding-top: 50px;
-            }
-
-            .testimonial-title {
-                width: 100%;
-
-            }
-
-            .review-header h3 {
-                font-size: 18px;
-            }
-
-            /* testimonial ends */
-        }
-
-        /* 375px and below */
-        @media (max-width: 375px) {
-
-            .section-title {
-                font-size: 22px;
-                line-height: 30px;
-            }
-
-            * testimonial starts */ .testimonial {
-                padding-top: 30px;
-            }
-
-            /* testimonial ends */
-
-        }
-   
-</style>
-@endpush
 @extends('frontend.app', ['title' => 'Home'])
 @section('content')
 <!-- banner starts -->
-<section class="banner-home" dir="ltr">
+<section class="banner-home">
     <div class="my-container">
         <div class="banner-content">
-            <h2 class="banner-title">
-               {{ __('banner.title') }}
-            </h2>
+            <h1 class="banner-title">{{ $home_banner->title ?? "Shashh Advertising" }}</h1>
             <div class="banner-details">
                 <div class="banner-line"></div>
                 <div>
-                    <p class="banner-desc">
-                      {{ __('banner.description') }} 
-                    </p>
-                    <a href="{{ route('login') }}" class="btn-common banner-home-btn">
-                    {{ __('menu.signup') }} 
-
+                    <p class="banner-desc">{{ $home_banner->description ?? "Reach a real and local engagead audience on Shashh. Drive results on one platform for better connections." }}</p>
+                    <a href="{{ $home_banner->button_link ?? '#' }}" class="btn-common banner-home-btn">
+                        {{ $home_banner->button_text ?? "Sign up now" }}
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                            <path d="M4 12L20 12M20 12L14 18M20 12L14 6" stroke="white" stroke-width="1.5" stroke-linecap="round"
-                                stroke-linejoin="round" />
+                            <path d="M4 12L20 12M20 12L14 18M20 12L14 6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
                     </a>
                 </div>
@@ -369,7 +35,7 @@ $home_hero = $cms->firstWhere('section', SectionEnum::HOME_HERO);
 
 <!-- marquee starts -->
 <section class="marquee">
-    <h1> {{__('banner.marquee') }}</h1>
+    <h1>{{ $home_marquee->title ?? "1st Public Signage Booking Website in Saudi Arabia and GCC***1st Public Signage Booking Website in Saudi Arabia and GCC" }}</h1>
 </section>
 <!-- marquee ends -->
 
@@ -527,15 +193,10 @@ $home_hero = $cms->firstWhere('section', SectionEnum::HOME_HERO);
     <div class="my-container">
         <div class="about-us-content-wrapper">
             <div class="about-us-left">
-                <h2 class="section-title">{{ __('about.title') }}</h2>
+                <h2 class="section-title">{{ $home_about->title ?? "About Us" }}</h2>
                 <div class="about-us-content">
                     <div class="about-us-line"></div>
-                    <p class="about-us-desc">
-                        {!! __('about.shortdescription') !!}
-                    </p>
-                    <p class="about-us-desc">
-                        {!! __('about.description') !!}
-                    </p>
+                    {!! $home_about->description ?? "Welcome to Shashh, the game-changer in how businesses and individuals book and utilize public signage spaces. Our cutting-edge solution is designed to make your advertising experience seamless, efficient, and incredibly effective." !!}
                 </div>
             </div>
             <div class="about-us-right">
@@ -552,40 +213,187 @@ $home_hero = $cms->firstWhere('section', SectionEnum::HOME_HERO);
 <!-- testimonial starts -->
 <section class="testimonial">
     <div class="my-container">
-        <h2 class="section-title testimonial-title text-center">{{ __('testimonial.title') }}</h2>
-        <div class="review-flex">
-            <div class="slide-container swiper">
-                <div class="slide-content">
-                    <div class="card-wrapper swiper-wrapper">
-                        <!-- Loop through home_cards -->
-                        @foreach ($home_cards as $home_card)
-                        <div class="card swiper-slide">
-                            <div class="review-card">
-                                <div class="review-header">
-                                    <h3>{{ $home_card->title ?? "Adam Smith" }}</h3>
-                                    <img src="{{ asset($home_card->image) }}" alt="Google Logo" style="width: 200px; height: auto; border-radius: 8px;" />
-
-                                </div>
-                                <!-- <div class="review-rating">⭐ ⭐ ⭐ ⭐ ⭐</div>
-                                    <p class="review-date">11 days ago</p> -->
-                                <p class="review-text">
-                                    {{ $home_card->description ?? "Lorem Ipsum" }}
-                                </p>
-                            </div>
-                        </div>
-                        @endforeach
-                    </div>
+        <h2 class="section-title">Testimonial</h2>
+        <div class="review-grid">
+            @if(isset($home_testimonials) && $home_testimonials->count() > 0)
+            @foreach($home_testimonials as $testimonial)
+            <div class="review-card">
+                <div class="review-header">
+                    <h3>{{ $testimonial->title ?? "Adam Smith" }}</h3>
+                    <img src="{{ asset('frontend') }}/images/google.png" alt="Google Logo" />
                 </div>
-                <!-- Swiper Navigation Buttons -->
-                <div class="swiper-button-next swiper-navBtn"></div>
-                <div class="swiper-button-prev swiper-navBtn"></div>
-                <!-- Swiper Pagination -->
-                <div class="swiper-pagination d-md-none"></div>
+                <div class="review-rating">
+                @if (isset(json_decode($testimonial->metadata)->rating) && json_decode($testimonial->metadata)->rating > 0)
+                    @for ($i = 0; $i < json_decode($testimonial->metadata)->rating; $i++)
+                        ⭐
+                    @endfor
+                @endif
+                </div>
+                <p class="review-date">{{ $testimonial->created_at->diffForHumans() ?? "N/A" }}</p>
+                <p class="review-text">
+                    {!! $testimonial->description ?? "Find the optimal location for your signage to meet your business needs." !!}
+                </p>
             </div>
+            @endforeach
+            @else
+            <div class="review-card">
+                <div class="review-header">
+                    <h3>Adam Smith</h3>
+                    <img src="{{ asset('frontend') }}/images/google.png" alt="Google Logo" />
+                </div>
+                <div class="review-rating">⭐ ⭐ ⭐ ⭐ ⭐</div>
+                <p class="review-date">11 days ago</p>
+                <p class="review-text">
+                    Find the optimal location for your signage to meet your business
+                    needs. Find the optimal location for your signage to meet your
+                    business needs. Find the optimal location for your signage to
+                    meet your business needs. Find the optimal location for your
+                    signage to meet your business needs. Find the optimal location
+                    for your signage to meet your business needs. Find the optimal
+                    location for your signage to meet your business needs. Find the
+                    optimal location for your signage to meet your business needs.
+                    Find the optimal location for your signage to meet your business
+                    needs. Find the optimal location for your signage to meet your
+                    business needs. Find the optimal location for your signage to
+                    meet your business needs.
+                </p>
+            </div>
+            <div class="review-card">
+                <div class="review-header">
+                    <h3>Adam Smith</h3>
+                    <img src="{{ asset('frontend') }}/images/google.png" alt="Google Logo" />
+                </div>
+                <div class="review-rating">⭐ ⭐ ⭐ ⭐ ⭐</div>
+                <p class="review-date">11 days ago</p>
+                <p class="review-text">
+                    Find the optimal location for your signage to meet your business
+                    needs. Find the optimal location for your signage to meet your
+                    business needs. Find the optimal location for your signage to
+                    meet your business needs. Find the optimal location for your
+                    signage to meet your business needs. Find the optimal location
+                    for your signage to meet your business needs. Find the optimal
+                    location for your signage to meet your business needs. Find the
+                    optimal location for your signage to meet your business needs.
+                    Find the optimal location for your signage to meet your business
+                    needs. Find the optimal location for your signage to meet your
+                    business needs. Find the optimal location for your signage to
+                    meet your business needs.
+                </p>
+            </div>
+            <div class="review-card">
+                <div class="review-header">
+                    <h3>Adam Smith</h3>
+                    <img src="{{ asset('frontend') }}/images/google.png" alt="Google Logo" />
+                </div>
+                <div class="review-rating">⭐ ⭐ ⭐ ⭐ ⭐</div>
+                <p class="review-date">11 days ago</p>
+                <p class="review-text">
+                    Find the optimal location for your signage to meet your business
+                    needs. Find the optimal location for your signage to meet your
+                    business needs. Find the optimal location for your signage to
+                    meet your business needs. Find the optimal location for your
+                    signage to meet your business needs. Find the optimal location
+                    for your signage to meet your business needs. Find the optimal
+                    location for your signage to meet your business needs. Find the
+                    optimal location for your signage to meet your business needs.
+                    Find the optimal location for your signage to meet your business
+                    needs. Find the optimal location for your signage to meet your
+                    business needs. Find the optimal location for your signage to
+                    meet your business needs.
+                </p>
+            </div>
+            <div class="review-card">
+                <div class="review-header">
+                    <h3>Adam Smith</h3>
+                    <img src="{{ asset('frontend') }}/images/google.png" alt="Google Logo" />
+                </div>
+                <div class="review-rating">⭐ ⭐ ⭐ ⭐ ⭐</div>
+                <p class="review-date">11 days ago</p>
+                <p class="review-text">
+                    Find the optimal location for your signage to meet your business
+                    needs. Find the optimal location for your signage to meet your
+                    business needs. Find the optimal location for your signage to
+                    meet your business needs. Find the optimal location for your
+                    signage to meet your business needs. Find the optimal location
+                    for your signage to meet your business needs. Find the optimal
+                    location for your signage to meet your business needs. Find the
+                    optimal location for your signage to meet your business needs.
+                    Find the optimal location for your signage to meet your business
+                    needs. Find the optimal location for your signage to meet your
+                    business needs. Find the optimal location for your signage to
+                    meet your business needs.
+                </p>
+            </div>
+            <div class="review-card">
+                <div class="review-header">
+                    <h3>Adam Smith</h3>
+                    <img src="{{ asset('frontend') }}/images/google.png" alt="Google Logo" />
+                </div>
+                <div class="review-rating">⭐ ⭐ ⭐ ⭐ ⭐</div>
+                <p class="review-date">11 days ago</p>
+                <p class="review-text">
+                    Find the optimal location for your signage to meet your business
+                    needs. Find the optimal location for your signage to meet your
+                    business needs. Find the optimal location for your signage to
+                    meet your business needs. Find the optimal location for your
+                    signage to meet your business needs. Find the optimal location
+                    for your signage to meet your business needs. Find the optimal
+                    location for your signage to meet your business needs. Find the
+                    optimal location for your signage to meet your business needs.
+                    Find the optimal location for your signage to meet your business
+                    needs. Find the optimal location for your signage to meet your
+                    business needs. Find the optimal location for your signage to
+                    meet your business needs.
+                </p>
+            </div>
+            <div class="review-card">
+                <div class="review-header">
+                    <h3>Adam Smith</h3>
+                    <img src="{{ asset('frontend') }}/images/google.png" alt="Google Logo" />
+                </div>
+                <div class="review-rating">⭐ ⭐ ⭐ ⭐ ⭐</div>
+                <p class="review-date">11 days ago</p>
+                <p class="review-text">
+                    Find the optimal location for your signage to meet your business
+                    needs. Find the optimal location for your signage to meet your
+                    business needs. Find the optimal location for your signage to
+                    meet your business needs. Find the optimal location for your
+                    signage to meet your business needs. Find the optimal location
+                    for your signage to meet your business needs. Find the optimal
+                    location for your signage to meet your business needs. Find the
+                    optimal location for your signage to meet your business needs.
+                    Find the optimal location for your signage to meet your business
+                    needs. Find the optimal location for your signage to meet your
+                    business needs. Find the optimal location for your signage to
+                    meet your business needs.
+                </p>
+            </div>
+            <div class="review-card">
+                <div class="review-header">
+                    <h3>Adam Smith</h3>
+                    <img src="{{ asset('frontend') }}/images/google.png" alt="Google Logo" />
+                </div>
+                <div class="review-rating">⭐ ⭐ ⭐ ⭐ ⭐</div>
+                <p class="review-date">11 days ago</p>
+                <p class="review-text">
+                    Find the optimal location for your signage to meet your business
+                    needs. Find the optimal location for your signage to meet your
+                    business needs. Find the optimal location for your signage to
+                    meet your business needs. Find the optimal location for your
+                    signage to meet your business needs. Find the optimal location
+                    for your signage to meet your business needs. Find the optimal
+                    location for your signage to meet your business needs. Find the
+                    optimal location for your signage to meet your business needs.
+                    Find the optimal location for your signage to meet your business
+                    needs. Find the optimal location for your signage to meet your
+                    business needs. Find the optimal location for your signage to
+                    meet your business needs.
+                </p>
+            </div>
+            @endif
         </div>
     </div>
 </section>
-
 <!-- testimonial end -->
 
 <!-- grow-business starts -->
@@ -593,15 +401,24 @@ $home_hero = $cms->firstWhere('section', SectionEnum::HOME_HERO);
     <div class="my-container">
         <div class="grow-business-wrapper">
             <div class="grow-business-content">
-                <h3>{{__('herobanner.title')}}</h3>
-                <p>{{__('herobanner.shorttitle')}}</p>
+                <h3>{{ $home_hero->title ?? "Its time to grow your business" }}</h3>
+                <p>{!! $home_hero->description ?? "reate your free account now and track your success" !!}</p>
             </div>
 
             <div class="grow-business-action-wrapper">
-                <a href="./login.html" class="btn-common">
-                    {!! __('menu.startnewcampaign') !!}
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                        <path d="M4 12L20 12M20 12L14 18M20 12L14 6" stroke="white" stroke-width="1.5" stroke-linecap="round"
+                <a href="{{ route('login') }}" class="btn-common">
+                    Start New Campaign
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none">
+                        <path
+                            d="M4 12L20 12M20 12L14 18M20 12L14 6"
+                            stroke="white"
+                            stroke-width="1.5"
+                            stroke-linecap="round"
                             stroke-linejoin="round" />
                     </svg>
                 </a>
@@ -611,4 +428,3 @@ $home_hero = $cms->firstWhere('section', SectionEnum::HOME_HERO);
 </section>
 <!-- grow-business ends -->
 @endsection
-
