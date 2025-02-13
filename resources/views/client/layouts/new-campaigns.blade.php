@@ -246,8 +246,9 @@
                                 type="date"
                                 id="start-date"
                                 class="date-input"
-                                placeholder="12 /06 / 24" required />
 
+                                placeholder="12 /06 / 24" />
+                             
                         </div>
                     </div>
 
@@ -258,7 +259,8 @@
                                 type="date"
                                 id="end-date"
                                 class="date-input"
-                                placeholder="DD / MM / YY" required />
+
+                                placeholder="DD / MM / YY" />    
 
                         </div>
                     </div>
@@ -373,12 +375,7 @@
 
                 <h2 class="results-heading">Results</h2>
                 <div class="tab-content" id="nav-tabContent">
-                    <div
-                        class="tab-pane fade show active"
-                        id="nav-home"
-                        role="tabpanel"
-                        aria-labelledby="nav-home-tab"
-                        tabindex="0">
+                    <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab" tabindex="0">
                         <div class="billboard-card-container">
                             @foreach($signages as $data)
                             <div
@@ -506,15 +503,7 @@
                         tabindex="0">
                         <div class="billboard-map-container">
                             <div class="billboard-map">
-                                <iframe
-                                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d228792.2532672344!2d49.82773211300567!3d26.36277673468037!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e361d32276b3403%3A0xefd901ec7a5e5676!2sDammam%20Saudi%20Arabia!5e0!3m2!1sen!2sbd!4v1731218948083!5m2!1sen!2sbd"
-                                    width="600"
-                                    height="450"
-                                    style="border: 0"
-                                    allowfullscreen=""
-                                    loading="lazy"
-                                    referrerpolicy="no-referrer-when-downgrade"></iframe>
-
+                                <div style="height:600px" id="mapDiv"></div>
                                 <div
                                     class="d-flex align-items-center justify-content-center gap-5 mt-5">
                                     <button
@@ -523,18 +512,17 @@
                                         Previous
                                     </button>
 
-                                    <button
-                                        type="button"
-                                        class="next-btn change-step next">
+                                    <button type="button" class="next-btn change-step next">
                                         Next
                                     </button>
                                 </div>
+
                             </div>
 
 
                             <input type="hidden" id="selected-signage-id" />
 
-                            <!-- <div class="billboard-map-card-container">
+                            <div class="billboard-map-card-container">
                                 @foreach($signages as $data)
                                 <div
                                     class="billboard-card"
@@ -548,9 +536,10 @@
                                                 <h3>Billboard Location</h3>
                                                 <p class="billboard-card-id">#{{$data->id}}</p>
                                             </div>
-                                            <button type="button" id="add-signage" class="add-signage" data-id="{{$data->id}}">
-                                                Add signage
-                                            </button>
+
+                                            <button class="btn btn-primary" onclick="changeLocation(event, '{{ $data->lat }}', '{{ $data->lan }}')">
+                                                <i class="fa fa-location-arrow"></i>
+                                            </button>                                         
                                         </div>
 
                                         <div class="billboard-card-info">
@@ -642,7 +631,7 @@
                                 </div>
                                 @endforeach
 
-                            </div> -->
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -711,7 +700,8 @@
                         </div>
                         <div class="campaign-details-input-wrapper">
                             <label>Design</label>
-                            <input type="text" value="Design File.JPEG" readonly id="uploaded-image-preview" required />
+                            <input type="text" value="Design File.JPEG" readonly id="uploaded-image-preview" />
+
                         </div>
 
                         <div class="campaign-details-input-wrapper">
@@ -760,19 +750,21 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function() {
-        $('.add-signage').click(function() {
-            var button = $(this);
-            var signageId = button.data('id');
+        $(document).on('click', '.add-signage', function() {
+        var button = $(this);
+        var signageId = button.data('id'); // Get the data-id (signage id) of the clicked button
 
-            // Check the current button text and toggle it along with the class
-            if (button.text() === "Remove signage") {
-                button.text("Add signage"); // Change text on the first click
-                button.toggleClass('btn-primary').toggleClass('btn-warning'); // Change color to warning
-            } else {
-                button.text("Remove signage"); // Change text back on the second click
-                button.toggleClass('btn-warning').toggleClass('btn-primary'); // Change color back to primary
-            }
-        });
+        // Check the current button text and toggle it along with the class
+        if (button.text() === "Remove signage") {
+            button.text("Add signage"); // Change text to "Add signage"
+            button.toggleClass('btn-primary').toggleClass('btn-warning'); // Change color to warning
+        } else {
+            button.text("Remove signage"); // Change text back to "Remove signage"
+            button.toggleClass('btn-warning').toggleClass('btn-primary'); // Change color back to primary
+        }
+
+        console.log('Signage ID:', signageId); // Check if the correct signage ID is passed
+    });
     });
     //fieltering
 
@@ -780,14 +772,14 @@
         // Fetch and populate cities dynamically
         function loadCities() {
             $.ajax({
-                url: "{{ route('page.new.campaigns') }}", // Adjust this route if needed
+                url: "{{ route('page.new.campaigns') }}", 
                 method: "GET",
                 dataType: "json",
                 success: function(response) {
-                    // Dynamically populate the cities dropdown
+                    
                     let citiesDropdown = $('#cities');
-                    citiesDropdown.empty(); // Clear existing options
-                    citiesDropdown.append('<option value="">Select City</option>'); // Default option
+                    citiesDropdown.empty(); 
+                    citiesDropdown.append('<option value="">Select City</option>');
 
                     response.cities.forEach(function(city) {
                         citiesDropdown.append('<option value="' + city.location + '">' + city.location + '</option>');
@@ -798,8 +790,6 @@
                 }
             });
         }
-
-        // Call loadCities() to populate cities when the page loads
         loadCities();
 
         // Handle city and category change
@@ -945,6 +935,9 @@
             filterBillboards();
         });
     });
+
+
+    
 </script>
 @endsection
 
@@ -974,75 +967,75 @@
 
     //collect Details name
     function collectName() {
-        let name = document.getElementById('addTitle').value;
-        let campaign_description = document.getElementById('description').value;
-        let startDate = document.getElementById('start-date').value;
-        let endDate = document.getElementById('end-date').value;
-        let artWorkInput = document.getElementById('file-input');
-        // console.log(artWorkInput);
-        let artWork = '';
-        // Handle file input and Base64 image storage
-        if (artWorkInput.files && artWorkInput.files[0]) {
-            let file = artWorkInput.files[0];
+    let name = document.getElementById('addTitle').value;
+    let campaign_description = document.getElementById('description').value;
+    let startDate = document.getElementById('start-date').value;
+    let endDate = document.getElementById('end-date').value;
+    let artWorkInput = document.getElementById('file-input');
+    // console.log(artWorkInput);
+    let artWork = ''; 
+  // Handle file input and Base64 image storage
+  if (artWorkInput.files && artWorkInput.files[0]) {
+        let file = artWorkInput.files[0];
 
-            // Create a FileReader to read the file
-            let reader = new FileReader();
-            reader.onloadend = function() {
-                artWorkUrl = reader.result; // Get Base64 string
-                localStorage.setItem('artWorkUrl', artWorkUrl); // Store Base64 string in localStorage
-
-                // Now that the image is processed, save form data
-                saveFormData(name, campaign_description, startDate, endDate, artWorkUrl);
-            };
-            reader.readAsDataURL(file); // Read the file as a Base64 string
-        } else {
-            artWorkUrl = 'No image uploaded'; // If no file is selected
+        // Create a FileReader to read the file
+        let reader = new FileReader();
+        reader.onloadend = function() {
+            artWorkUrl = reader.result; // Get Base64 string
+            localStorage.setItem('artWorkUrl', artWorkUrl); // Store Base64 string in localStorage
+            
+            // Now that the image is processed, save form data
             saveFormData(name, campaign_description, startDate, endDate, artWorkUrl);
-        }
-
-        saveFormData(name, campaign_description, startDate, endDate, artWorkUrl);
-
-        // Log the form values for debugging
-        console.log('Name:', name);
-        console.log('Description:', campaign_description);
-        console.log('Start Date:', startDate);
-        console.log('End Date:', endDate);
-        console.log('Art Work:', artWork);
-    }
-
-    function saveFormData(name, campaign_description, startDate, endDate, artWork) {
-        // Ensure dates are valid before calculating the difference
-        if (startDate && endDate) {
-            let start = new Date(startDate);
-            let end = new Date(endDate);
-            let difference = end - start;
-            let differenceDays = difference / (1000 * 3600 * 24);
-
-            localStorage.setItem('differenceDays', differenceDays);
-            console.log('Difference in days:', differenceDays);
-        }
-
-        // Construct the formData object and check if it's populated correctly
-        let formData = {
-            name: name || 'Default Name',
-            campaign_description: campaign_description || 'No Description',
-            startDate: startDate || 'Not Set',
-            endDate: endDate || 'Not Set',
-            artWork: artWork || 'not set'
         };
-
-        console.log('Form Data:', formData);
-
-        // Store the formData object in localStorage as a JSON string
-        localStorage.setItem('formData', JSON.stringify(formData));
+        reader.readAsDataURL(file); // Read the file as a Base64 string
+    } else {
+        artWorkUrl = 'No image uploaded'; // If no file is selected
+        saveFormData(name, campaign_description, startDate, endDate, artWorkUrl);
     }
 
-    // Attach event listeners to the form fields
-    document.getElementById('addTitle').addEventListener('change', collectName);
-    document.getElementById('description').addEventListener('change', collectName);
-    document.getElementById('start-date').addEventListener('change', collectName);
-    document.getElementById('end-date').addEventListener('change', collectName);
-    document.getElementById('file-input').addEventListener('change', collectName);
+    saveFormData(name, campaign_description, startDate, endDate, artWorkUrl);
+
+    // Log the form values for debugging
+    console.log('Name:', name);
+    console.log('Description:', campaign_description);
+    console.log('Start Date:', startDate);
+    console.log('End Date:', endDate);
+    console.log('Art Work:', artWork);
+}
+
+function saveFormData(name, campaign_description, startDate, endDate, artWork) {
+    // Ensure dates are valid before calculating the difference
+    if (startDate && endDate) {
+        let start = new Date(startDate);
+        let end = new Date(endDate);
+        let difference = end - start;
+        let differenceDays = difference / (1000 * 3600 * 24);
+
+        localStorage.setItem('differenceDays', differenceDays);
+        console.log('Difference in days:', differenceDays);  
+    }
+
+    // Construct the formData object and check if it's populated correctly
+    let formData = {
+        name: name || 'Default Name',  
+        campaign_description: campaign_description || 'No Description', 
+        startDate: startDate || 'Not Set', 
+        endDate: endDate || 'Not Set', 
+        artWork: artWork || 'not set'  
+    };
+
+    console.log('Form Data:', formData);
+
+    // Store the formData object in localStorage as a JSON string
+    localStorage.setItem('formData', JSON.stringify(formData));
+}
+
+// Attach event listeners to the form fields
+document.getElementById('addTitle').addEventListener('change', collectName);
+document.getElementById('description').addEventListener('change', collectName);
+document.getElementById('start-date').addEventListener('change', collectName);
+document.getElementById('end-date').addEventListener('change', collectName);
+document.getElementById('file-input').addEventListener('change', collectName);
 
 
 
@@ -1135,5 +1128,26 @@
         });
 
     }
+ 
+</script>
+<script>
+    function changeLocation(event, lat, lan) { 
+        event.preventDefault();
+        const apiKey = "{{ env('GOOGLE_MAPS_API_KEY') }}";
+        const url = `https://www.google.com/maps/embed/v1/view?key=${apiKey}&center=${parseInt(lat)},${parseInt(lan)}&zoom=5`;
+        document.getElementById('mapDiv').innerHTML = `
+            <iframe
+                width="100%"
+                height="100%"
+                frameborder="0"
+                style="border:0"
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"
+                src="${url}"
+                allowfullscreen>
+            </iframe>
+        `;
+    }
+
 </script>
 @endpush
